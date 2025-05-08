@@ -15,8 +15,16 @@ width = screen.get_width()
 height = screen.get_height()
 
 # fonts
-font_h1 = pygame.font.SysFont("ocraextended", 100, False, False)
-font_h2 = pygame.font.SysFont("ocraextended", 30, False, False)
+H1_SIZE = 100
+H2_SIZE = 30
+font_h1 = pygame.font.SysFont("ocraextended", H1_SIZE, False, False)
+font_h2 = pygame.font.SysFont("ocraextended", H2_SIZE, False, False)
+
+# images and sprites
+map = pygame.image.load("zug_fallt_aus/germany-satellite-map.png")
+
+# values
+euros = 100000
 
 while running:
     for event in pygame.event.get():
@@ -34,6 +42,19 @@ while running:
         if pygame.mouse.get_pressed()[2] or pygame.mouse.get_pressed()[0]:
             homepage = False
             game = True
+
+    if game:
+        screen.fill(pygame.Color(200,200,200))
+        screen.blit(map,(0,0))
+
+        sidebar_rect = pygame.Rect(map.get_width(), 0, width-map.get_width(), height)
+        pygame.draw.rect(screen, "black", sidebar_rect, width = 2)
+
+        # money tab
+        money = font_h2.render(f"${euros}", True, "black")
+        screen.blit(money, ((map.get_width() + ((width-map.get_width()) / 2)) - (money.get_width() / 2), H2_SIZE))
+        y_down = H2_SIZE * 3
+
 
     pygame.display.flip()
 
