@@ -17,14 +17,32 @@ height = screen.get_height()
 # fonts
 H1_SIZE = 100
 H2_SIZE = 30
+H3_SIZE = 16
 font_h1 = pygame.font.SysFont("ocraextended", H1_SIZE, False, False)
 font_h2 = pygame.font.SysFont("ocraextended", H2_SIZE, False, False)
+font_h3 = pygame.font.SysFont("ocraextended", H3_SIZE, False, False)
 
 # images and sprites
 map = pygame.image.load("zug_fallt_aus/germany-satellite-map.png")
 
 # values
 euros = 100000
+
+def horizontal_labels(labels, x_across, y_down):
+    '''Print horizontal labels based on a list of values and an x and y value'''
+    rect_list = []
+    max_len = (width-map.get_width() + (len(labels) * 2)) / len(labels)
+    for label in labels:
+        label_text = font_h3.render(label, True, "black")
+        text_gap = (max_len - (H3_SIZE * 2) - label_text.get_width()) / 2
+        screen.blit(label_text, (map.get_width() + x_across + text_gap, y_down + H3_SIZE - 1.5))
+
+        label_text_rect = pygame.Rect(map.get_width() + x_across - H3_SIZE, y_down, max_len, H3_SIZE * 3)
+        pygame.draw.rect(screen, "black", label_text_rect, width = 2)
+
+        rect_list.append(label_text_rect)
+        x_across += (max_len-2)
+    return rect_list
 
 while running:
     for event in pygame.event.get():
@@ -55,6 +73,10 @@ while running:
         screen.blit(money, ((map.get_width() + ((width-map.get_width()) / 2)) - (money.get_width() / 2), H2_SIZE))
         y_down = H2_SIZE * 3
 
+        # nav bar buttons
+        nav_labels = ["Stations", "Trains", "Lines", "Upgrades"]
+        nav_rects = horizontal_labels(nav_labels ,H3_SIZE, y_down)
+        y_down += H3_SIZE * 3 - 2
 
     pygame.display.flip()
 
