@@ -2,7 +2,7 @@ import pygame
 
 # pygame initialisation
 pygame.init()
-screen = pygame.display.set_mode((951,700))
+screen = pygame.display.set_mode((961,700))
 clock = pygame.time.Clock()
 
 # loops and stages
@@ -44,8 +44,15 @@ def horizontal_labels(labels, x_across, y_down):
         x_across += (max_len-2)
     return rect_list
 
+
+def button_check(rect):
+    if pygame.event.peek(eventtype=pygame.MOUSEBUTTONUP) and pygame.mouse.get_pos()[0] in range(rect[0],rect[0]+rect[2]-2) and pygame.mouse.get_pos()[1] in range(rect[1],rect[1]+rect[3]+1):
+        pygame.event.get()
+        return True
+    
+
 while running:
-    for event in pygame.event.get():
+    for event in pygame.event.get(exclude=pygame.MOUSEBUTTONUP):
         if event.type == pygame.QUIT:
             running = False
 
@@ -77,6 +84,30 @@ while running:
         nav_labels = ["Stations", "Trains", "Lines", "Upgrades"]
         nav_rects = horizontal_labels(nav_labels ,H3_SIZE, y_down)
         y_down += H3_SIZE * 3 - 2
+
+        # nav bar functions
+        for rect in nav_rects:
+            if button_check(rect):
+                if nav_rects.index(rect) == 0:
+                    station_menu = True
+                    train_menu = False
+                    line_menu = False
+                    upgrade_menu = False
+                elif nav_rects.index(rect) == 1:
+                    station_menu = False
+                    train_menu = True
+                    line_menu = False
+                    upgrade_menu = False
+                elif nav_rects.index(rect) == 2:
+                    station_menu = False
+                    train_menu = False
+                    line_menu = True
+                    upgrade_menu = False
+                elif nav_rects.index(rect) == 3:
+                    station_menu = False
+                    train_menu = False
+                    line_menu = False
+                    upgrade_menu = True   
 
     pygame.display.flip()
 
