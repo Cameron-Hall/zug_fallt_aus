@@ -64,8 +64,10 @@ while running:
         text = font_h2.render("Press anywhere to continue", True, "black")
         screen.blit(text, ((width / 2) - (text.get_width() / 2), (height / 2) - (text.get_height() / 2) + height * 0.1))
 
-        if pygame.mouse.get_pressed()[2] or pygame.mouse.get_pressed()[0]:
+        rect = pygame.Rect(0, 0, width, height)
+        if button_check(rect):
             homepage = False
+
             game = True
 
     if game:
