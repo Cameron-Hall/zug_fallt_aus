@@ -45,6 +45,35 @@ map = pygame.image.load("zug_fallt_aus/germany-satellite-map.png")
 # values
 euros = 100000
 
+# lists
+stations_unowned = [["Munich",     "MUC", 360, 610, 125000, 50000, 6, ""],
+                    ["Nuremberg",  "NRB", 310, 490, 50000,  25000, 3, ""],
+                    ["Stuttgart",  "STT", 195, 560, 65000,  30000, 5, ""],
+                    ["Frankfurt",  "FRA", 150, 460, 105000, 50000, 6, ""],
+                    ["Essen",      "ESS", 70,  320, 100000, 45000, 5, ""],
+                    ["Dortmund",   "DOR", 100, 315, 145000, 50000, 5, ""],
+                    ["Dusseldorf", "DUS", 60,  345, 120000, 50000, 5, ""],
+                    ["Cologne",    "KOL", 65,  370, 150000, 50000, 5, ""],
+                    ["Bielefeld",  "BIE", 165, 270, 60000,  25000, 3, ""],
+                    ["Hanover",    "HAN", 220, 240, 55000,  15000, 3, ""],
+                    ["Bremen",     "BRE", 170, 185, 80000,  40000, 4, ""],
+                    ["Hamburg",    "HAM", 230, 145, 120000, 50000, 5, ""]
+                    ] 
+                  # [name, code, x, y, price, passenger_capacity, train_cap, operates_to]
+
+
+stations_owned = [["Berlin", "BER", 425, 220, 120000, 50000, 6, ""],
+                  ["Dresden", "DRS", 460, 350, 50000, 20000, 3, ""],
+                  ["Leipzig", "LPZ", 375, 320, 45000, 20000, 3, ""]] # [name, x, y, profit, text_color, bg_color]
+
+train_types = [] # [make, model, cost, capacity, speed, text_color, bg_color]
+owned_trains = [] # [make, model, station_a, station_b]
+
+lines = [["BER", "LPZ", [], 400],
+         ["DRS", "LPZ", [], 200],
+         ["BER", "DRS", [], 300],
+         ] # [start, end, [train_ids], distance]
+
 def horizontal_labels(labels, x_across, y_down):
     '''Print horizontal labels based on a list of values and an x and y value'''
     rect_list = []
@@ -67,7 +96,6 @@ def button_check(rect):
         pygame.event.get()
         return True
     
-
 while running:
     for event in pygame.event.get(exclude=pygame.MOUSEBUTTONUP):
         if event.type == pygame.QUIT:
