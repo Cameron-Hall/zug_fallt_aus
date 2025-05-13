@@ -10,6 +10,8 @@ running = True
 homepage = True
 game = False
 
+mouse_up_check = False
+
 station_menu = False
 train_menu = False
 line_menu = False
@@ -17,6 +19,9 @@ upgrade_menu = False
 
 station_menu_unowned = False
 station_menu_owned = False
+
+train_menu_purchase = False
+train_menu_owned = False
 
 # sizes
 width = screen.get_width()
@@ -26,9 +31,13 @@ height = screen.get_height()
 H1_SIZE = 100
 H2_SIZE = 30
 H3_SIZE = 16
+H4_SIZE = 13
+H5_SIZE = 11
 font_h1 = pygame.font.SysFont("ocraextended", H1_SIZE, False, False)
 font_h2 = pygame.font.SysFont("ocraextended", H2_SIZE, False, False)
 font_h3 = pygame.font.SysFont("ocraextended", H3_SIZE, False, False)
+font_h4 = pygame.font.SysFont("ocraextended", H4_SIZE, False, False)
+font_h5 = pygame.font.SysFont("ocraextended", H5_SIZE, False, False)
 
 # images and sprites
 map = pygame.image.load("zug_fallt_aus/germany-satellite-map.png")
@@ -63,6 +72,13 @@ while running:
     for event in pygame.event.get(exclude=pygame.MOUSEBUTTONUP):
         if event.type == pygame.QUIT:
             running = False
+
+    # checks for phantom clicks (ie. player clicks not on a button, so MOUSEBUTTONUP does not get removed from the event queue)
+    if mouse_up_check:
+        mouse_up_check = False
+        pygame.event.get()
+    if pygame.event.peek(pygame.MOUSEBUTTONUP):
+        mouse_up_check = True
 
     if homepage:
         screen.fill(pygame.Color(200,200,200))
