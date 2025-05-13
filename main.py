@@ -10,6 +10,14 @@ running = True
 homepage = True
 game = False
 
+station_menu = False
+train_menu = False
+line_menu = False
+upgrade_menu = False
+
+station_menu_unowned = False
+station_menu_owned = False
+
 # sizes
 width = screen.get_width()
 height = screen.get_height()
@@ -63,12 +71,13 @@ while running:
         screen.blit(text, ((width / 2) - (text.get_width() / 2), (height / 2) - (text.get_height() / 2) - height * 0.1))
         text = font_h2.render("Press anywhere to continue", True, "black")
         screen.blit(text, ((width / 2) - (text.get_width() / 2), (height / 2) - (text.get_height() / 2) + height * 0.1))
-
         rect = pygame.Rect(0, 0, width, height)
+
         if button_check(rect):
             homepage = False
-
             game = True
+            station_menu = True
+            station_menu_unowned = True
 
     if game:
         screen.fill(pygame.Color(200,200,200))
@@ -110,6 +119,20 @@ while running:
                     train_menu = False
                     line_menu = False
                     upgrade_menu = True   
+
+        # station menu
+        if station_menu:
+            station_purchase_labels = ["Unowned", "Owned"]
+            station_purchase_rects = horizontal_labels(station_purchase_labels, H3_SIZE, y_down)
+            y_down += H3_SIZE * 3
+            for rect in station_purchase_rects:
+                if button_check(rect):
+                    if station_purchase_rects.index(rect) == 0:
+                        station_menu_unowned = True
+                        station_menu_owned = False
+                    elif station_purchase_rects.index(rect) == 1:
+                        station_menu_unowned = False
+                        station_menu_owned = True
 
     pygame.display.flip()
 
