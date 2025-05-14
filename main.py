@@ -18,14 +18,26 @@ line_menu = False
 upgrade_menu = False
 
 station_menu_unowned = False
-station_menu_owned = False
-
+station_menu_owned = True
 train_menu_purchase = False
-train_menu_owned = False
+train_menu_owned = True
+line_menu_owned = True
+line_menu_purchase = False
+
+station_page_unowned = 0
+station_page_owned = 0
+train_page_purchase = 0
+train_page_owned = 0
+line_page_owned = 0
+line_page_purchase = 0
+
+# images and sprites
+map = pygame.image.load("zug_fallt_aus/germany-satellite-map.png")
 
 # sizes
 width = screen.get_width()
 height = screen.get_height()
+sidebar_centre = map.get_width()+((width-map.get_width())/2)
 
 # fonts
 H1_SIZE = 100
@@ -39,11 +51,8 @@ font_h3 = pygame.font.SysFont("ocraextended", H3_SIZE, False, False)
 font_h4 = pygame.font.SysFont("ocraextended", H4_SIZE, False, False)
 font_h5 = pygame.font.SysFont("ocraextended", H5_SIZE, False, False)
 
-# images and sprites
-map = pygame.image.load("zug_fallt_aus/germany-satellite-map.png")
-
 # values
-euros = 100000
+euros = 600000
 
 # lists
 stations_unowned = [["Munich",     "MUC", 360, 610, 125000, 50000, 6, ""],
@@ -74,6 +83,11 @@ lines = [["BER", "LPZ", [], 400],
          ["BER", "DRS", [], 300],
          ] # [start, end, [train_ids], distance]
 
+
+def cell_amount_calc(cell_height):
+    return round((height - 227) / cell_height)
+
+
 def horizontal_labels(labels, x_across, y_down):
     '''Print horizontal labels based on a list of values and an x and y value'''
     rect_list = []
@@ -91,11 +105,56 @@ def horizontal_labels(labels, x_across, y_down):
     return rect_list
 
 
+def print_text(words, font, color, x, y):
+    text = font.render(str(words), True, color)
+    screen.blit(text, (x, y))
+
+
 def button_check(rect):
     if pygame.event.peek(eventtype=pygame.MOUSEBUTTONUP) and pygame.mouse.get_pos()[0] in range(rect[0],rect[0]+rect[2]-2) and pygame.mouse.get_pos()[1] in range(rect[1],rect[1]+rect[3]+1):
         pygame.event.get()
         return True
     
+
+def page_tab(y_down, left_title, right_title, data_1_title, data_1_value, data_2_title, data_2_value, data_3_title = None, data_3_value = None, data_4_title = None, data_4_value = None, data_5_title = None, data_5_value = None, data_6_title = None, data_6_value = None):
+    if data_3_title == None:
+        h5_mult = 1
+    elif data_5_title == None:
+        h5_mult = 2
+    else:
+        h5_mult = 3
+    rect = pygame.Rect(map.get_width()+2, y_down, width-map.get_width()-4, H4_SIZE + 8 + (H5_SIZE * h5_mult))
+    pygame.draw.rect(screen, pygame.Color(130,130,130), rect, width = 2)
+    pygame.draw.line(screen,pygame.Color(130,130,130),(sidebar_centre, y_down + H4_SIZE + 4), (sidebar_centre, y_down + H4_SIZE + 6 + (H5_SIZE * h5_mult)), width = 2)
+
+    print_text(left_title[0], font_h4, left_title[1], map.get_width()+6, y_down + 2)
+    print_text(right_title[0], font_h4, right_title[1], width - 6 - (H4_SIZE/1.6)*len(right_title[0]), y_down + 2)
+
+    print_text(data_1_title[0], font_h5, data_1_title[1], map.get_width() + 6, y_down + H4_SIZE + 4)
+    print_text(data_1_value[0], font_h5, data_1_value[1], sidebar_centre - 2 - (H5_SIZE/1.6)*len(f"{data_1_value[0]}"), y_down + H4_SIZE + 4)
+
+    print_text(data_2_title[0], font_h5, data_2_title[1], sidebar_centre + 4, y_down + H4_SIZE + 4)
+    print_text(data_2_value[0], font_h5, data_2_value[1], width - 6 - (H5_SIZE/1.6)*len(f"{data_2_value[0]}"), y_down + H4_SIZE + 4)
+
+    if data_3_title != None:
+        print_text(data_3_title[0], font_h5, data_3_title[1], map.get_width() + 6, y_down + H4_SIZE + H5_SIZE + 4)
+        print_text(data_3_value[0], font_h5, data_3_value[1], sidebar_centre - 2 - (H5_SIZE/1.6)*len(f"{data_3_value[0]}"), y_down + H4_SIZE + H5_SIZE + 4)
+
+    if data_4_title != None:
+        print_text(data_4_title[0], font_h5, data_4_title[1], sidebar_centre + 4, y_down + H4_SIZE + H5_SIZE + 4)
+        print_text(data_4_value[0], font_h5, data_4_value[1], width - 6 - (H5_SIZE/1.6)*len(f"{data_4_value[0]}"), y_down + H4_SIZE + H5_SIZE + 4)
+
+    if data_5_title != None:
+        print_text(data_5_title[0], font_h5, data_5_title[1], map.get_width() + 6, y_down + H4_SIZE + H5_SIZE*2 + 4)
+        print_text(data_5_value[0], font_h5, data_5_value[1], sidebar_centre - 2 - (H5_SIZE/1.6)*len(f"{data_5_value[0]}"), y_down + H4_SIZE + H5_SIZE*2 + 4)
+
+    if data_6_title != None:
+        print_text(data_6_title[0], font_h5, data_6_title[1], sidebar_centre + 4, y_down + H4_SIZE + H5_SIZE*2 + 4)
+        print_text(data_6_value[0], font_h5, data_6_value[1], width - 6 - (H5_SIZE/1.6)*len(f"{data_6_value[0]}"), y_down + H4_SIZE + H5_SIZE*2 + 4)
+
+    return h5_mult
+
+
 while running:
     for event in pygame.event.get(exclude=pygame.MOUSEBUTTONUP):
         if event.type == pygame.QUIT:
@@ -177,6 +236,42 @@ while running:
                     elif station_purchase_rects.index(rect) == 1:
                         station_menu_unowned = False
                         station_menu_owned = True
+
+            if station_menu_unowned:
+                purchase_rects = []
+
+                cell_amount = cell_amount_calc(H4_SIZE * 3 + 4)
+
+                for station in stations_unowned[cell_amount * station_page_unowned:cell_amount * station_page_unowned + cell_amount]:
+                    color = pygame.Color(130,130,130) if station[4] > euros else pygame.Color(11,128,9)
+                    rect = pygame.Rect(width - 7 - (H4_SIZE/1.6)*len("PURCHASE"), y_down + 3, (H4_SIZE/1.6)*len("PURCHASE") + 2, H4_SIZE + 1)
+                    pygame.draw.rect(screen, color, rect)
+                    purchase_rects.append(rect)
+
+                    color = "red" if station[4] > euros else pygame.Color(11,128,9)
+                    h5_mult = page_tab(y_down,
+                             [f"{station[0]} - {station[1]}", "black"],
+                             ["PURCHASE", "white"],
+                             ["Cost", "black"],
+                             [station[4], color],
+                             ["Train Cap", "black"],
+                             [station[6], "black"],
+                             ["Passenger Cap", "black"],
+                             [station[5], "black"],
+                             ["Operates to", "black"],
+                             [station[7], "black"])
+                    
+                    y_down += H4_SIZE + 6 + (H5_SIZE * h5_mult)
+
+                for rect in purchase_rects:
+                    if button_check(rect):
+                        if euros < stations_unowned[purchase_rects.index(rect)][4]:
+                            pass
+                        else:
+                            euros -= stations_unowned[purchase_rects.index(rect)][4]
+                            stations_owned.append(stations_unowned[purchase_rects.index(rect)])
+                            stations_unowned.remove(stations_unowned[purchase_rects.index(rect)])
+
 
 
         # drawing on map
