@@ -178,6 +178,40 @@ while running:
                         station_menu_unowned = False
                         station_menu_owned = True
 
+
+        # drawing on map
+        # draw lines
+        for line in lines:
+            for station in stations_owned:
+                if station[1] == line[0]:
+                    start_loc = station
+                if station[1] == line[1]:
+                    end_loc = station
+            pygame.draw.line(screen, "white", (start_loc[2]+2.5, start_loc[3]+2.5), (end_loc[2]+2.5, end_loc[3]+2.5), width = 3)
+
+        # draw stations
+        for station in stations_unowned+stations_owned:
+            # on hover
+            if pygame.mouse.get_pos()[0] in range(station[2]-5,station[2]+11) and pygame.mouse.get_pos()[1] in range(station[3]-5,station[3]+11):
+                station_inner = pygame.Rect(station[2]-2,station[3]-2,9,9)
+
+            # no hover
+            else:
+                station_inner = pygame.Rect(station[2],station[3],5,5)
+            station_outer = pygame.Rect(station[2]-5,station[3]-5,15,15)
+
+            # color based on ownership status
+            if station in stations_unowned and station[4] > euros: # unowned, cannot afford
+                color = pygame.Color(161, 53, 45)
+            elif station in stations_unowned:                      # unowned, can afford
+                color = pygame.Color(200,200,200)
+            else:                                                  # owned
+                color = pygame.Color(11,188,9)
+
+            pygame.draw.rect(screen, "black", station_outer)
+            pygame.draw.rect(screen, color, station_inner)
+
+
     pygame.display.flip()
 
 pygame.quit()
