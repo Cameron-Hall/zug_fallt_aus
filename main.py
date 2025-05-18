@@ -1,4 +1,5 @@
 import pygame
+import math
 
 # pygame initialisation
 pygame.init()
@@ -59,42 +60,46 @@ font_h2.set_bold(True)
 euros = 1200000
 
 # lists
-stations_unowned = [["Munich",               "MUC", 360, 610, 740000,  50000, 6, ["NRB", "AUG"], "High"],
-                    ["Nuremberg",            "NRB", 310, 490, 420000,  25000, 3, ["MUC", "AUG", "ERF", "FRA", "STT"], "Medium"],
-                    ["Stuttgart",            "STT", 195, 560, 650000,  30000, 5, ["FRA", "KAR", "AUG", "NRB"], "Medium"],
-                    ["Frankfurt",            "FRA", 155, 460, 1000000, 50000, 6, ["ERF", "BIE", "KOL", "KAR", "STT", "NRB"], "Very High"],
-                    ["Essen",                "ESS", 70,  320, 800000,  45000, 5, ["DUS", "DOR"], "High"],
-                    ["Dortmund",             "DOR", 100, 315, 950000,  50000, 5, ["ESS", "BIE"], "Very High"],
-                    ["Dusseldorf",           "DUS", 60,  345, 720000,  50000, 5, ["KOL", "ESS"], "High"],
-                    ["Bielefeld",            "BIE", 165, 270, 450000,  20000, 3, ["DOR", "FRA", "HAN", "BRE"], "Low"],
-                    ["Hanover",              "HAN", 220, 240, 510000,  25000, 3, ["HAM", "BRE", "BIE", "ERF"], "Low"],
-                    ["Bremen",               "BRE", 170, 185, 650000,  40000, 4, ["HAM", "HAN", "BIE"], "Medium"],
-                    ["Hamburg",              "HAM", 230, 145, 800000,  50000, 5, ["BER", "BRE", "HAN"], "Medium"],
-                    ["Karlsruhe",            "KAR", 150, 545, 300000,  18000, 3, ["FRA", "STT"], "Low"],
-                    ["Erfurt",               "ERF", 305, 370, 400000,  40000, 5, ["LPZ", "NRB", "HAN"], "Low"],
-                    ["Augsburg",             "AUG", 300, 585, 350000,  25000, 4, ["MUC", "STT", "NRB"], "Low"],
-
-                    ["Berlin",               "BER", 425, 220, 740000,  50000, 6, ["NRB", "AUG"], "High"],
-                    ["Leipzig",              "LPZ", 375, 320, 420000,  25000, 3, ["MUC", "AUG", "ERF", "FRA", "STT"], "Medium"],
-                    ["Dresden",              "DRS", 460, 350, 650000,  30000, 5, ["FRA", "KAR", "AUG", "NRB"], "Medium"],
-
-                    ["Munster",              "MUN", 115, 275, 600000,  35000, 6, [], "High"],
-                    ["Bonn",                 "BON", 75,  390, 680000,  40000, 5, [], "High"],
-                    ["Madgeburg",            "MAD", 320, 260, 500000,  25000, 5, [], "Medium"],
-                    ["Potsdam",              "POT", 380, 240, 450000,  30000, 5, [], "Medium"],
-                    ["Regensburg",           "REG", 385, 525, 380000,  22000, 5, [], "Low"],
-                    ["Konstanz",             "KON", 195, 655, 150000,  8000,  3, [], "Low"],
-                    ["Freiburg im Breisgau", "FRB", 120, 630, 200000,  7500,  3, [], "Low"],
-                    ["Wurzburg",             "WRZ", 230, 475, 240000,  10000, 4, [], "Medium"],
-                    ["Mannheim",             "MAN", 150, 495, 520000,  15000, 5, [], "Medium"],
-                    ["Kassel",               "KAS", 200, 340, 300000,  18000, 3, [], "Medium"],
-                    ["Flensburg",            "FLN", 205, 30,  90000,   5000,  1, [], "Low"],
-                    ["Bremerhaven",          "BRM", 160, 135, 350000,  20000, 4, [], "Medium"],
-                    ["Aachen",               "AAC", 25,  385, 300000,  18000, 3, [], "Medium"],
-                    ["Oldenburg",            "OLD", 125, 180, 400000,  12000, 5, [], "Low"],
-                    ["Wuppertal",            "WUP", 85,  345, 900000,  30000, 4, [], "High"],
-                    ["Cologne",              "KOL", 65,  370, 850000,  60000, 5, ["DUS", "FRA"], "Very High"]
-                    ] 
+stations_unowned = [
+    ["Aachen",      "AAC", 25,  385, 250000,  15000, 15, ['BON', 'DUS', 'KOL']],
+    ["Augsburg",    "AUG", 300, 585, 600000,  40000, 18, ['MUC', 'NRB', 'ULM']],
+    ["Berlin",      "BER", 425, 220, 1200000, 100000, 28,['DRS', 'HAM', 'POT', 'ROS']],
+    ["Bielefeld",   "BIE", 165, 270, 450000,  35000, 24, ['BRE', 'DOR', 'HAN', 'KAS', 'MUN', 'OLD']],
+    ["Bonn",        "BON", 75,  390, 320000,  25000, 12, ['AAC', 'FRA', 'KOL']],
+    ["Bremen",      "BRE", 160, 135, 400000,  30000, 20, ['BIE', 'BRM', 'HAM', 'HAN', 'OLD']],
+    ["Bramstedt",   "BRM", 170, 185, 150000,  9000,  9,  ['BRE', 'HAM', 'OLD']],
+    ["Chemnitz",    "CHM", 0,   0,   180000,  10000, 6,  ['DRS', 'ERF']],
+    ["Dortmund",    "DOR", 100, 315, 700000,  55000, 25, ['BIE', 'ESS', 'KAS', 'MUN', 'WUP']],
+    ["Dresden",     "DRS", 460, 350, 750000,  60000, 12, ['BER', 'CHM', 'LPZ']],
+    ["Duisburg",    "DUS", 60,  345, 550000,  45000, 16, ['AAC', 'ESS', 'KOL', 'WUP']],
+    ["Essen",       "ESS", 70,  320, 400000,  35000, 12, ['DOR', 'DUS', 'WUP']],
+    ["Erfurt",      "ERF", 305, 370, 320000,  28000, 24, ['CHM', 'KAS', 'LPZ', 'MAD', 'NRB', 'WRZ']],
+    ["Flensburg",   "FLN", 205, 30,  90000,   8000,  3,  ['KIE']],
+    ["Freiburg",    "FRB", 120, 630, 85000,   10000, 3,  ['KAR']],
+    ["Frankfurt",   "FRA", 155, 460, 900000,  80000, 30, ['BON', 'KAS', 'MAN', 'SBR', 'WRZ']],
+    ["Hamburg",     "HAM", 230, 145, 850000,  70000, 30, ['BRE', 'BRM', 'BER', 'KIE', 'MAD', 'ROS']],
+    ["Hannover",    "HAN", 220, 240, 620000,  50000, 20, ['BIE', 'BRE', 'KAS', 'MAD']],
+    ["Kassel",      "KAS", 200, 340, 530000,  45000, 30, ['BIE', 'DOR', 'ERF', 'FRA', 'HAN', 'MAD']],
+    ["Karlsruhe",   "KAR", 150, 545, 200000,  20000, 12, ['FRB', 'MAN', 'SBR', 'STT']],
+    ["Kiel",        "KIE", 0,   0,   180000,  15000, 9,  ['FLN', 'HAM', 'ROS']],
+    ["Cologne",     "KOL", 65,  370, 600000,  52000, 16, ['AAC', 'BON', 'DUS', 'WUP']],
+    ["Konstanz",    "KON", 195, 655, 85000,   9000,  6,  ['STT', 'ULM']],
+    ["Leipzig",     "LPZ", 375, 320, 450000,  40000, 16, ['DRS', 'ERF', 'MAD', 'POT']],
+    ["Magdeburg",   "MAD", 320, 260, 420000,  38000, 30, ['ERF', 'HAM', 'HAN', 'KAS', 'LPZ', 'POT']],
+    ["Mannheim",    "MAN", 150, 495, 300000,  28000, 12, ['FRA', 'KAR', 'STT']],
+    ["Munster",     "MUN", 115, 275, 360000,  32000, 9,  ['BIE', 'DOR', 'OLD']],
+    ["Munich",      "MUC", 360, 610, 1100000, 95000, 15, ['AUG', 'NRB', 'REG']],
+    ["Nuremberg",   "NRB", 310, 490, 510000,  44000, 25, ['AUG', 'ERF', 'MUC', 'REG', 'WRZ']],
+    ["Oldenburg",   "OLD", 125, 180, 300000,  26000, 16, ['BIE', 'BRE', 'BRM', 'MUN']],
+    ["Potsdam",     "POT", 380, 240, 200000,  22000, 9,  ['BER', 'LPZ', 'MAD']],
+    ["Regensburg",  "REG", 385, 525, 180000,  17000, 6,  ['MUC', 'NRB']],
+    ["Rostock",     "ROS", 0,   0,   220000,  20000, 9,  ['BER', 'HAM', 'KIE']],
+    ["Saarbrucken", "SBR", 0,   0,   140000,  12000, 6,  ['FRA', 'KAR']],
+    ["Stuttgart",   "STT", 195, 560, 600000,  55000, 25, ['KAR', 'KON', 'MAN', 'ULM', 'WRZ']],
+    ["Ulm",         "ULM", 0,   0,   210000,  18000, 9,  ['AUG', 'KON', 'STT']],
+    ["Wuppertal",   "WUP", 85,  345, 250000,  24000, 16, ['DOR', 'DUS', 'ESS', 'KOL']],
+    ["Wurzburg",    "WRZ", 230, 475, 300000,  27000, 16, ['ERF', 'FRA', 'NRB', 'STT']]
+]
                   # [name,          code, x,   y,   price, passenger_capacity, train_cap, can_operate_to, demand]
 
 
@@ -142,7 +147,7 @@ def print_text(words, font, color, x, y):
 
 def page_numbers(list, page, cell_amount):
     page_num_rects = []
-    pages = (len(list) // 11) + 1
+    pages = (len(list) // cell_amount) + 1
     x_across = map.get_width() + ((width - map.get_width()) / 2) - ((pages * 2 - 1) * 15 ) / 2 + 2
     y_down = (height - H5_SIZE*2.65)
     for i in range(pages):
@@ -322,43 +327,61 @@ while running:
                             pass
                         else:
                             euros -= stations_unowned[purchase_rects.index(rect)][4]
-                            stations_owned.append(stations_unowned[purchase_rects.index(rect)])
+
+                            stations_owned.append([stations_unowned[purchase_rects.index(rect)][0],
+                                                   stations_unowned[purchase_rects.index(rect)][1],
+                                                   stations_unowned[purchase_rects.index(rect)][2],
+                                                   stations_unowned[purchase_rects.index(rect)][3],
+                                                   round(stations_unowned[purchase_rects.index(rect)][4]/125),
+                                                   0,
+                                                   stations_unowned[purchase_rects.index(rect)][5],
+                                                   0,
+                                                   0,
+                                                   stations_unowned[purchase_rects.index(rect)][6],
+                                                   [],
+                                                   stations_unowned[purchase_rects.index(rect)][7]
+                                                   ])
                             stations_unowned.remove(stations_unowned[purchase_rects.index(rect)])
 
                             # [name, code, x, y, price,            passenger_capacity,   train_cap,          can_operate_to    ,   demand      ,          ,            ,               ,           ,     ]
-                            # [name, code, x, y, additional_costs, passive_daily_profit, train_daily_profit, total_daily_profit, trains_running, train_cap, operates to, can_operate_to, text_color, bg_color]
-                            #   0      1   2  3   4                      5                     6                 7                      8              9      10            11                   12      13
-
-                            stations_owned[-1][4] = round(stations_owned[-1][4]/125)
-                            stations_owned[-1][5] = 0
-                            stations_owned[-1][6] = 0
-                            can_operate = stations_owned[-1][7]
-                            stations_owned[-1][7] = 0
-                            stations_owned[-1].append(0)
-                            stations_owned[-1].append(0)
-                            stations_owned[-1].append(can_operate)
-                            stations_owned[-1].append([])
+                            # [name, code, x, y, additional_costs, passive_daily_profit, passenger_cap, total_daily_profit, trains_running, train_cap, operates to, can_operate_to, text_color, bg_color]
+                            #   0      1   2  3   4                      5                     6                 7                 8              9      10            11                   12      13
 
             # owned stations
             if station_menu_owned:
                 cell_amount = cell_amount_calc(H4_SIZE + 6 + (H5_SIZE * 3))
 # [name, code, x, y, additional_costs, daily_profit, all_time_profit, trains_running, train_cap, operates to, can_operate_to, text_color, bg_color]
                 for station in stations_owned[cell_amount * station_page_owned:cell_amount * station_page_owned + cell_amount]:
+                    rect = pygame.Rect(width - 7 - (H4_SIZE/1.6)*len("PROFIT GRAPHS"), y_down + 3, (H4_SIZE/1.6)*len("PROFIT GRAPHS") + 2, H4_SIZE + 1)
+                    purchase_rects.append(rect)
+
+                    if len(station[10]+station[11]) <= 4:
+                        extra_line_1 = None
+                        extra_line_2 = None
+                        extra_line_3 = None
+                        extra_line_4 = None
+                    else:
+                        extra_line_1 = ["", "black"]
+                        extra_line_2 = [",".join(station[10][math.ceil(len(station[10])/2) : len(station[10])]), "black"]
+                        extra_line_3 = ["", "black"]
+                        extra_line_4 = [",".join(station[11][math.ceil(len(station[11])/2) : len(station[11])]), "black"]
+                        
+
                     h5_mult = page_tab(y_down,
                              [f"{station[0]} - {station[1]}", "black"],
-                             ["", "white"],
-                             ["Daily Profit", "black"],
-                             [station[5], "black"],
-                             ["All Time Profit", "black"],
+                             ["PROFIT GRAPHS", " black"],
+                             ["Train slots in use", "black"],
+                             [f"{station[8]}/{station[9]}", "black"],
+                             ["Passenger Cap", "black"],
                              [station[6], "black"],
-                             ["Train Space", "black"],
-                             [f"{station[7]}/{station[8]}", "black"],
                              ["Operates to", "black"],
-                             [station[9], "black"],
-                             ["Price Markup", "black"],
-                             [station[4], "black"],
-                             ["", "black"],
-                             [station[10], "black"])
+                             [",".join(station[10][0: 4 if len(station[10]) <= 4 else math.ceil(len(station[10])/2)]), "black"],
+                             ["Can operate to", "black"],
+                             [",".join(station[11][0: 4 if len(station[11]) <= 4 else math.ceil(len(station[11])/2)]), "black"],
+                             extra_line_1,
+                             extra_line_2,
+                             extra_line_3,
+                             extra_line_4)
                     
                     y_down += H4_SIZE + 6 + (H5_SIZE * h5_mult)
                 # add page numbers
