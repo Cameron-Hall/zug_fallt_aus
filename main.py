@@ -24,8 +24,10 @@ width = screen.get_width()
 height = screen.get_height()
 
 # images
-map = pygame.image.load("zug_fallt_aus/north-europe-extended.png")
+map = pygame.image.load("zug_fallt_aus/north-europe-map.png")
 map = pygame.transform.scale(map, (width, (height * (map.get_width()/width)))) # adjusts map size so the width of the map is the same as the width of the screen
+
+print(map.get_width(), map.get_height())
 
 # fonts
 H1_SIZE = 100
@@ -57,45 +59,50 @@ COST_PER_KM = 100
 
 # lists
 stations = [
-    {"name": "Aachen",      "code": "AAC", "x": 305, "y": 485, "owned": False, "clicked": False, "cost": 250000, "passenger_cap": 15000, "train_cap": 15, "operates_to": ['BON', 'DUS', 'KOL']},
-    {"name": "Augsburg",    "code": "AUG", "x": 580, "y": 685, "owned": False, "clicked": False, "cost": 600000, "passenger_cap": 40000, "train_cap": 18, "operates_to": ['MUC', 'NRB', 'ULM']},
-    {"name": "Berlin",      "code": "BER", "x": 705, "y": 320, "owned": False, "clicked": False, "cost": 1200000,"passenger_cap": 100000,"train_cap": 28, "operates_to": ['DRS', 'HAM', 'POT', 'ROS']},
-    {"name": "Bielefeld",   "code": "BIE", "x": 445, "y": 370, "owned": False, "clicked": False, "cost": 450000, "passenger_cap": 35000, "train_cap": 24, "operates_to": ['BRE', 'DOR', 'HAN', 'KAS', 'MUN', 'OLD']},
-    {"name": "Bonn",        "code": "BON", "x": 355, "y": 490, "owned": False, "clicked": False, "cost": 320000, "passenger_cap": 25000, "train_cap": 12, "operates_to": ['AAC', 'FRA', 'KOL']},
-    {"name": "Bremerhaven", "code": "BRM", "x": 440, "y": 235, "owned": False, "clicked": False, "cost": 400000, "passenger_cap": 30000, "train_cap": 20, "operates_to": ['BRE', 'HAM', 'OLD']},
-    {"name": "Bremen",      "code": "BRE", "x": 450, "y": 285, "owned": False, "clicked": False, "cost": 150000, "passenger_cap": 9000,  "train_cap": 9,  "operates_to": ['BIE', 'BRM', 'HAM', 'HAN', 'OLD']},
-    {"name": "Chemnitz",    "code": "CHM", "x": 680, "y": 465, "owned": False, "clicked": False, "cost": 180000, "passenger_cap": 10000, "train_cap": 6,  "operates_to": ['DRS', 'ERF']},
-    {"name": "Cologne",     "code": "KOL", "x": 345, "y": 470, "owned": False, "clicked": False, "cost": 600000, "passenger_cap": 52000, "train_cap": 16, "operates_to": ['AAC', 'BON', 'DUS', 'WUP']},
-    {"name": "Dortmund",    "code": "DOR", "x": 380, "y": 415, "owned": False, "clicked": False, "cost": 700000, "passenger_cap": 55000, "train_cap": 25, "operates_to": ['BIE', 'ESS', 'KAS', 'MUN', 'WUP']},
-    {"name": "Dresden",     "code": "DRS", "x": 740, "y": 450, "owned": False, "clicked": False, "cost": 750000, "passenger_cap": 60000, "train_cap": 12, "operates_to": ['BER', 'CHM', 'LPZ']},
-    {"name": "Dusseldorf",  "code": "DUS", "x": 340, "y": 445, "owned": False, "clicked": False, "cost": 750000, "passenger_cap": 45000, "train_cap": 16, "operates_to": ['AAC', 'ESS', 'KOL', 'WUP']},
-    {"name": "Essen",       "code": "ESS", "x": 350, "y": 420, "owned": False, "clicked": False, "cost": 400000, "passenger_cap": 35000, "train_cap": 12, "operates_to": ['DOR', 'DUS', 'WUP']},
-    {"name": "Erfurt",      "code": "ERF", "x": 585, "y": 470, "owned": False, "clicked": False, "cost": 320000, "passenger_cap": 28000, "train_cap": 24, "operates_to": ['CHM', 'KAS', 'LPZ', 'MAD', 'NRB', 'WRZ']},
-    {"name": "Flensburg",   "code": "FLN", "x": 485, "y": 130, "owned": False, "clicked": False, "cost": 90000,  "passenger_cap": 8000,  "train_cap": 3,  "operates_to": ['KIE']},
-    {"name": "Freiburg",    "code": "FRB", "x": 400, "y": 730, "owned": False, "clicked": False, "cost": 85000,  "passenger_cap": 10000, "train_cap": 3,  "operates_to": ['KAR']},
-    {"name": "Frankfurt",   "code": "FRA", "x": 435, "y": 560, "owned": False, "clicked": False, "cost": 900000, "passenger_cap": 80000, "train_cap": 30, "operates_to": ['BON', 'KAS', 'MAN', 'SBR', 'WRZ']},
-    {"name": "Hamburg",     "code": "HAM", "x": 510, "y": 245, "owned": False, "clicked": False, "cost": 850000, "passenger_cap": 70000, "train_cap": 30, "operates_to": ['BRM', 'BRE', 'BER', 'KIE', 'MAD', 'ROS', 'HAN']},
-    {"name": "Hannover",    "code": "HAN", "x": 500, "y": 340, "owned": False, "clicked": False, "cost": 620000, "passenger_cap": 50000, "train_cap": 20, "operates_to": ['BIE', 'BRE', 'KAS', 'MAD', 'HAM']},
-    {"name": "Kassel",      "code": "KAS", "x": 480, "y": 440, "owned": False, "clicked": False, "cost": 530000, "passenger_cap": 45000, "train_cap": 30, "operates_to": ['BIE', 'DOR', 'ERF', 'FRA', 'HAN', 'MAD']},
-    {"name": "Karlsruhe",   "code": "KAR", "x": 430, "y": 645, "owned": False, "clicked": False, "cost": 200000, "passenger_cap": 20000, "train_cap": 12, "operates_to": ['FRB', 'MAN', 'SBR', 'STT']},
-    {"name": "Kiel",        "code": "KIE", "x": 520, "y": 180, "owned": False, "clicked": False, "cost": 180000, "passenger_cap": 15000, "train_cap": 9,  "operates_to": ['FLN', 'HAM', 'ROS']},
-    {"name": "Konstanz",    "code": "KON", "x": 475, "y": 755, "owned": False, "clicked": False, "cost": 85000,  "passenger_cap": 9000,  "train_cap": 6,  "operates_to": ['STT', 'ULM']},
-    {"name": "Leipzig",     "code": "LPZ", "x": 655, "y": 420, "owned": False, "clicked": False, "cost": 450000, "passenger_cap": 40000, "train_cap": 16, "operates_to": ['DRS', 'ERF', 'MAD', 'POT']},
-    {"name": "Magdeburg",   "code": "MAD", "x": 600, "y": 360, "owned": False, "clicked": False, "cost": 420000, "passenger_cap": 38000, "train_cap": 30, "operates_to": ['ERF', 'HAM', 'HAN', 'KAS', 'LPZ', 'POT']},
-    {"name": "Mannheim",    "code": "MAN", "x": 430, "y": 595, "owned": False, "clicked": False, "cost": 300000, "passenger_cap": 28000, "train_cap": 12, "operates_to": ['FRA', 'KAR', 'STT']},
-    {"name": "Munster",     "code": "MUN", "x": 395, "y": 375, "owned": False, "clicked": False, "cost": 360000, "passenger_cap": 32000, "train_cap": 9,  "operates_to": ['BIE', 'DOR', 'OLD']},
-    {"name": "Munich",      "code": "MUC", "x": 640, "y": 710, "owned": False, "clicked": False, "cost": 1100000,"passenger_cap": 95000, "train_cap": 15, "operates_to": ['AUG', 'NRB', 'REG']},
-    {"name": "Nuremberg",   "code": "NRB", "x": 590, "y": 590, "owned": False, "clicked": False, "cost": 510000, "passenger_cap": 44000, "train_cap": 25, "operates_to": ['AUG', 'ERF', 'MUC', 'REG', 'WRZ']},
-    {"name": "Oldenburg",   "code": "OLD", "x": 405, "y": 280, "owned": False, "clicked": False, "cost": 300000, "passenger_cap": 26000, "train_cap": 16, "operates_to": ['BIE', 'BRM', 'BRE', 'MUN']},
-    {"name": "Potsdam",     "code": "POT", "x": 660, "y": 340, "owned": False, "clicked": False, "cost": 200000, "passenger_cap": 22000, "train_cap": 9,  "operates_to": ['BER', 'LPZ', 'MAD']},
-    {"name": "Regensburg",  "code": "REG", "x": 665, "y": 625, "owned": False, "clicked": False, "cost": 180000, "passenger_cap": 17000, "train_cap": 6,  "operates_to": ['MUC', 'NRB']},
-    {"name": "Rostock",     "code": "ROS", "x": 620, "y": 185, "owned": False, "clicked": False, "cost": 220000, "passenger_cap": 20000, "train_cap": 9,  "operates_to": ['BER', 'HAM', 'KIE']},
-    {"name": "Saarbrucken", "code": "SBR", "x": 355, "y": 620, "owned": False, "clicked": False, "cost": 140000, "passenger_cap": 12000, "train_cap": 6,  "operates_to": ['FRA', 'KAR']},
-    {"name": "Stuttgart",   "code": "STT", "x": 475, "y": 660, "owned": False, "clicked": False, "cost": 600000, "passenger_cap": 55000, "train_cap": 25, "operates_to": ['KAR', 'KON', 'MAN', 'ULM', 'WRZ']},
-    {"name": "Ulm",         "code": "ULM", "x": 525, "y": 685, "owned": False, "clicked": False, "cost": 210000, "passenger_cap": 18000, "train_cap": 9,  "operates_to": ['AUG', 'KON', 'STT']},
-    {"name": "Wuppertal",   "code": "WUP", "x": 365, "y": 445, "owned": False, "clicked": False, "cost": 250000, "passenger_cap": 24000, "train_cap": 16, "operates_to": ['DOR', 'DUS', 'ESS', 'KOL']},
-    {"name": "Wurzburg",    "code": "WRZ", "x": 510, "y": 575, "owned": False, "clicked": False, "cost": 300000, "passenger_cap": 27000, "train_cap": 16, "operates_to": ['ERF', 'FRA', 'NRB', 'STT']}
-]
+
+    {"name": "Amsterdam",   "code": "AMS", "x": 200,  "y": 275, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 36, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Berlin",      "code": "BER", "x": 790,  "y": 250, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 30, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Prague",      "code": "PRA", "x": 860,  "y": 500, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Brussels",    "code": "BRU", "x": 160,  "y": 420, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Warsaw",      "code": "WSW", "x": 1320, "y": 280, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Brno",        "code": "BRN", "x": 1005, "y": 590, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Gdansk",      "code": "GDA", "x": 1130, "y": 65,  "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Lodz",        "code": "LOD", "x": 1225, "y": 335, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Krakow",      "code": "KRA", "x": 1240, "y": 495, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Rotterdam",   "code": "ROT", "x": 160,  "y": 320, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "The Hague",   "code": "HAG", "x": 150,  "y": 300, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Antwerp",     "code": "ANT", "x": 160,  "y": 380, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Ostrava",     "code": "OST", "x": 1110, "y": 525, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Munich",      "code": "MUC", "x": 650,  "y": 695, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Frankfurt",   "code": "FRA", "x": 445,  "y": 495, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Hamburg",     "code": "HAM", "x": 530,  "y": 155, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Luxembourg",  "code": "LUX", "x": 270,  "y": 540, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Leipzig",     "code": "LPZ", "x": 700,  "y": 380, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Koln",        "code": "KOL", "x": 340,  "y": 415, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Stuttgart",   "code": "STT", "x": 480,  "y": 620, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Dusseldorf",  "code": "DUS", "x": 320,  "y": 385, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Nuremberg",   "code": "NRB", "x": 620,  "y": 580, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Bydgoszcz",   "code": "BYD", "x": 1100, "y": 200, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Poznan",      "code": "POZ", "x": 1030, "y": 270, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Wroclaw",     "code": "WRO", "x": 1015, "y": 410, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ["AMS", "BER", "PRA", "BRU", "WSW", "BRN", "GDA", "LOD", "KRA", "ROT", "HAG", "ANT", "OST", "MUC", "FRA", "HAM", "LUX", "LPZ", "KOL", "STT", "DUS", "NRB", "BYD", "POZ", "WRO"], "runs_to": []},
+    {"name": "Ghent",       "code": "GHE", "x": 105,  "y": 400, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "Katowice",    "code": "KAT", "x": 1155, "y": 475, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []},
+    {"name": "",      "code": "", "x": 0, "y": 0, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": [], "runs_to": []}
+    ]
 
                   # [name,          code, x,   y,   price, passenger_capacity, train_cap, can_operate_to, demand]
 
@@ -151,6 +158,29 @@ def draw_lines(lines, stations):
         pygame.draw.line(screen, "black", (start_loc["x"]+2.5, start_loc["y"]+2.5), (end_loc["x"]+2.5, end_loc["y"]+2.5), width = 3)
 
 
+def draw_station(station, flash=1):
+    if (pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+11) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+11)) or flash < 0.5:
+        station_inner = pygame.Rect(station["x"]-2,station["y"]-2,9,9)
+
+    # no hover
+    else:
+        station_inner = pygame.Rect(station["x"]-1,station["y"]-1,7,7)
+    station_outer = pygame.Rect(station["x"]-5,station["y"]-5,15,15)
+
+    if not station["owned"] and station["cost"] > euros:
+        color = pygame.Color(217, 49, 30)
+    elif not station["owned"]:
+        color = "white"
+    else:
+        color = "yellow"
+
+    # pygame.Color(11,188,9)
+
+    pygame.draw.rect(screen, "black", station_outer)
+    pygame.draw.rect(screen, color, station_inner)
+
+
+
 while running:
     for event in pygame.event.get(exclude=pygame.MOUSEBUTTONUP):
         if event.type == pygame.QUIT:
@@ -164,9 +194,9 @@ while running:
         mouse_up_check = True
 
     if homepage:
-        screen.fill(pygame.Color(200,200,200))
+        screen.fill(pygame.Color(210,210,210))
 
-        menu = font_h1.render("Zug Fällt Aus", True, "black")
+        menu = font_h1.render("Zug Fallt Aus", True, "black")
         screen.blit(menu,((width/2)-(menu.get_width()/2),(height/2)-(menu.get_height()/2)-height*0.1))
         anywhere = font_h2.render("Press anywhere to continue", True, "black")
         screen.blit(anywhere,((width/2)-(anywhere.get_width()/2),(height/2)-(anywhere.get_height()/2)+height*0.1))
@@ -184,12 +214,13 @@ while running:
         for station in stations:
             if line_purchasing and station["owned"] and station["clicked"]:
                 start_loc = station
-
+                end_loc = start_loc
                 for dest in station["operates_to"]:
 
                     for item in stations:
-                        if dest == item["code"]:
-                            end_loc = item
+                        if item["owned"]:
+                            if dest == item["code"]:
+                                end_loc = item
 
                     if flash < 0.5:
                         pygame.draw.line(screen, pygame.Color(160,160,160), (start_loc["x"]+2.5, start_loc["y"]+2.5), (end_loc["x"]+2.5, end_loc["y"]+2.5), width = 3)
@@ -200,6 +231,12 @@ while running:
                         lines.append({"start": start_loc,
                                       "end": end_loc,
                                       "trains": []}) 
+                        start_loc["operates_to"].remove(end_loc["code"])
+                        end_loc["operates_to"].remove(start_loc["code"])
+
+                        start_loc["runs_to"].append(end_loc["code"])
+                        end_loc["runs_to"].append(start_loc["code"])
+
                         line_purchasing = False
 
                     if button_check(rect) and not end_loc["owned"]:
@@ -216,26 +253,10 @@ while running:
         
         # draw stations
         for station in stations:
-            # on hover
-            if pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+11) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+11):
-                station_inner = pygame.Rect(station["x"]-2,station["y"]-2,9,9)
+            if station["shown"]:
+                draw_station(station)
 
-            # no hover
-            else:
-                station_inner = pygame.Rect(station["x"]-1,station["y"]-1,7,7)
-            station_outer = pygame.Rect(station["x"]-5,station["y"]-5,15,15)
-
-            if not station["owned"] and station["cost"] > euros:
-                color = pygame.Color(161, 53, 45)
-            elif not station["owned"]:
-                color = "white"
-            else:
-                color = "yellow"
-
-            # pygame.Color(11,188,9)
-
-            pygame.draw.rect(screen, "black", station_outer)
-            pygame.draw.rect(screen, color, station_inner)
+    
 
 
         # hover labels - will show when mouse is hovering over station icon on map
@@ -251,11 +272,11 @@ while running:
         if hover:
             # detecting mouse pos relative to each station
             for station in stations:
-                if pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+11) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+11):
+                if pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+11) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+11) and station["shown"]:
 
                     # determining backing colour based on cost and players money - adds a clearer visualisation of what the player can do with station
                     if station in stations and station["cost"] > euros:
-                        bg_color = pygame.Color(161, 53, 45)
+                        bg_color = pygame.Color(217, 49, 30)
                     elif station in stations:
                         bg_color = pygame.Color(210,210,210)
                     else:
@@ -309,18 +330,26 @@ while running:
                     # checks for if user is clicking the purchase button or not
                     if button_check(rect):
                         station["owned"] = True
+
+                        for dest in station["operates_to"]:
+                            for item in stations:
+                                if dest == item["code"]:
+                                    item["shown"] = True
                         # add money changes etc here
                 
                 # shows two buttons if station is owned - purchasing a line, levelling up the station
                 if station["owned"]:
+                    line_available = False
                     # changing color based on whether line can be purchased or not
-                    color = pygame.Color(150,150,150)
-                    for dest in station["operates_to"]:
-                        for item in stations:
-                            if dest == item["code"] and item["owned"]:
-                                color = pygame.Color(39, 143, 31)
-                                # line_purchase = True
+                    if station["operates_to"] != []:
+                        for dest in station["operates_to"]:
+                            for item in stations:
+                                if dest == item["code"]:
+                                    if item["owned"]:
+                                        line_available = True
                     
+                    color = pygame.Color(39, 143, 31) if line_available else pygame.Color(150,150,150)
+
                     # rect for the add line button
                     line_rect = pygame.Rect(box.x+4, box.y+H4_SIZE+6, 57, H5_SIZE*5-(H4_SIZE+6)-4)
                     pygame.draw.rect(screen, color, line_rect)
@@ -340,6 +369,18 @@ while running:
                     if button_check(line_rect) and color == pygame.Color(39, 143, 31):
                         line_purchasing = True  
 
+    	# line clicking
+        rect = pygame.Rect(pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10, 20,20)
+        for line in lines:
+            for line in lines:
+                for station in stations:
+                    if station == line["start"]:
+                        start_loc = station
+                    if station == line["end"]:
+                        end_loc = station
+            if pygame.Rect.clipline(rect, first_coordinate=(start_loc["x"]+2.5, start_loc["y"]+2.5), second_coordinate=(end_loc["x"]+2.5, end_loc["y"]+2.5)) and pygame.event.peek(eventtype=pygame.MOUSEBUTTONUP):
+                pygame.draw.rect(screen, "green", rect)
+
         # removing large station labels when clicked elsewhere
         if button_check(pygame.Rect(0,0,width,height)):
             for station in stations:
@@ -351,7 +392,7 @@ while running:
         rect = pygame.Rect(10,10,15,15)
         pygame.draw.rect(screen, "black", rect)
         rect = pygame.Rect(13,13,9,9)
-        pygame.draw.rect(screen, pygame.Color(186, 24, 24), rect)
+        pygame.draw.rect(screen, pygame.Color(217, 49, 30), rect)
         print_text("Can't Afford", font_h4, "black", 31, 10)
 
         # can afford key
@@ -367,6 +408,9 @@ while running:
         rect = pygame.Rect(13,53,9,9)
         pygame.draw.rect(screen, "yellow", rect)
         print_text("Owned", font_h4, "black", 31, 50)
+
+        text = font_h5.render(str(pygame.mouse.get_pos()), True, "black")
+        screen.blit(text, (pygame.mouse.get_pos()[0]+4, pygame.mouse.get_pos()[1]+4))
 
 
     pygame.display.flip()
