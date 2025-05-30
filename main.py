@@ -16,8 +16,16 @@ mouse_up_check = False
 flash = 0
 
 line_purchasing = False
+line_build = False
+train_purchase = False
 
 flash_dests = []
+
+menu_page = 'Lines'
+
+tip_line_1 = ""
+tip_line_2 = ""
+tip_line_3 = ""
 
 # sizes
 width = screen.get_width()
@@ -33,12 +41,45 @@ lock = pygame.image.load("zug_fallt_aus/assets/lock.png")
 lock = pygame.transform.scale(lock, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
 
 # train icons
-red_hill = pygame.image.load("zug_fallt_aus/assets/train_icons/red-hill.png")
-red_hill = pygame.transform.scale(red_hill, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
-great_northern = pygame.image.load("zug_fallt_aus/assets/train_icons/great-northern.png")
-great_northern = pygame.transform.scale(great_northern, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
-guangdong_star = pygame.image.load("zug_fallt_aus/assets/train_icons/guangdong-star.png")
-guangdong_star = pygame.transform.scale(guangdong_star, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+if True:
+    red_hill = pygame.image.load("zug_fallt_aus/assets/train_icons/red-hill.png")
+    red_hill = pygame.transform.scale(red_hill, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    great_northern = pygame.image.load("zug_fallt_aus/assets/train_icons/great-northern.png")
+    great_northern = pygame.transform.scale(great_northern, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    guangdong_star = pygame.image.load("zug_fallt_aus/assets/train_icons/guangdong-star.png")
+    guangdong_star = pygame.transform.scale(guangdong_star, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    west_network = pygame.image.load("zug_fallt_aus/assets/train_icons/west-network.png")
+    west_network = pygame.transform.scale(west_network, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    railspark_bulb = pygame.image.load("zug_fallt_aus/assets/train_icons/railspark-bulb.png")
+    railspark_bulb  = pygame.transform.scale(railspark_bulb, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    railspark_ember = pygame.image.load("zug_fallt_aus/assets/train_icons/railspark-ember.png")
+    railspark_ember  = pygame.transform.scale(railspark_ember, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    railspark_torrent = pygame.image.load("zug_fallt_aus/assets/train_icons/railspark-torrent.png")
+    railspark_torrent  = pygame.transform.scale(railspark_torrent, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    railspark_mystic = pygame.image.load("zug_fallt_aus/assets/train_icons/railspark-mystic.png")
+    railspark_mystic  = pygame.transform.scale(railspark_mystic, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    erlington_works = pygame.image.load("zug_fallt_aus/assets/train_icons/erlington-works.png")
+    erlington_works  = pygame.transform.scale(erlington_works, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    north_star_green = pygame.image.load("zug_fallt_aus/assets/train_icons/north-star-green.png")
+    north_star_green  = pygame.transform.scale(north_star_green, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    north_star_purple = pygame.image.load("zug_fallt_aus/assets/train_icons/north-star-purple.png")
+    north_star_purple  = pygame.transform.scale(north_star_purple, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    north_star_red = pygame.image.load("zug_fallt_aus/assets/train_icons/north-star-red.png")
+    north_star_red  = pygame.transform.scale(north_star_red, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    north_star_yellow = pygame.image.load("zug_fallt_aus/assets/train_icons/north-star-yellow.png")
+    north_star_yellow  = pygame.transform.scale(north_star_yellow, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    express_orange = pygame.image.load("zug_fallt_aus/assets/train_icons/express-orange.png")
+    express_orange  = pygame.transform.scale(express_orange, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    express_blue = pygame.image.load("zug_fallt_aus/assets/train_icons/express-blue.png")
+    express_blue  = pygame.transform.scale(express_blue, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    express_green = pygame.image.load("zug_fallt_aus/assets/train_icons/express-green.png")
+    express_green  = pygame.transform.scale(express_green, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    express_red = pygame.image.load("zug_fallt_aus/assets/train_icons/express-red.png")
+    express_red = pygame.transform.scale(express_red, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    thompson_lines_blue = pygame.image.load("zug_fallt_aus/assets/train_icons/thompson-locomotives-blue.png")
+    thompson_lines_blue  = pygame.transform.scale(thompson_lines_blue, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+    thompson_lines_red = pygame.image.load("zug_fallt_aus/assets/train_icons/thompson-locomotives-red.png")
+    thompson_lines_red = pygame.transform.scale(thompson_lines_red, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
 
 
 # fonts
@@ -180,188 +221,124 @@ stations = [
 
     ]
 
-for station in stations:
-    print(f'Code - {station["code"]}, X - {station["x"]}, Y - -{station["y"]} ')
-
 trains = [
-    {"make": "Red Hill",            "model": "Baron",       "icon": red_hill,       "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "Great Northern",      "model": "Piercer",     "icon": great_northern, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "Guangdong Star",      "model": "Hyperspeed",  "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
-    {"make": "", "model": "", "icon": guangdong_star, "unlocked": False, "cost": 0, "fuel type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Express",              "model": "DT-1",        "icon": express_red,               "shown": False, "unlocked": False, "cost": 2000000, "train_type": "Diesel",   "capacity": 0, "speed": 300, "profit_pp": 0, "desc": "The most basic train of the lot. Small yet reliable for transporting your first passengers, or for serving new connections."},
+    {"make": "Express",              "model": "DT-2A",       "icon": express_orange,            "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Express",              "model": "DT-2B",       "icon": express_green,             "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Express",              "model": "DT-3",        "icon": express_blue,              "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "North Star",           "model": "Ursa",        "icon": north_star_yellow,         "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "North Star",           "model": "Maris",       "icon": north_star_green,          "shown": False, "unlocked": False, "cost": 0, "train_type": "Electric", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "North Star",           "model": "Polaris",     "icon": north_star_purple,         "shown": False, "unlocked": False, "cost": 0, "train_type": "Electric", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "North Star",           "model": "Pole",        "icon": north_star_red,            "shown": False, "unlocked": False, "cost": 0, "train_type": "Electric", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "RailSpark",            "model": "Ember",       "icon": railspark_ember,           "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "RailSpark",            "model": "Torrent",     "icon": railspark_torrent,         "shown": False, "unlocked": False, "cost": 0, "train_type": "Electric", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "RailSpark",            "model": "Bulb",        "icon": railspark_bulb,            "shown": False, "unlocked": False, "cost": 0, "train_type": "Electric", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "RailSpark",            "model": "Mystic",      "icon": railspark_mystic,          "shown": False, "unlocked": False, "cost": 0, "train_type": "Hybrid",   "capacity": 0, "speed": 0, "profit_pp": 0},
+
+    {"make": "Thompson Lines",       "model": "AC-76",       "icon": thompson_lines_red,        "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Thompson Lines",       "model": "AC-77",       "icon": thompson_lines_blue,       "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel", "capacity": 0, "speed": 0, "profit_pp": 0},
+
+    {"make": "Red Hill",             "model": "Baron",       "icon": red_hill,                  "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Great Northern",       "model": "Piercer",     "icon": great_northern,            "shown": False, "unlocked": False, "cost": 0, "train_type": "Electric", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Guangdong Star",       "model": "Hyperspeed",  "icon": guangdong_star,            "shown": False, "unlocked": False, "cost": 0, "train_type": "MagLev",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "West Network",         "model": "Bullet",      "icon": west_network,              "shown": False, "unlocked": False, "cost": 0, "train_type": "MagLev",   "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "Erlington Works",      "model": "Jubilee",     "icon": erlington_works,           "shown": False, "unlocked": False, "cost": 0, "train_type": "Diesel",   "capacity": 0, "speed": 0, "profit_pp": 0},
     
-
-
-
-
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    {"make": "", "model": "", "icon": guangdong_star, "shown": False, "unlocked": False, "cost": 0, "train_type": "", "capacity": 0, "speed": 0, "profit_pp": 0},
+    
 ]
-owned_trains = [] # [make, model, station_a, station_b]
+
+owned_trains = []
 
 lines = [
-    {"name": "Red",               "color": pygame.Color(255, 0, 0),     "owned": True,  "stations": [], "money_earned": 0},
-    {"name": "Green",             "color": pygame.Color(0, 255, 0),     "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Blue",              "color": pygame.Color(0, 0, 255),     "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Yellow",            "color": pygame.Color(255, 255, 0),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Orange",            "color": pygame.Color(255, 165, 0),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Purple",            "color": pygame.Color(128, 0, 128),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Cyan",              "color": pygame.Color(0, 255, 255),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Dark Orange",       "color": pygame.Color(255, 120, 0),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Medium Turquoise",  "color": pygame.Color(72, 209, 204),  "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Hot Pink",          "color": pygame.Color(255, 105, 180), "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Gray",              "color": pygame.Color(128, 128, 128), "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Brown",             "color": pygame.Color(165, 42, 42),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Dark Green",        "color": pygame.Color(0, 100, 0),     "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Indigo",            "color": pygame.Color(75, 0, 130),    "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Forest Green",      "color": pygame.Color(34, 139, 34),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Orange Red",        "color": pygame.Color(255, 69, 0),    "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Sandy Brown",       "color": pygame.Color(244, 164, 96),  "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Gold",              "color": pygame.Color(255, 215, 0),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Saddle Brown",      "color": pygame.Color(139, 69, 19),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Steel Blue",        "color": pygame.Color(70, 130, 180),  "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Slate Blue",        "color": pygame.Color(106, 90, 205),  "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Teal",              "color": pygame.Color(0, 128, 128),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Orchid",            "color": pygame.Color(218, 112, 214), "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Medium Violet Red", "color": pygame.Color(199, 21, 133),  "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Navy Blue",         "color": pygame.Color(0, 0, 128),     "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Dark Red",          "color": pygame.Color(139, 0, 0),     "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Salmon",            "color": pygame.Color(250, 128, 114), "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Medium Slate Blue", "color": pygame.Color(123, 104, 238), "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Crimson",           "color": pygame.Color(220, 20, 60),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Sea Green",         "color": pygame.Color(46, 139, 87),   "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Royal Blue",        "color": pygame.Color(65, 105, 225),  "owned": False, "stations": [], "money_earned": 0},
-    {"name": "Dark Slate Gray",   "color": pygame.Color(47, 79, 79),    "owned": False, "stations": [], "money_earned": 0},
+    # Reds
+    {"class": "", "name": "Light Coral", "color": pygame.Color(255, 105, 97), "shown": True, "owned": True, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Red", "color": pygame.Color(255, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Chilli Red", "color": pygame.Color(224, 54, 22), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Dark Red", "color": pygame.Color(139, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Yellows
+    {"class": "", "name": "Light Yellow", "color": pygame.Color(255, 255, 153), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Gold", "color": pygame.Color(255, 215, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Orange", "color": pygame.Color(255, 165, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Goldenrod", "color": pygame.Color(204, 119, 34), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Greens
+    {"class": "", "name": "Light Green", "color": pygame.Color(144, 238, 144), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Lime", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Forest Green", "color": pygame.Color(34, 139, 34), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Dark Green", "color": pygame.Color(0, 100, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Light Blues
+    {"class": "", "name": "Light Cyan", "color": pygame.Color(224, 255, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Light Blue", "color": pygame.Color(173, 216, 230), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Medium Turquoise", "color": pygame.Color(72, 209, 204), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Teal", "color": pygame.Color(0, 128, 128), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Blues
+    {"class": "", "name": "Sky Blue", "color": pygame.Color(135, 206, 235), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Royal Blue", "color": pygame.Color(65, 105, 225), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Blue", "color": pygame.Color(0, 0, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Navy Blue", "color": pygame.Color(0, 0, 128), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Purples
+    {"class": "", "name": "Thistle", "color": pygame.Color(216, 191, 216), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Medium Orchid", "color": pygame.Color(186, 85, 211), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Purple", "color": pygame.Color(128, 0, 128), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Indigo", "color": pygame.Color(75, 0, 130), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Pinks
+    {"class": "", "name": "Light Pink", "color": pygame.Color(255, 182, 193), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Hot Pink", "color": pygame.Color(255, 105, 180), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Deep Pink", "color": pygame.Color(255, 20, 147), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Medium Violet Red", "color": pygame.Color(199, 21, 133), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+
+    # Browns
+    {"class": "", "name": "Sandy Brown", "color": pygame.Color(244, 164, 96), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Chocolate", "color": pygame.Color(210, 105, 30), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Brown", "color": pygame.Color(165, 42, 42), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "", "name": "Saddle Brown", "color": pygame.Color(139, 69, 19), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0}
 ]
+
+upgrades = []
+
 
 # functions
 def button_check(rect):
     if pygame.event.peek(eventtype=pygame.MOUSEBUTTONUP) and pygame.mouse.get_pos()[0] in range(rect[0],rect[0]+rect[2]-2) and pygame.mouse.get_pos()[1] in range(rect[1],rect[1]+rect[3]+1):
         pygame.event.get()
         return True
-
-
+  
+ 
 def print_text(words, font, color, x, y):
     text = font.render(str(words), True, color)
     screen.blit(text, (x, y))
 
 
-def game_init():
-    # draws map - map has already been adjusted to fill screen size
-    screen.fill("black")
-    screen.blit(map,(0,0))
-
-
-    # left side menus
-    # money
-    box_top = height - 240
-    rect = pygame.Rect(25, box_top, 300, H2_SIZE * 2)
-    pygame.draw.rect(screen, "black", rect)
-    text = font_h2.render(f"€{euros}", True, pygame.Color(232, 170, 0))
-    screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]/2)-(text.get_height()/2)))
-    box_top += H2_SIZE * 2
-
-    # clock
-    # background
-    rect = pygame.Rect(25, box_top, 120, 120)
-    pygame.draw.rect(screen, pygame.Color(128, 50, 1), rect)
-    # face
-    pygame.draw.circle(screen, "white", (85, box_top+60), 46)
-
-    # date
-    rect = pygame.Rect(25, box_top + 120, 120, 60)
-    pygame.draw.rect(screen, "pink", rect)
-
-    # graph
-    rect = pygame.Rect(145, box_top, 180, 180)
-    pygame.draw.rect(screen, pygame.Color(232, 170, 0), rect)
-
-    rect = pygame.Rect(150, box_top+5, 170, 170)
-    pygame.draw.rect(screen, "black", rect)
-
-
-    # right side menus
-    # lines
-    x_shift = 0
-    x_across = width - 25 - (len(lines) / ROWS) * ROW_HEIGHT
-    y_down = height - (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT - SPACING
-    rect = pygame.Rect(x_across-SPACING, y_down-SPACING, (len(lines) / ROWS) * ROW_HEIGHT + SPACING*2, (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT + SPACING*2)
-    pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
-    line_rects = []
-    for line in range(len(lines)):
-        rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2)
-        pygame.draw.rect(screen, lines[line]["color"], rect)
-        line_rects.append(rect)
-
-        if not lines[line]["owned"]:
-            screen.blit(lock, (x_across+SPACING, y_down+SPACING))
-
-        y_down += ROW_HEIGHT
-        x_shift += 1
-        if x_shift == ROWS:
-            y_down = height - (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT - SPACING
-            x_across += ROW_HEIGHT
-            x_shift = 0
-        
-    for rect in line_rects:
-        if button_check(rect):
-            lines[line_rects.index(rect)]["owned"] = True
-
-    # train comps
-    x_across = width - SPACING - 25 - (len(lines) / ROWS) * ROW_HEIGHT - (len(trains) / ROWS) * ROW_HEIGHT - 8
-    y_down = height - (ROWS-(len(trains) % (len(trains) / ROWS))) * ROW_HEIGHT - SPACING
-    rect = pygame.Rect(x_across-SPACING, y_down-SPACING, (len(trains) / ROWS) * ROW_HEIGHT + SPACING*2, (ROWS-(len(trains) % (len(trains) / ROWS))) * ROW_HEIGHT + SPACING*2)
-    pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
-    train_rects = []
-    for train in range(len(trains)):
-        screen.blit(trains[train]["icon"], (x_across+SPACING, y_down+SPACING))
-        rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2)
-        train_rects.append(rect)
-
-        if not trains[train]["unlocked"]:
-            screen.blit(lock, (x_across+SPACING, y_down+SPACING))
-
-        y_down += ROW_HEIGHT
-        x_shift += 1
-        if x_shift == ROWS:
-            y_down = height - (ROWS-(len(trains) % (len(trains) / ROWS))) * ROW_HEIGHT - SPACING
-            x_across += ROW_HEIGHT
-            x_shift = 0
-        
-    for rect in train_rects:
-        if button_check(rect):
-            trains[train_rects.index(rect)]["unlocked"] = True
-
-    # separator line
-    pygame.draw.line(screen, "black", (width - SPACING - 25 - (len(lines) / ROWS) * ROW_HEIGHT -2, height - SPACING - (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT - SPACING), (width - 25 - SPACING - (len(lines) / ROWS) * ROW_HEIGHT -2, height), width = 4)
-
-    # popup answers
-    
-    
-    # close window button
-    rect = pygame.Rect(width - 50, 10, 40, 40)
-    pygame.draw.rect(screen, "red", rect)
-    text = font_h2.render("X", True, "white")
-    screen.blit(text, (width-41, 14))
-    if button_check(rect):
-        return False
-    else:
-        return True
-
-
 def draw_lines(lines, stations):
     for line in lines:
-        pass
+        if line["stations"] != [] and item["finished"]:
+            for code in range(len(line["stations"])-1):
+                for station in stations:
+                    if station["code"] == line["stations"][code]:
+                        start_loc = station
+                    if station["code"] == line["stations"][code+1]:
+                        end_loc = station
 
+                pygame.draw.line(screen, line["color"], (start_loc["x"], start_loc["y"]), (end_loc["x"], end_loc["y"]), width = 5)
+        
 
 def draw_station(station, color=None, flash=1):
     if (pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+11) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+11)) or flash < 0.5:
@@ -386,7 +363,6 @@ def draw_station(station, color=None, flash=1):
 
     pygame.draw.rect(screen, "black", station_outer)
     pygame.draw.rect(screen, color, station_inner)
-
 
 
 while running:
@@ -415,7 +391,270 @@ while running:
             game = True
 
     if game:
-        running = game_init()
+        # draws map - map has already been adjusted to fill screen size
+        screen.fill("black")
+        screen.blit(map,(0,0))
+
+        # left side menus
+        # money
+        box_top = height - 240
+        rect = pygame.Rect(25, box_top, 300, H2_SIZE * 2)
+        pygame.draw.rect(screen, "black", rect)
+        text = font_h2.render(f"€{euros}", True, pygame.Color(232, 170, 0))
+        screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]/2)-(text.get_height()/2)))
+        box_top += H2_SIZE * 2
+
+        # clock
+        # background
+        rect = pygame.Rect(25, box_top, 120, 120)
+        pygame.draw.rect(screen, pygame.Color(128, 50, 1), rect)
+        # face
+        pygame.draw.circle(screen, "white", (85, box_top+60), 46)
+
+        # date
+        rect = pygame.Rect(25, box_top + 120, 120, 60)
+        pygame.draw.rect(screen, "pink", rect)
+
+        # graph
+        rect = pygame.Rect(145, box_top, 180, 180)
+        pygame.draw.rect(screen, pygame.Color(232, 170, 0), rect)
+
+        rect = pygame.Rect(150, box_top+5, 170, 170)
+        pygame.draw.rect(screen, "black", rect)
+
+
+        # right side menus
+        # top selection
+        x_across = width - 25 - (32 / ROWS) * ROW_HEIGHT - SPACING
+        y_down = height - (ROWS-32 % 32 / ROWS) * ROW_HEIGHT - SPACING - H2_SIZE
+        MENU_WIDTH = (32 / ROWS) * ROW_HEIGHT + SPACING*2
+
+
+        title_rects = []
+        titles = ['Lines', 'Trains', 'Upgrades']
+        for title in titles:
+            if menu_page == title:
+                color = pygame.Color(210,210,210)
+            else:
+                color = pygame.Color(160,160,160)
+
+
+            rect = pygame.Rect(x_across, y_down, MENU_WIDTH/3, H2_SIZE)
+            pygame.draw.rect(screen, color, rect)
+            text = font_h3.render(title, True, "black")
+            screen.blit(text, (rect[0]+rect[2]/2-text.get_width()/2, rect[1]+rect[3]/2-text.get_height()/2-2))
+            pygame.draw.line(screen, "black", (x_across+1,y_down), (x_across+1,y_down+H2_SIZE), width=4)
+            x_across += MENU_WIDTH/3
+            title_rects.append(rect)
+
+        x_across = width - 25 - (32 / ROWS) * ROW_HEIGHT - SPACING
+        y_down = height - (ROWS-32 % 32 / ROWS) * ROW_HEIGHT - SPACING - H2_SIZE - 2
+        rect = pygame.Rect(x_across, y_down, MENU_WIDTH, H2_SIZE)
+        pygame.draw.rect(screen, 'black', rect, width=4)
+
+        for rect in title_rects:
+            if button_check(rect):
+                menu_page = titles[title_rects.index(rect)]
+
+        x_shift = 0
+
+        if menu_page == "Lines":
+            # lines
+            x_across = width - 25 - (len(lines) / ROWS) * ROW_HEIGHT
+            y_down = height - (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT - SPACING
+            rect = pygame.Rect(x_across-SPACING, y_down-SPACING, (len(lines) / ROWS) * ROW_HEIGHT + SPACING*2, (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT + SPACING*2)
+            pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
+            line_rects = []
+            for line in range(len(lines)):
+                rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2)
+                pygame.draw.rect(screen, lines[line]["color"], rect)
+                line_rects.append(rect)
+
+                if not lines[line]["owned"]:
+                    screen.blit(lock, (x_across+SPACING, y_down+SPACING))
+
+                y_down += ROW_HEIGHT
+                x_shift += 1
+                if x_shift == ROWS:
+                    y_down = height - (ROWS-(len(lines) % (len(lines) / ROWS))) * ROW_HEIGHT - SPACING
+                    x_across += ROW_HEIGHT
+                    x_shift = 0
+                
+            for rect in line_rects:
+                if not train_purchase:
+                    if button_check(rect):
+                        print("line purchase")
+                        for item in trains+lines+upgrades:
+                            item["shown"] = False
+                        lines[line_rects.index(rect)]["shown"] = True
+                        lines[line_rects.index(rect)]["owned"] = True
+
+        if menu_page == "Trains":
+            # lines
+            x_across = width - 25 - (len(trains) / ROWS) * ROW_HEIGHT
+            y_down = height - (ROWS-(len(trains) % (len(trains) / ROWS))) * ROW_HEIGHT - SPACING
+            rect = pygame.Rect(x_across-SPACING, y_down-SPACING, (len(lines) / ROWS) * ROW_HEIGHT + SPACING*2, (ROWS-(len(trains) % (len(trains) / ROWS))) * ROW_HEIGHT + SPACING*2)
+            pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
+            train_rects = []
+            for train in range(len(trains)):
+                screen.blit(trains[train]['icon'], (x_across+SPACING, y_down+SPACING))
+                rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2)
+                train_rects.append(rect)
+
+                if not trains[train]["unlocked"]:
+                    screen.blit(lock, (x_across+SPACING, y_down+SPACING))
+
+                y_down += ROW_HEIGHT
+                x_shift += 1
+                if x_shift == ROWS:
+                    y_down = height - (ROWS-(len(trains) % (len(trains) / ROWS))) * ROW_HEIGHT - SPACING
+                    x_across += ROW_HEIGHT
+                    x_shift = 0
+                
+            for rect in train_rects:
+                if button_check(rect):
+                    print("train_owned")
+                    for item in trains+lines+upgrades:
+                        item["shown"] = False
+                    trains[train_rects.index(rect)]["shown"] = True
+                    trains[train_rects.index(rect)]["unlocked"] = True
+
+        x_across = width - 25 - (32 / ROWS) * ROW_HEIGHT - SPACING
+        y_down = height - (ROWS-(32 % (32 / ROWS))) * ROW_HEIGHT - SPACING*2
+        pygame.draw.line(screen, "black", (x_across+1, y_down), (x_across+1, height), width=4)
+        pygame.draw.line(screen, "black", (width-22, y_down), (width-22, height), width=4)
+
+        # popup answers
+        for item in trains+lines+upgrades:
+            if item["shown"]:
+                x_across = width - 25 - (32 / ROWS) * ROW_HEIGHT - SPACING - 250
+                y_down = height - (ROWS-(32 % (32 / ROWS))) * ROW_HEIGHT - SPACING*2
+                rect = pygame.Rect(x_across, y_down, 254, height-y_down + 4)
+                pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
+                pygame.draw.rect(screen, "black", rect, width=4)
+
+                if item in lines:
+                    y_down += 6
+
+                    text = font_h3.render(f'{item["name"]} Line', True, "black")
+                    screen.blit(text, (x_across+8, y_down))
+                    rect = pygame.Rect(x_across+215, y_down, 33, 33)
+                    pygame.draw.rect(screen, item["color"], rect)
+                    y_down += H3_SIZE
+
+                    text = font_h4.render(f'{item["class"]} class line', True, "black")
+                    screen.blit(text, (x_across+8, y_down))
+                    y_down += H4_SIZE + 6
+
+                    pygame.draw.line(screen, pygame.Color(160,160,160), (x_across+4, y_down),(x_across+249, y_down), width = 4)
+                    pygame.draw.line(screen, pygame.Color(160,160,160), (x_across+127, y_down), (x_across+127, height - 55), width = 4)
+                    y_down += 4
+
+                    rect = pygame.Rect(x_across+10, height - 50, 234, 44)
+                    pygame.draw.rect(screen, "green", rect)
+
+
+                    if button_check(rect):
+                        line_build = True
+                        item["finished"] = False
+                    if line_build:
+                        pygame.draw.rect(screen, "black", rect)
+                        for station in stations:
+                            key = pygame.key.get_pressed()
+                            rect = pygame.Rect(station["x"]-5, station["y"]-5, 15, 15)
+                            if item["stations"] == [] and button_check(rect) and item["owned"] and station["owned"]:
+                                item["stations"].append(station["code"])
+                                pygame.draw.rect(screen, "red", rect)
+                            elif button_check(rect) and item["stations"][-1] in station["operates_to"] and len(item["stations"]) < 10 and station["code"] not in item["stations"]:
+                                item["stations"].append(station["code"])
+                                pygame.draw.rect(screen, "red", rect)
+                            elif key[pygame.K_RETURN]:
+                                line_build = False
+                                item["finished"] = True
+                            elif key[pygame.K_ESCAPE]:
+                                line_build = False
+                                item["stations"] = []
+                            else:
+                                pass
+                        
+                if item in trains:
+                    y_down += 6
+
+                    text = font_h3.render(item["make"], True, "black")
+                    screen.blit(text, (x_across+8, y_down))
+                    screen.blit(item["icon"], (x_across+248-item["icon"].get_width(), y_down))
+                    y_down += H3_SIZE
+
+                    text = font_h4.render(item["model"], True, "black")
+                    screen.blit(text, (x_across+8, y_down))
+                    y_down += H4_SIZE + 6
+
+                    pygame.draw.line(screen, pygame.Color(160,160,160), (x_across+4, y_down),(x_across+249, y_down), width = 4)
+                    pygame.draw.line(screen, pygame.Color(160,160,160), (x_across+127, y_down), (x_across+127, height - 55), width = 4)
+                    y_down += 4
+
+                    text = font_h5.render("Capacity", True, "black")
+                    screen.blit(text, (x_across + 8, y_down))
+                    text = font_h5.render(str(item["capacity"]), True, "black")
+                    screen.blit(text, (x_across + 123 - text.get_width(), y_down ))
+                    text = font_h5.render("Type", True, "black")
+                    screen.blit(text, (x_across + 133, y_down))
+                    text = font_h5.render(item["train_type"], True, "black")
+                    screen.blit(text, (x_across + 246 - text.get_width(), y_down))
+                    y_down += H5_SIZE + 2
+
+                    text = font_h5.render("Top Speed", True, "black")
+                    screen.blit(text, (x_across + 8, y_down))
+                    text = font_h5.render(f'{item["speed"]}km/h', True, "black")
+                    screen.blit(text, (x_across + 123 - text.get_width(), y_down ))
+                    text = font_h5.render("Profit PP", True, "black")
+                    screen.blit(text, (x_across + 133, y_down))
+                    text = font_h5.render(f'€{item["profit_pp"]}', True, "black")
+                    screen.blit(text, (x_across + 246 - text.get_width(), y_down))
+
+                    # for char in item["desc"]:
+                    # desc writing - 34 char per horizontal
+
+                    rect = pygame.Rect(x_across+10, height - 50, 234, 44)
+                    pygame.draw.rect(screen, "green", rect)
+
+                    if button_check(rect):
+                        print("train purchase")
+                        train_purchase = True
+                    if train_purchase:
+                        menu_page = "Lines"
+                        tip_line_1 = "Choose which line you'd like this train to run on."
+                        tip_line_2 = f'This train requires a {item["train_type"]} line.'
+                        tip_line_3 = ""
+                        for rect in line_rects:
+                            if button_check(rect):
+                                lines[line_rects.index(rect)]["stations"].append(item["model"])
+                                menu_page = "Trains"
+                                train_purchase = False
+
+
+
+                if item in upgrades:
+                    pass
+                
+
+        # tips
+        rect = pygame.Rect(350, 800, x_across-375, height-800)
+        pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
+        text = font_h3.render(tip_line_1, True, "black")
+        screen.blit(text, (rect[0]+rect[2]/2-text.get_width()/2, rect[1]+rect[3]/6-text.get_height()/2))
+        text = font_h3.render(tip_line_2, True, "black")
+        screen.blit(text, (rect[0]+rect[2]/2-text.get_width()/2, rect[1]+rect[3]/2-text.get_height()/2))
+        text = font_h3.render(tip_line_3, True, "black")
+        screen.blit(text, (rect[0]+rect[2]/2-text.get_width()/2, rect[1]+rect[3]/1.333-text.get_height()/2))
+
+        # close game
+        rect = pygame.Rect(width - 50, 10, 40, 40)
+        pygame.draw.rect(screen, "red", rect)
+        text = font_h2.render("X", True, "white")
+        screen.blit(text, (width-41, 14))
+        if button_check(rect):
+            running = False
         
         # drawing on map
         # line flashes - lowest layer
