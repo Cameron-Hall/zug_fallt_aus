@@ -117,7 +117,7 @@ months = {"Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul
 stations = [
     {"name": "Amsterdam",        "code": "AMS", "x": 200,  "y": 275, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 36, "operates_to": ['HAG', 'ROT', 'UTR', 'ARN', 'APL', 'ZWL'], "runs_to": []},
     {"name": "Berlin",           "code": "BER", "x": 790,  "y": 250, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 30, "operates_to": ['ROS', 'SZZ', 'POZ', 'MAG', 'LPZ', 'DRE'], "runs_to": []},
-    {"name": "Prague",           "code": "PRA", "x": 860,  "y": 500, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['PIL', 'DRE', 'PAR', 'LIB', 'BRN'], "runs_to": []},
+    {"name": "Prague",           "code": "PRA", "x": 860,  "y": 500, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['PLS', 'DRE', 'PAR', 'LIB', 'BRN'], "runs_to": []},
     {"name": "Brussels",         "code": "BRU", "x": 160,  "y": 420, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['GHE', 'CHA', 'NAM', 'LIE', 'ANT'], "runs_to": []},
     {"name": "Warsaw",           "code": "WSW", "x": 1320, "y": 280, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['PLK', 'LOD', 'SID', 'BIA', 'OLZ'], "runs_to": []},
     {"name": "Brno",             "code": "BRN", "x": 1005, "y": 590, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['PRA', 'PAR', 'OLO', 'ZLI'], "runs_to": []},
@@ -136,7 +136,7 @@ stations = [
     {"name": "Koln",             "code": "KOL", "x": 330,  "y": 410, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['WUP', 'DUS', 'AAC', 'BON', 'SIE'], "runs_to": []},
     {"name": "Stuttgart",        "code": "STT", "x": 480,  "y": 620, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['KAR', 'KON', 'ULM', 'WRZ'], "runs_to": []},
     {"name": "Dusseldorf",       "code": "DUS", "x": 325,  "y": 385, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['DUI', 'ESS', 'WUP', 'KOL', 'AAC'], "runs_to": []},
-    {"name": "Nuremberg",        "code": "NRB", "x": 620,  "y": 580, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['WRZ', 'AUG', 'ING', 'REG', 'PIL'], "runs_to": []},
+    {"name": "Nuremberg",        "code": "NRB", "x": 620,  "y": 580, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['WRZ', 'AUG', 'ING', 'REG', 'PLS'], "runs_to": []},
     {"name": "Bydgoszcz",        "code": "BYD", "x": 1100, "y": 200, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['PIL', 'POZ', 'GRD', 'TOR'], "runs_to": []},
     {"name": "Poznan",           "code": "POZ", "x": 1030, "y": 270, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['BER', 'LEZ', 'PIL', 'BYD', 'LOD'], "runs_to": []},
     {"name": "Wroclaw",          "code": "WRO", "x": 1015, "y": 410, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['LEG', 'GLO', 'LEZ', 'PAR', 'OST', 'KAT', 'CZE'], "runs_to": []},
@@ -172,12 +172,12 @@ stations = [
     {"name": "Bialystok",        "code": "BIA", "x": 1440, "y": 200, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['OLZ', 'WSW', 'SID'], "runs_to": []},
     {"name": "Elblag",           "code": "ELB", "x": 1185, "y": 85,  "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['GDA', 'OLZ'], "runs_to": []},
     {"name": "Rzeszow",          "code": "RZS", "x": 1370, "y": 505, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['TAR', 'KIL', 'LUB'], "runs_to": []},
-    {"name": "Pilsen",           "code": "PIL", "x": 780,  "y": 530, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['NRB', 'REG', 'CHM', 'PRA'], "runs_to": []},
+    {"name": "Pilsen",           "code": "PLS", "x": 780,  "y": 530, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['NRB', 'REG', 'CHM', 'PRA'], "runs_to": []},
     {"name": "Pardubice",        "code": "PAR", "x": 945,  "y": 505, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['LIB', 'PRA', 'OLO', 'BRN', 'WRO'], "runs_to": []},
     {"name": "Wurzburg",         "code": "WRZ", "x": 545,  "y": 535, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['FRA', 'MAN', 'NRB', 'STT', 'ULM', 'ERF'], "runs_to": []},
     {"name": "Mannheim",         "code": "MAN", "x": 430,  "y": 555, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['SAA', 'KAR', 'WIE', 'FRA', 'WRZ'], "runs_to": []},
     {"name": "Kassel",           "code": "KAS", "x": 515,  "y": 365, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['BIE', 'HAN', 'BRS', 'ERF', 'MAR'], "runs_to": []},
-    {"name": "Chemnitz",         "code": "CHM", "x": 735,  "y": 415, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['LPZ', 'DRE', 'PIL', 'ERF'], "runs_to": []},
+    {"name": "Chemnitz",         "code": "CHM", "x": 735,  "y": 415, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['LPZ', 'DRE', 'PLS', 'ERF'], "runs_to": []},
     {"name": "Oldenburg",        "code": "OLD", "x": 415,  "y": 180, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['GRO', 'BRE', 'OSN'], "runs_to": []},
     {"name": "Rostock",          "code": "ROS", "x": 680,  "y": 95,  "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['LBK', 'SCH', 'BER', 'SZZ'], "runs_to": []},
     {"name": "Lubeck",           "code": "LBK", "x": 585,  "y": 110, "shown": True, "owned": False, "clicked": False, "cost": 0, "passenger_cap": 0, "train_cap": 0, "operates_to": ['KIE', 'HAM', 'SCH', 'ROS'], "runs_to": []},
@@ -264,53 +264,54 @@ owned_trains = []
 
 lines = [
     # Reds
-    {"class": "", "name": "Light Coral", "color": pygame.Color(255, 105, 97), "shown": True, "owned": True, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Red", "color": pygame.Color(255, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Chilli Red", "color": pygame.Color(224, 54, 22), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Dark Red", "color": pygame.Color(139, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Red", "name": "Light Red", "color": pygame.Color(255, 102, 102), "shown": True, "owned": True, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Red", "name": "Red", "color": pygame.Color(255, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Red", "name": "Dark Red 1", "color": pygame.Color(204, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Red", "name": "Dark Red 2", "color": pygame.Color(153, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Yellows
-    {"class": "", "name": "Light Yellow", "color": pygame.Color(255, 255, 153), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Gold", "color": pygame.Color(255, 215, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Orange", "color": pygame.Color(255, 165, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Goldenrod", "color": pygame.Color(204, 119, 34), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Light Yellow", "color": pygame.Color(255, 255, 153), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow", "color": pygame.Color(255, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Dark Yellow 1", "color": pygame.Color(204, 204, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Dark Yellow 2", "color": pygame.Color(153, 153, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Greens
-    {"class": "", "name": "Light Green", "color": pygame.Color(144, 238, 144), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Lime", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Forest Green", "color": pygame.Color(34, 139, 34), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Dark Green", "color": pygame.Color(0, 100, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Green", "name": "Green", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Green", "name": "Dark Green 1", "color": pygame.Color(0, 204, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Green", "name": "Dark Green 2", "color": pygame.Color(0, 153, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Green", "name": "Dark Green 3", "color": pygame.Color(0, 102, 0), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Light Blues
-    {"class": "", "name": "Light Cyan", "color": pygame.Color(224, 255, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Light Blue", "color": pygame.Color(173, 216, 230), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Medium Turquoise", "color": pygame.Color(72, 209, 204), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Teal", "color": pygame.Color(0, 128, 128), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Light Light Blue", "color": pygame.Color(153, 255, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Light Blue", "color": pygame.Color(0, 255, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Dark Light Blue 1", "color": pygame.Color(0, 204, 204), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Dark Light Blue 2", "color": pygame.Color(0, 153, 153), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Blues
-    {"class": "", "name": "Sky Blue", "color": pygame.Color(135, 206, 235), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Royal Blue", "color": pygame.Color(65, 105, 225), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Blue", "color": pygame.Color(0, 0, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Navy Blue", "color": pygame.Color(0, 0, 128), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Blue", "name": "Light Blue", "color": pygame.Color(80, 80, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue", "color": pygame.Color(0, 0, 255), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Blue", "name": "Darker Blue 1", "color": pygame.Color(0, 0, 110), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Blue", "name": "Darker Blue 2", "color": pygame.Color(0, 0, 40), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Purples
-    {"class": "", "name": "Thistle", "color": pygame.Color(216, 191, 216), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Medium Orchid", "color": pygame.Color(186, 85, 211), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Purple", "color": pygame.Color(128, 0, 128), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Indigo", "color": pygame.Color(75, 0, 130), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Purple", "name": "Dark Purple 1", "color": pygame.Color(204, 0, 204), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Purple", "name": "Dark Purple 2", "color": pygame.Color(179, 0, 179), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple", "color": pygame.Color(153, 0, 153), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Purple", "name": "Very Dark Purple", "color": pygame.Color(102, 0, 102), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Pinks
-    {"class": "", "name": "Light Pink", "color": pygame.Color(255, 182, 193), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Hot Pink", "color": pygame.Color(255, 105, 180), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Deep Pink", "color": pygame.Color(255, 20, 147), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Medium Violet Red", "color": pygame.Color(199, 21, 133), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Pink", "name": "Light Pink", "color": pygame.Color(255, 192, 203), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Pink", "name": "Hot Pink", "color": pygame.Color(255, 105, 180), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Pink", "name": "Deep Pink", "color": pygame.Color(255, 20, 147), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Pink", "name": "Medium Violet Red", "color": pygame.Color(199, 21, 133), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
 
     # Browns
-    {"class": "", "name": "Sandy Brown", "color": pygame.Color(244, 164, 96), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Chocolate", "color": pygame.Color(210, 105, 30), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Brown", "color": pygame.Color(165, 42, 42), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
-    {"class": "", "name": "Saddle Brown", "color": pygame.Color(139, 69, 19), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0}
+    {"class": "Brown", "name": "Light Brown", "color": pygame.Color(181, 101, 29), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Brown", "name": "Medium Brown", "color": pygame.Color(160, 82, 45), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown", "color": pygame.Color(139, 69, 19), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0},
+    {"class": "Brown", "name": "Dark Brown", "color": pygame.Color(101, 67, 33), "shown": False, "owned": False, "finished": True, "stations": [], "money_earned": 0}
 ]
+
 
 upgrades = []
 
@@ -483,7 +484,6 @@ while running:
             for rect in line_rects:
                 if not train_purchase:
                     if button_check(rect):
-                        print("line purchase")
                         for item in trains+lines+upgrades:
                             item["shown"] = False
                         lines[line_rects.index(rect)]["shown"] = True
@@ -513,7 +513,6 @@ while running:
                 
             for rect in train_rects:
                 if button_check(rect):
-                    print("train_owned")
                     for item in trains+lines+upgrades:
                         item["shown"] = False
                     trains[train_rects.index(rect)]["shown"] = True
@@ -538,7 +537,7 @@ while running:
 
                     text = font_h3.render(f'{item["name"]} Line', True, "black")
                     screen.blit(text, (x_across+8, y_down))
-                    rect = pygame.Rect(x_across+215, y_down, 33, 33)
+                    rect = pygame.Rect(x_across+213, y_down+2, 29, 29)
                     pygame.draw.rect(screen, item["color"], rect)
                     y_down += H3_SIZE
 
@@ -550,8 +549,31 @@ while running:
                     pygame.draw.line(screen, pygame.Color(160,160,160), (x_across+127, y_down), (x_across+127, height - 55), width = 4)
                     y_down += 4
 
-                    rect = pygame.Rect(x_across+10, height - 50, 234, 44)
+                    text = font_h5.render("Trains Running", True, "black")
+                    screen.blit(text, (x_across + 8, y_down))
+                    text = font_h5.render(str(len(item["stations"])), True, "black")
+                    screen.blit(text, (x_across + 123 - text.get_width(), y_down ))
+                    text = font_h5.render("Value Y", True, "black")
+                    screen.blit(text, (x_across + 133, y_down))
+                    text = font_h5.render(str(0), True, "black")
+                    screen.blit(text, (x_across + 246 - text.get_width(), y_down))
+                    y_down += H5_SIZE + 2
+
+                    text = font_h5.render("Value Z", True, "black")
+                    screen.blit(text, (x_across + 8, y_down))
+                    text = font_h5.render("0", True, "black")
+                    screen.blit(text, (x_across + 123 - text.get_width(), y_down ))
+                    text = font_h5.render("Money Earnt", True, "black")
+                    screen.blit(text, (x_across + 133, y_down))
+                    text = font_h5.render(f'€{item["money_earned"]}', True, "black")
+                    screen.blit(text, (x_across + 246 - text.get_width(), y_down))
+
+                    rect = pygame.Rect(x_across+10, height - 50, 115, 44)
                     pygame.draw.rect(screen, "green", rect)
+
+
+                    rect = pygame.Rect(x_across+129, height - 50, 115, 44)
+                    pygame.draw.rect(screen, "red", rect)
 
 
                     if button_check(rect):
@@ -569,11 +591,11 @@ while running:
                                 item["stations"].append(station["code"])
                                 pygame.draw.rect(screen, "red", rect)
                             elif key[pygame.K_RETURN]:
-                                line_build = False
                                 item["finished"] = True
-                            elif key[pygame.K_ESCAPE]:
                                 line_build = False
+                            elif key[pygame.K_ESCAPE]:
                                 item["stations"] = []
+                                line_build = False
                             else:
                                 pass
                         
@@ -619,7 +641,6 @@ while running:
                     pygame.draw.rect(screen, "green", rect)
 
                     if button_check(rect):
-                        print("train purchase")
                         train_purchase = True
                     if train_purchase:
                         menu_page = "Lines"
@@ -637,7 +658,6 @@ while running:
                 if item in upgrades:
                     pass
                 
-
         # tips
         rect = pygame.Rect(350, 800, x_across-375, height-800)
         pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
@@ -861,9 +881,6 @@ while running:
 
 
     pygame.display.flip()
-
-    # print(pygame.mouse.get_pos())
-    # print(pygame.event.poll())
 
     # for flashing/pulsing items such as lines in purchase phase
     if flash < 1:
