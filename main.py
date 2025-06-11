@@ -125,15 +125,18 @@ hermann_green = pygame.transform.scale(hermann_green, (ROW_HEIGHT, ROW_HEIGHT))
     
 # fonts
 H1_SIZE = 100
-H2_SIZE = 30
+H2_SIZE = 38
 H3_SIZE = 22
 H4_SIZE = 17
 H5_SIZE = 11
 font_h1 = pygame.font.SysFont("ticketing", H1_SIZE, False, False)
-font_h2 = pygame.font.SysFont("ticketing", H2_SIZE, False, False)
+font_h2_standard = pygame.font.SysFont("ticketing", H2_SIZE, False, False)
+font_h2_diff = pygame.font.SysFont("bahnschrift", H2_SIZE, False, False)
 font_h3 = pygame.font.SysFont("ticketing", H3_SIZE, False, False)
 font_h4 = pygame.font.SysFont("ticketing", H4_SIZE, False, False)
 font_h5 = pygame.font.SysFont("ticketing", H5_SIZE, False, False)
+
+print(pygame.font.get_fonts())
 
 # font_h1.set_bold(True)
 # font_h2.set_bold(True)
@@ -149,7 +152,7 @@ grey = pygame.Color(170,170,170)
 COLOR = pygame.Color(61, 72, 138)
 
 # values
-euros = 5000000
+euros = 500000000
 COST_PER_KM = 100
 
 # date calc things
@@ -443,13 +446,11 @@ def circle_point(center, radius, theta):
     return (center[0] + radius * math.cos(theta),
             center[1] + radius * math.sin(theta))
 
-
 def line_at_angle(screen, center, radius, theta, color, width):
     """Draws a line from a center towards an angle. The angle is given in
     radians."""
     point = circle_point(center, radius, theta)
     pygame.draw.line(screen, color, center, point, width)
-
 
 def get_angle(unit, total):
     """Calculates the angle, in radians, corresponding to a portion of the clock
@@ -475,7 +476,7 @@ while running:
 
         text = font_h1.render("Zug Fallt Aus", True, "white")
         screen.blit(text,((width/2)-(text.get_width()/2),(height/2)-(text.get_height()/2)-height*0.1))
-        anywhere = font_h2.render("Click anywhere to continue", True, "white")
+        anywhere = font_h2_standard.render("Click anywhere to continue", True, "white")
         screen.blit(anywhere,((width/2)-(anywhere.get_width()/2),(height/2)-(anywhere.get_height()/2)+height*0.1))
         rect = pygame.Rect(0, 0, width, height)
         
@@ -502,8 +503,8 @@ while running:
 
         rect = pygame.Rect(0, height - 200, 450, 60)
         pygame.draw.rect(screen, "black", rect)
-        text = font_h2.render(f"${euros}", True, "yellow")
-        screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]/2)-(text.get_height()/2)))
+        text = font_h2_diff.render(f"${'{:,}'.format(euros)}", True, "yellow")
+        screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]/2)-(text.get_height()/2)+2))
 
         # clock
         # background
@@ -729,6 +730,13 @@ while running:
                             
                             tips("Current Line Path", ", ".join(item["stations"]) if len(item["stations"]) > 0 else "None", "Press enter to finish building line, or escape to cancel build", font_h4, font_h3, font_h4)
 
+                    # other line details
+                    y_down = (height - 200) + H3_SIZE+SPACING*2
+
+                    text = font_h4.render(f"Line Route:", True, "black")
+                    screen.blit(text, (x_across+8, y_down+8))
+                    text = font_h4.render(f"{','.join(item['stations'])}", True, "black")
+                    screen.blit(text, (x_across+8, y_down+8+H4_SIZE))
 
                 if item in trains:
                     rect = pygame.Rect(x_across, y_down, 500, H3_SIZE+SPACING*2)
@@ -749,7 +757,7 @@ while running:
                         if button_check(rect):
                             item["unlocked"] = True
 
-                    # line owned
+                    # train owned
                     else:
                         # train owned, purchase
                         rect = pygame.Rect(x_across+350, y_down+SPACING, 150-SPACING, (height-y_down-SPACING*3)/2)
@@ -787,14 +795,14 @@ while running:
                     pass
 
         # close game
-        font_h2.set_bold(True)
+        font_h2_diff.set_bold(True)
         rect = pygame.Rect(width - 50, 10, 40, 40)
         pygame.draw.rect(screen, "red", rect)
-        text = font_h2.render("X", True, "white")
+        text = font_h2_diff.render("X", True, "white")
         screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2+2))
         if button_check(rect):
             running = False
-        font_h2.set_bold(False)
+        font_h2_diff.set_bold(False)
 
         # money
         # passive from stations
