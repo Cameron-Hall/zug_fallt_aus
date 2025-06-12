@@ -42,6 +42,15 @@ year = 1980
 menu_page = 'Lines'
 
 flash_lines = []
+income_statements = ["","","","","","","","",""]
+
+zoom_level = 0
+
+
+# start and end of day
+start = 7
+end = 21
+trains_running = False
 
 # sizes
 width = screen.get_width()
@@ -122,7 +131,6 @@ hermann_orange = pygame.transform.scale(hermann_orange, (ROW_HEIGHT, ROW_HEIGHT)
 hermann_green = pygame.image.load("zug_fallt_aus/assets/train_icons/hermann-trainworks-2.png")
 hermann_green = pygame.transform.scale(hermann_green, (ROW_HEIGHT, ROW_HEIGHT))
     
-    
 # fonts
 H1_SIZE = 100
 H2_SIZE = 38
@@ -136,7 +144,7 @@ font_h3 = pygame.font.SysFont("ticketing", H3_SIZE, False, False)
 font_h4 = pygame.font.SysFont("ticketing", H4_SIZE, False, False)
 font_h5 = pygame.font.SysFont("ticketing", H5_SIZE, False, False)
 
-print(pygame.font.get_fonts())
+# print(pygame.font.get_fonts())
 
 # font_h1.set_bold(True)
 # font_h2.set_bold(True)
@@ -235,7 +243,7 @@ stations = [
     {'name': 'Ulm', 'code': 'ULM', 'x': 431, 'y': 519, 'shown': False, 'owned': False, 'clicked': False, 'cost': 520000, 'passenger_cap': 6000, 'operates_to': ['STT', 'KON', 'AUG', 'WRZ'], 'runs_to': []},
     {'name': 'Konstanz', 'code': 'KON', 'x': 382, 'y': 591, 'shown': False, 'owned': False, 'clicked': False, 'cost': 270000, 'passenger_cap': 4000, 'operates_to': ['FRB', 'MUC', 'STT', 'ULM'], 'runs_to': []},
     {'name': 'Augsburg', 'code': 'AUG', 'x': 470, 'y': 523, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1320000, 'passenger_cap': 15000, 'operates_to': ['NRB', 'ING', 'MUC', 'ULM'], 'runs_to': []},
-    {'name': 'Regensburg', 'code': 'REG', 'x': 551, 'y': 491, 'shown': False, 'owned': False, 'clicked': False, 'cost': 660000, 'passenger_cap': 8000, 'operates_to': ['PIL', 'NRB', 'ING', 'MUC'], 'runs_to': []},
+    {'name': 'Regensburg', 'code': 'REG', 'x': 551, 'y': 491, 'shown': False, 'owned': False, 'clicked': False, 'cost': 660000, 'passenger_cap': 8000, 'operates_to': ['PLS', 'NRB', 'ING', 'MUC'], 'runs_to': []},
     {'name': 'Ingolstadt', 'code': 'ING', 'x': 510, 'y': 512, 'shown': False, 'owned': False, 'clicked': False, 'cost': 590000, 'passenger_cap': 7000, 'operates_to': ['NRB', 'REG', 'AUG', 'MUC'], 'runs_to': []},
     {'name': 'Koblenz', 'code': 'KOB', 'x': 297, 'y': 378, 'shown': False, 'owned': False, 'clicked': False, 'cost': 450000, 'passenger_cap': 6000, 'operates_to': ['BON', 'WIE', 'TRI', 'SIE'], 'runs_to': []},
     {'name': 'Olomouc', 'code': 'OLO', 'x': 845, 'y': 439, 'shown': False, 'owned': False, 'clicked': False, 'cost': 370000, 'passenger_cap': 5000, 'operates_to': ['PAR', 'BRN', 'ZLI', 'OST'], 'runs_to': []},
@@ -304,62 +312,79 @@ owned_trains = []
 
 lines = [
     # Reds
-    {"class": "Red", "name": "Light Red", "color":  pygame.Color(255, 102, 102), "text": "white", "shown": True, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Red", "name": "Red", "color":        pygame.Color(255, 0, 0), "text": "white", "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Red", "name": "Dark Red 1", "color": pygame.Color(204, 0, 0), "text": "white", "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Red", "name": "Dark Red 2", "color": pygame.Color(153, 0, 0), "text": "white", "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-1", "color": pygame.Color(255, 102, 102), "text": "white", "shown": True, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-2", "color": pygame.Color(255, 0, 0), "text": "white", "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-3", "color": pygame.Color(204, 0, 0), "text": "white", "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-4", "color": pygame.Color(153, 0, 0), "text": "white", "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+
+    # Oranges
+    {"class": "Orange", "name": "Orange-1", "color": pygame.Color(255, 200, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-2", "color": pygame.Color(255, 150, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-3", "color": pygame.Color(255, 100, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-4", "color": pygame.Color(255, 50, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Yellows
-    {"class": "Yellow", "name": "Light Yellow",  "color":  pygame.Color(255, 255, 80), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Yellow", "name": "Yellow",        "color":        pygame.Color(255, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Yellow", "name": "Dark Yellow 1", "color": pygame.Color(204, 204, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Yellow", "name": "Dark Yellow 2", "color": pygame.Color(153, 153, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-1", "color": pygame.Color(255, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-2", "color": pygame.Color(210, 210, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-3", "color": pygame.Color(150, 150, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-4", "color": pygame.Color(70, 70, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Greens
-    {"class": "Green", "name": "Green", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Green", "name": "Dark Green 1", "color": pygame.Color(0, 204, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Green", "name": "Dark Green 2", "color": pygame.Color(0, 153, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Green", "name": "Dark Green 3", "color": pygame.Color(0, 102, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-1", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-2", "color": pygame.Color(0, 190, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-3", "color": pygame.Color(0, 120, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-4", "color": pygame.Color(0, 70, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Light Blues
-    {"class": "Light Blue", "name": "Light Light Blue", "color":  pygame.Color(80, 255, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Light Blue", "name": "Light Blue", "color":        pygame.Color(0, 255, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Light Blue", "name": "Dark Light Blue 1", "color": pygame.Color(0, 204, 204), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Light Blue", "name": "Dark Light Blue 2", "color": pygame.Color(0, 153, 153), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L1", "color": pygame.Color(80, 225, 225), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L2", "color": pygame.Color(0, 190, 190), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L3", "color": pygame.Color(0, 140, 140), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L4", "color": pygame.Color(0, 70, 70), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Blues
-    {"class": "Blue", "name": "Light Blue", "color":    pygame.Color(80, 80, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Blue", "name": "Blue", "color":          pygame.Color(0, 0, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Blue", "name": "Darker Blue 1", "color": pygame.Color(0, 0, 110), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Blue", "name": "Darker Blue 2", "color": pygame.Color(0, 0, 40), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D1", "color": pygame.Color(80, 80, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D2", "color": pygame.Color(0, 0, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D3", "color": pygame.Color(0, 0, 110), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D4", "color": pygame.Color(0, 0, 40), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Purples
-    {"class": "Purple", "name": "Dark Purple 1", "color":    pygame.Color(204, 0, 204), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Purple", "name": "Dark Purple 2", "color":    pygame.Color(179, 0, 179), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Purple", "name": "Purple", "color":           pygame.Color(153, 0, 153), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Purple", "name": "Very Dark Purple", "color": pygame.Color(102, 0, 102), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-1", "color": pygame.Color(150, 75, 150), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-2", "color": pygame.Color(160, 0, 160), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-3", "color": pygame.Color(110, 0, 110), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-4", "color": pygame.Color(50, 0, 50), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Pinks
-    {"class": "Pink", "name": "Light Pink", "color":        pygame.Color(255, 192, 203), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Pink", "name": "Hot Pink", "color":          pygame.Color(255, 105, 180), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Pink", "name": "Deep Pink", "color":         pygame.Color(255, 20, 147),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Pink", "name": "Medium Violet Red", "color": pygame.Color(199, 21, 133), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-1", "color": pygame.Color(180, 180, 180), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-2", "color": pygame.Color(130, 130, 130), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-3", "color": pygame.Color(80, 80, 80),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-4", "color": pygame.Color(50, 50, 50), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
 
     # Browns
-    {"class": "Brown", "name": "Light Brown", "color":  pygame.Color(181, 101, 29), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Medium Brown", "color": pygame.Color(160, 82, 45), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Brown", "color":        pygame.Color(139, 69, 19), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Dark Brown", "color":   pygame.Color(101, 67, 33), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-
-    # Browns
-    {"class": "Brown", "name": "Light Brown", "color":  pygame.Color(145, 231, 126), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Medium Brown", "color": pygame.Color(230, 82, 123), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Brown", "color":        pygame.Color(200, 200, 19), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Dark Brown", "color":   pygame.Color(101, 34, 234), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0}
+    {"class": "Brown", "name": "Brown-1", "color": pygame.Color(181, 101, 29), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown-2", "color": pygame.Color(160, 82, 45), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown-3", "color": pygame.Color(139, 69, 19), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown-4", "color": pygame.Color(101, 67, 33), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0}
 
 ]
 
+
+
 upgrades = []
+
+# classes
+class Train:
+    def __init__(self, model, line, cap, ppkm, speed):
+        self.model = model
+        self.line = line
+        self.cap = cap
+        self.ppkm = ppkm
+        self.speed = speed
+        self.last_hr = 0
+        self.last_min = 0
+        self.next_hr = 0
+        self.next_min = 0
+        self.trip_hr = 0
+        self.trip_min = 0
 
 
 # functions
@@ -514,9 +539,19 @@ while running:
         pygame.draw.circle(screen, "black", (70, height-70), 61)
         pygame.draw.circle(screen, "white", (70, height-70), 58)
         # clock hands
-        hour_theta = get_angle(seconds_since_date_update, 12)
+        now = pygame.Vector2(math.floor(seconds_since_date_update), math.floor((seconds_since_date_update%1)*60))
+        hour_theta = get_angle(now.x+1.0*now.y/60, 12)
+        # minute_theta = get_angle(now.y, 60)
         line_at_angle(screen, (70, height-70), 58*0.7, hour_theta, "black", 5)
+        # line_at_angle(screen, (70, height-70), 58*0.9, minute_theta, "black", 3)
         pygame.draw.circle(screen, "black", (70, height-70), 5) 
+        # service running markers
+        FROM_EDGE = 14
+        rect = pygame.Rect(FROM_EDGE, (height-140)+FROM_EDGE, 140-FROM_EDGE*2, 140-FROM_EDGE*2)
+        pygame.draw.arc(screen, "green", rect, get_angle(18-12, 12), get_angle(18-7,12), width = 3)
+        FROM_EDGE = 20
+        rect = pygame.Rect(FROM_EDGE, (height-140)+FROM_EDGE, 140-FROM_EDGE*2, 140-FROM_EDGE*2)
+        pygame.draw.arc(screen, "green", rect, get_angle(18-21, 12), get_angle(18-12,12), width = 3)
         # draw markings
         for hour in range(0, 12):
             theta = get_angle(hour, 12)
@@ -524,20 +559,30 @@ while running:
             p2 = circle_point((70, height-70), 58, theta)
             pygame.draw.line(screen, "black", p1, p2, 3)
 
+        hour = now.x
+        minute = now.y
+
         # date info
         text = font_h4.render(list(months.keys())[month-1], True, "black")
-        screen.blit(text, (20, height-70-text.get_height()/2))
+        screen.blit(text, (30, height-70-text.get_height()/2))
         text = font_h4.render(str(day), True, "black")
-        screen.blit(text, (120-text.get_width(), height-70-text.get_height()/2))
+        screen.blit(text, (110-text.get_width(), height-70-text.get_height()/2))
         text = font_h4.render(str(year), True, "black")
-        screen.blit(text, (70-text.get_width()/2, height-30-text.get_height()/2))
+        screen.blit(text, (70-text.get_width()/2, height-50-text.get_height()/2))
 
-        # graph
+        # income box
         rect = pygame.Rect(140, height-140, 310, 140)
         pygame.draw.rect(screen, pygame.Color(232, 170, 0), rect)
-
         rect = pygame.Rect(145, height-135, 300, 130)
         pygame.draw.rect(screen, "black", rect)
+        x_across = 145
+        y_down = height-135
+        for statement in range(1,8):
+            text = font_h4.render(income_statements[-statement], True, "yellow")
+            screen.blit(text, (x_across+2, y_down+2))
+            y_down += H4_SIZE+1
+
+
 
                             
         # right side menus
@@ -571,7 +616,7 @@ while running:
                 extra = 0
 
         x_across = width - 280
-        y_down = 60-SPACING
+        y_down = 52-SPACING
 
         # line page
         if menu_page == "Lines":
@@ -636,7 +681,7 @@ while running:
                 if item in lines:
                     rect = pygame.Rect(x_across, y_down, 500, H3_SIZE+SPACING*2)
                     pygame.draw.rect(screen, item["color"], rect)
-                    text = font_h3.render(f'{item["name"]} Line', True, "white")
+                    text = font_h3.render(f'{item["name"]} Line', True, "black" if item["name"] == "Yellow-1" else "white")
                     screen.blit(text, (x_across+250-text.get_width()/2, y_down+SPACING))
 
                     y_down += H3_SIZE+SPACING*2
@@ -775,6 +820,10 @@ while running:
                             for rect in line_rects:
                                 if button_check(rect) and lines[line_rects.index(rect)]["owned"]:
                                     lines[line_rects.index(rect)]["trains"].append(item["model"])
+
+                                    # create Train with Train class
+                                    owned_trains.append(Train(item["model"], lines[line_rects.index(rect)]["name"], item["capacity"], item["profit_per_person_per_km"], item["speed"]))
+
                                     menu_page = "Trains"
                                     train_purchase = False
 
@@ -796,7 +845,7 @@ while running:
 
         # close game
         font_h2_diff.set_bold(True)
-        rect = pygame.Rect(width - 50, 10, 40, 40)
+        rect = pygame.Rect(width - 42, 10, 32, 32)
         pygame.draw.rect(screen, "red", rect)
         text = font_h2_diff.render("X", True, "white")
         screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2+2))
@@ -824,12 +873,33 @@ while running:
                             pass
                         else:
                             distance += round(math.sqrt((start_loc["x"] - end_loc["x"])**2 + (start_loc["y"] - end_loc["y"])**2))
-                for train in line["trains"]:
-                    for model in trains:
-                        if model["model"] == train:
-                            train = model
-                    euros_per_trip = train["capacity"] * train["profit_per_person_per_km"] * distance
-                    daily_euros += (24 / (distance / train["speed"])) * euros_per_trip
+
+                for train in owned_trains:
+                    euros_per_trip = train.cap * train.ppkm * distance
+                    trip_time = distance / train.speed
+                    train.trip_hr = trip_time // 60
+                    train.trip_min = trip_time % 60
+                    if hour == start and minute >= 0:
+                        trains_running = True
+                        train.last_hr = start
+                        train.last_min = 0
+                    if hour == end:
+                        trains_running = False
+
+                    if trains_running:
+                        train.next_hr = train.last_hr + train.trip_hr
+                        train.next_min = train.last_min + train.trip_min
+                        if train.next_min >= 60:
+                            train.next_min -= 60
+                            train.next_hr += 1
+                        if train.next_hr >= end:
+                            pass
+                        else:
+                            if hour == train.next_hr and minute in range(int(train.next_min)-10, int(train.next_min+15)) or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
+                                euros += euros_per_trip
+                                train.last_hr = hour
+                                train.last_min = minute
+                                income_statements.append(f'{list(months.keys())[month-1]} {round(day)}{" " if round(day)<10 else ""} {0 if round(hour)<10 else ""}{round(hour)}:{0 if round(minute)<10 else ""}{round(minute)} | {line["name"]:<11} | ${round(euros_per_trip)}')                           
         
         # drawing on map
         # draw lines
@@ -932,7 +1002,7 @@ while running:
                 
                 # shows 'owned' button if station is owned - may change
                 if station["owned"]:
-                    rect = pygame.Rect(box.x+4, box.y+H4_SIZE+6, BOX_WIDTH-8, H5_SIZE*5-(H4_SIZE+6)-4)
+                    rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
                     pygame.draw.rect(screen, pygame.Color(160, 160, 160), rect)
 
                     font_h4.set_bold(True)
@@ -946,7 +1016,6 @@ while running:
                 for clicked in stations:       # makes every other stations  
                     clicked["clicked"] = False # 'clicked' status False, then sets 
                 station["clicked"] = True      # the correct stations status to True
-
 
         # removing large station labels when clicked elsewhere
         if button_check(pygame.Rect(0,0,width,height)):
@@ -975,6 +1044,8 @@ while running:
         pygame.draw.rect(screen, "yellow", rect)
         print_text("Owned", font_h4, "black", 31, 50)
 
+        text = font_h5.render(f'{round(hour)}:{round(minute)}', True, "black")
+        screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
 
     pygame.display.flip()
 
