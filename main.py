@@ -875,32 +875,33 @@ while running:
                             distance += round(math.sqrt((start_loc["x"] - end_loc["x"])**2 + (start_loc["y"] - end_loc["y"])**2))
 
                 for train in owned_trains:
-                    euros_per_trip = train.cap * train.ppkm * distance
-                    trip_time = distance / train.speed
-                    train.trip_hr = trip_time // 60
-                    train.trip_min = trip_time % 60
-                    if hour == start and minute >= 0:
-                        trains_running = True
-                        train.last_hr = start
-                        train.last_min = 0
-                    if hour == end:
-                        trains_running = False
+                    if train.line == line["name"]:
+                        euros_per_trip = train.cap * train.ppkm * distance
+                        trip_time = distance / train.speed
+                        train.trip_hr = trip_time // 60
+                        train.trip_min = trip_time % 60
+                        if hour == start and minute >= 0:
+                            trains_running = True
+                            train.last_hr = start
+                            train.last_min = 0
+                        if hour == end:
+                            trains_running = False
 
-                    if trains_running:
-                        train.next_hr = train.last_hr + train.trip_hr
-                        train.next_min = train.last_min + train.trip_min
-                        if train.next_min >= 60:
-                            train.next_min -= 60
-                            train.next_hr += 1
-                        if train.next_hr >= end:
-                            pass
-                        else:
-                            if hour == train.next_hr and minute in range(int(train.next_min)-10, int(train.next_min+15)) or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
-                                euros += euros_per_trip
-                                train.last_hr = hour
-                                train.last_min = minute
-                                income_statements.append(f'{list(months.keys())[month-1]} {round(day)}{" " if round(day)<10 else ""} {0 if round(hour)<10 else ""}{round(hour)}:{0 if round(minute)<10 else ""}{round(minute)} | {line["name"]:<11} | ${round(euros_per_trip)}')                           
-        
+                        if trains_running:
+                            train.next_hr = train.last_hr + train.trip_hr
+                            train.next_min = train.last_min + train.trip_min
+                            if train.next_min >= 60:
+                                train.next_min -= 60
+                                train.next_hr += 1
+                            if train.next_hr >= end:
+                                pass
+                            else:
+                                if hour == train.next_hr and minute in range(int(train.next_min)-10, int(train.next_min+15)) or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
+                                    euros += euros_per_trip
+                                    train.last_hr = train.next_hr
+                                    train.last_min = train.next_min
+                                    income_statements.append(f'{list(months.keys())[month-1]} {round(day)}{" " if round(day)<10 else ""} {0 if round(train.next_hr)<10 else ""}{round(train.next_hr)}:{0 if round(train.next_min)<10 else ""}{round(train.next_min)} | {line["name"]:<8} | ${round(euros_per_trip)}')                           
+            
         # drawing on map
         # draw lines
         if flash > 0.5:
