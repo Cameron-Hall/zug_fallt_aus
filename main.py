@@ -212,9 +212,7 @@ trains = [
 {'make': 'Hermann Monorails', 'model': 'HM-11W', 'icon': hermann_green, 'shown': False, 'unlocked': False, 'cost': 11000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 140, 'profit_per_person_per_km': 0.2, 'level': 0},
 {'make': 'Hermann Monorails', 'model': 'HM-12W', 'icon': hermann_orange, 'shown': False, 'unlocked': False, 'cost': 12000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 150, 'profit_per_person_per_km': 0.2, 'level': 0},
 ]
-
 owned_trains = []
-
 lines = [
     # Reds
     {"class": "Red", "name": "Red-1", "color": pygame.Color(255, 102, 102),  "shown": True, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
@@ -271,8 +269,34 @@ lines = [
     {"class": "Brown", "name": "Brown-4", "color": pygame.Color(101, 67, 33),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0}
 
 ]
-
 upgrades = []
+# place names
+first_names = [
+    "Ash", "Bath", "Bay", "Beaver", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
+    "Brad", "Brent", "Bridge", "Brook", "Cam", "Cedar", "Charl", "Chest", "Clear",
+    "Clifton", "Coal", "Clover", "Col", "Cran", "Crow", "Daven", "Day",
+    "Deer", "Dover", "Down", "Dun", "East", "Edge", "Elm", "Elk", "Fair", "Farm",
+    "Fayette", "Fern", "Fish", "Flat", "Fort", "Fountain", "Fox", "Frank", "Freder",
+    "Glen", "Gold", "Green", "Ham", "Han", "Hart", "Hazel", "Hemp", "Hen",
+    "High", "Hill", "Hol", "Hope", "Hun", "Iron", "Jackson", "Jam", "Jeff", "John",
+    "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
+    "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "Mart", "May",
+    "Mid", "Mill", "Mon",  "Mount",  "New", "North", "Oak",
+    "Oce", "Olive", "Orchard", "Ox", "Park", "Peach", "Pine", "Plain", "Pleasant", "Port",
+    "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
+    "Ruther", "Saint", "Salem", "Salt", "Sand", "Scot", "Shel", "Silver",
+    "Smith", "Snow", "South", "Spring", "Stan", "Stone", "Stock", "Sun", "Syl",
+    "Tall", "Three", "Tim", "Twin", "Union", "Valley", "Vern", "Wake",
+    "Wash", "Water", "West", "White", "Willow", "Win", "Wood", "York",
+]
+last_names = [
+    "ville", "ton", "ham", "field", "bury", "ford", "land", "wood", "port", "dale",
+    "ridge", "side", "hill", "town", "view", "grove", "creek", "spring", "falls", "lake",
+    "bay", "point", "beach", "bend", "summit", "peak", "cross", "fort", "cove", "brook",
+    "plains", "groves", "heights", "moor", "hurst", "worth", "combe", "fell", "leigh", "well",
+    "gate", "head", "stone", "wick", "holt", "burn", "thorpe", "fleet", "march", "den", "cumbe"
+]
+
 
 # classes
 class Train:
@@ -288,6 +312,26 @@ class Train:
         self.next_min = 0
         self.trip_hr = 0
         self.trip_min = 0
+
+class Tile:
+    def __init__(self, img, top, right, bottom, left):
+        self.img = img
+        self.top = top
+        self.right = right
+        self.bottom = bottom
+        self.left = left
+
+class City:
+    def __init__(self, name, code, loc, cost, passengers, operates_to):
+        self.name = name
+        self.code = code
+        self.loc = loc
+        self.shown = True
+        self.clicked = False
+        self.owned = False
+        self.cost = cost
+        self.passengers = passengers
+        self.operates_to = operates_to
 
 
 # functions
@@ -399,47 +443,22 @@ def get_angle(unit, total):
     return 2 * math.pi * unit / total - math.pi / 2
 
 
+def triangle_overlaps_other_rects(tri_pts, rects):
+    for i in range(3):
+        p1 = tri_pts[i]
+        p2 = tri_pts[(i + 1) % 3]
+        for rect_info in rects:
+            cx, cy = rect_info["center"]
+            # Skip if this rect belongs to an endpoint
+            if (p1 == (cx, cy)) or (p2 == (cx, cy)):
+                continue
+            if rect_info["rect"].clipline(p1, p2):
+                return True
+    return False
 
 
 
 
-
-class Tile:
-    def __init__(self, img, top, right, bottom, left):
-        self.img = img
-        self.top = top
-        self.right = right
-        self.bottom = bottom
-        self.left = left
-
-
-
-first_names = [
-    "Ash", "Bath", "Bay", "Beaver", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
-    "Brad", "Brent", "Bridge", "Brook", "Brown", "Cam", "Cedar", "Charl", "Chest", "Clear",
-    "Clifton", "Clinton", "Coal", "Clover", "Col", "Cran", "Crow", "Cumber", "Daven", "Day",
-    "Deer", "Dover", "Down", "Dun", "East", "Edge", "Elm", "Elk", "Fair", "Farm",
-    "Fayette", "Fern", "Fish", "Flat", "Forest", "Fort", "Fountain", "Fox", "Frank", "Freder",
-    "Glen", "Gold", "Green", "Greer", "Ham", "Han", "Hart", "Hazel", "Hemp", "Hen",
-    "High", "Hill", "Hol", "Hope", "Hun", "Iron", "Jackson", "Jam", "Jeff", "John",
-    "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
-    "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "Mart", "May",
-    "Mid", "Mill", "Milton", "Mon", "Mont", "Mount", "Moun", "New", "North", "Oak",
-    "Oce", "Olive", "Orchard", "Ox", "Park", "Peach", "Pine", "Plain", "Pleasant", "Port",
-    "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
-    "Ruther", "Saint", "Salem", "Salt", "San", "Sand", "Sandy", "Scot", "Shel", "Silver",
-    "Smith", "Snow", "South", "Spring", "Stan", "Star", "Stone", "Sun", "Syl",
-    "Tall", "Temple", "Thor", "Three", "Tim", "Twin", "Union", "Valley", "Vern", "Wake",
-    "Wash", "Water", "West", "White", "Wild", "Willow", "Win", "Wood", "York",
-]
-
-last_names = [
-    "ville", "ton", "ham", "field", "bury", "ford", "land", "wood", "port", "dale",
-    "ridge", "side", "hill", "town", "view", "grove", "creek", "spring", "falls", "lake",
-    "bay", "point", "beach", "bend", "summit", "peak", "cross", "fort", "cove", "brook",
-    "plains", "groves", "heights", "moor", "hurst", "worth", "combe", "fell", "leigh", "well",
-    "gate", "head", "stone", "wick", "holt", "burn", "thorpe", "fleet", "march", "den", "cumbe"
-]
 
 tiles = []
 tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_1.png"), "green", "green", "green", "green"))
@@ -472,7 +491,8 @@ for tile in tiles[0:1]:
         tiles.append(tile)
     if greens == 4:
         tiles.append(tile)
-    
+
+# generating tile map based on specified sizes 
 TILE_SIZE = 100
 
 tile_order = []
@@ -496,26 +516,31 @@ for slot in range((width-350//TILE_SIZE)*(height-250//TILE_SIZE)):
     #     if good:
     #         break
 
+# generating city points based on specified amounts
 num_points = 50
 points = np.random.rand(num_points, 2)
 points *= [width-350, height-250]  # Scale to screen size    
 points += [25, 25]
 
-cities = []
+# creating cities
+cities_base = []
 valid_points = []
 deletions = 0
 for index, point in enumerate(points):
+    first_name = random.choice(first_names)
+    first_names.remove(first_name)
     city_name = str(random.choice(first_names)+random.choice(last_names))
     city_loc = pygame.Vector2(point[0], point[1])
     good = True
-    for item in cities:
+    for item in cities_base:
         if item["loc"].x-70 <= city_loc.x <= item["loc"].x+70 and item["loc"].y-70 <= city_loc.y <= item["loc"].y+70:
             good = False
             deletions += 1
     if good:
-        cities.append({"name":city_name, "loc":city_loc})
+        cities_base.append({"name":city_name, "loc":city_loc})
         valid_points.append([city_loc.x, city_loc.y])
 
+# triangle linkage map
 valid_points = np.array(valid_points)
 tri = Delaunay(valid_points)    
 
@@ -532,25 +557,39 @@ exclude_rects = [
     for x, y in int_points
 ]
 
-def triangle_overlaps_other_rects(tri_pts, rects):
-    for i in range(3):
-        p1 = tri_pts[i]
-        p2 = tri_pts[(i + 1) % 3]
-        for rect_info in rects:
-            cx, cy = rect_info["center"]
-            # Skip if this rect belongs to an endpoint
-            if (p1 == (cx, cy)) or (p2 == (cx, cy)):
-                continue
-            if rect_info["rect"].clipline(p1, p2):
-                return True
-    return False
+num_stations = len(int_points)
+connections = [set() for _ in range(num_stations)]
 
+for simplex in tri.simplices:
+    tri_pts = [int_points[i] for i in simplex]
 
+    if triangle_overlaps_other_rects(tri_pts, exclude_rects):
+        continue
 
+    i0, i1, i2 = simplex
 
+    connections[i0].update([i1, i2])
+    connections[i1].update([i0, i2])
+    connections[i2].update([i0, i1])
 
+cities = []
+for city in cities_base:
+    runs_to = []
+    for i, conn in enumerate(connections):
+        if city["name"] == cities_base[i]["name"]:
+            conns = len(conn)
+            runs_to = [int(x) for x in conn]
+            for i, x in enumerate(runs_to):
+                runs_to[i] = cities_base[x]["name"]
 
+    cost = round(random.choice(range(10000, 20000))*(random.choice(range(8, 50))), -4)
+    
+    cities.append(City(city["name"], city["name"][0:3].upper(), city["loc"], cost, round(cost/50*conns), runs_to))
+    
+for city in cities:
+    print(f'{city.name} {city.code} - {city.cost}, {city.passengers}, {city.operates_to}')
 
+    
 
 
 while running:
@@ -705,12 +744,12 @@ while running:
                 pygame.draw.polygon(screen, "black", tri_pts, 1)
             
         for city in cities:
-            if screen.get_at((int(city["loc"].x), int(city["loc"].y))) == pygame.Color(63, 72, 204):
+            if screen.get_at((int(city.loc.x), int(city.loc.y))) == pygame.Color(63, 72, 204):
                 cities.remove(city)
                 
-            pygame.draw.circle(screen, "red", city["loc"], 10)
-            text = font_h4.render(city["name"], True, 'black')
-            screen.blit(text, city["loc"])
+            pygame.draw.circle(screen, "red", city.loc, 10)
+            text = font_h4.render(city.code, True, 'black')
+            screen.blit(text, city.loc)
 
         # tips
         tips("","","",font_h5,font_h5,font_h5)
@@ -1329,27 +1368,27 @@ while running:
             for station in stations:
                 station["clicked"] = False
 
-        # map key
-        # can't afford key
-        rect = pygame.Rect(10,10,15,15)
-        pygame.draw.rect(screen, "black", rect)
-        rect = pygame.Rect(13,13,9,9)
-        pygame.draw.rect(screen, pygame.Color(217, 49, 30), rect)
-        print_text("Can't Afford", font_h4, "black", 31, 10)
+        # # map key
+        # # can't afford key
+        # rect = pygame.Rect(10,10,15,15)
+        # pygame.draw.rect(screen, "black", rect)
+        # rect = pygame.Rect(13,13,9,9)
+        # pygame.draw.rect(screen, pygame.Color(217, 49, 30), rect)
+        # print_text("Can't Afford", font_h4, "black", 31, 10)
 
-        # can afford key
-        rect = pygame.Rect(10,30,15,15)
-        pygame.draw.rect(screen, "black", rect)
-        rect = pygame.Rect(13,33,9,9)
-        pygame.draw.rect(screen, pygame.Color(170,170,170), rect)
-        print_text("Can Afford", font_h4, "black", 31, 30)
+        # # can afford key
+        # rect = pygame.Rect(10,30,15,15)
+        # pygame.draw.rect(screen, "black", rect)
+        # rect = pygame.Rect(13,33,9,9)
+        # pygame.draw.rect(screen, pygame.Color(170,170,170), rect)
+        # print_text("Can Afford", font_h4, "black", 31, 30)
 
-        # owned key
-        rect = pygame.Rect(10,50,15,15)
-        pygame.draw.rect(screen, "black", rect)
-        rect = pygame.Rect(13,53,9,9)
-        pygame.draw.rect(screen, "yellow", rect)
-        print_text("Owned", font_h4, "black", 31, 50)
+        # # owned key
+        # rect = pygame.Rect(10,50,15,15)
+        # pygame.draw.rect(screen, "black", rect)
+        # rect = pygame.Rect(13,53,9,9)
+        # pygame.draw.rect(screen, "yellow", rect)
+        # print_text("Owned", font_h4, "black", 31, 50)
 
         text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
         screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
