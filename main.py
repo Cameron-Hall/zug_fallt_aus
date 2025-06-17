@@ -1,5 +1,8 @@
 import math
 import pygame
+import numpy as np
+from scipy.spatial import Delaunay
+import random
 
 # pygame initialisation
 pygame.init()
@@ -59,10 +62,19 @@ ROW_HEIGHT = 60
 SPACING = 8
 
 # images
-map = pygame.image.load("zug_fallt_aus/assets/north-europe-map.png")
-map = pygame.transform.scale(map, (width-300, (height * (map.get_width()/(width+300))))) # adjusts map size so the width of the map is the same as the width of the screen
+# map = pygame.image.load("zug_fallt_aus/assets/north-europe-map.png")
+# init_map_w = map.get_width()
+# init_map_h = map.get_height()
+# map = pygame.transform.scale(map, (width-300, (height * (map.get_width()/(width+300))))) # adjusts map size so the width of the map is the same as the width of the screen
 lock = pygame.image.load("zug_fallt_aus/assets/lock.png")
 lock = pygame.transform.scale(lock, (ROW_HEIGHT-SPACING*2, ROW_HEIGHT-SPACING*2))
+
+speed = 60
+
+scale_level = 0
+
+# map = pygame.image.load("zug_fallt_aus/assets/train_icons/red-hill.png")
+map_loc = pygame.Vector2(0,0)
 
 # train icons
 red_hill = pygame.image.load("zug_fallt_aus/assets/train_icons/red-hill.png")
@@ -166,112 +178,6 @@ COST_PER_KM = 100
 months = {"Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul": 31, "Aug": 31, "Sep": 30, "Oct": 31, "Nov": 30, "Dec": 31, }
 
 # lists
-stations = [
-    {'name': 'Amsterdam', 'code': 'AMS', 'x': 161, 'y': 221, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3410000, 'passenger_cap': 47000, 'operates_to': ['HAG', 'ROT', 'UTR', 'ARN', 'APL', 'ZWL'], 'runs_to': []},
-    {'name': 'Berlin', 'code': 'BER', 'x': 636, 'y': 201, 'shown': False, 'owned': False, 'clicked': False, 'cost': 10000000, 'passenger_cap': 188000, 'operates_to': ['ROS', 'SZZ', 'POZ', 'MAG', 'LPZ', 'DRE'], 'runs_to': []},
-    {'name': 'Prague', 'code': 'PRA', 'x': 692, 'y': 402, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4470000, 'passenger_cap': 66000, 'operates_to': ['PLS', 'DRE', 'PAR', 'LIB', 'BRN'], 'runs_to': []},
-    {'name': 'Brussels', 'code': 'BRU', 'x': 129, 'y': 338, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4080000, 'passenger_cap': 59000, 'operates_to': ['GHE', 'CHA', 'NAM', 'LIE', 'ANT'], 'runs_to': []},
-    {'name': 'Warsaw', 'code': 'WSW', 'x': 1062, 'y': 225, 'shown': False, 'owned': False, 'clicked': False, 'cost': 5830000, 'passenger_cap': 93000, 'operates_to': ['PLK', 'LOD', 'SID', 'BIA', 'OLZ'], 'runs_to': []},
-    {'name': 'Brno', 'code': 'BRN', 'x': 809, 'y': 475, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1630000, 'passenger_cap': 19000, 'operates_to': ['PRA', 'PAR', 'OLO', 'ZLI'], 'runs_to': []},
-    {'name': 'Gdansk', 'code': 'GDA', 'x': 909, 'y': 52, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1950000, 'passenger_cap': 24000, 'operates_to': ['ELB', 'GRD', 'SLP'], 'runs_to': []},
-    {'name': 'Lodz', 'code': 'LOD', 'x': 986, 'y': 270, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2610000, 'passenger_cap': 34000, 'operates_to': ['PLK', 'TOR', 'POZ', 'WSW', 'LUB', 'KIL', 'CZE'], 'runs_to': []},
-    {'name': 'Krakow', 'code': 'KRA', 'x': 998, 'y': 398, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3010000, 'passenger_cap': 40000, 'operates_to': ['TAR', 'KIL', 'CZE', 'KAT'], 'runs_to': []},
-    {'name': 'Rotterdam', 'code': 'ROT', 'x': 129, 'y': 258, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2590000, 'passenger_cap': 33000, 'operates_to': ['HAG', 'UTR', 'AMS', 'ANT', 'EIN'], 'runs_to': []},
-    {'name': 'The Hague', 'code': 'HAG', 'x': 121, 'y': 241, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2260000, 'passenger_cap': 28000, 'operates_to': ['ROT', 'AMS'], 'runs_to': []},
-    {'name': 'Antwerp', 'code': 'ANT', 'x': 129, 'y': 306, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2150000, 'passenger_cap': 26000, 'operates_to': ['GHE', 'BRG', 'BRU', 'ROT', 'EIN'], 'runs_to': []},
-    {'name': 'Ostrava', 'code': 'OST', 'x': 893, 'y': 422, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1270000, 'passenger_cap': 14000, 'operates_to': ['OLO', 'ZLI', 'WRO', 'KAT'], 'runs_to': []},
-    {'name': 'Munich', 'code': 'MUC', 'x': 523, 'y': 559, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4910000, 'passenger_cap': 74000, 'operates_to': ['KON', 'AUG', 'ING', 'REG'], 'runs_to': []},
-    {'name': 'Frankfurt', 'code': 'FRA', 'x': 362, 'y': 398, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2900000, 'passenger_cap': 38000, 'operates_to': ['WIE', 'MAN', 'WRZ', 'MAR', 'SIE'], 'runs_to': []},
-    {'name': 'Hamburg', 'code': 'HAM', 'x': 428, 'y': 124, 'shown': False, 'owned': False, 'clicked': False, 'cost': 5810000, 'passenger_cap': 93000, 'operates_to': ['KIE', 'LBK', 'SCH', 'BRE', 'HAN'], 'runs_to': []},
-    {'name': 'Luxembourg', 'code': 'LUX', 'x': 217, 'y': 433, 'shown': False, 'owned': False, 'clicked': False, 'cost': 530000, 'passenger_cap': 6000, 'operates_to': ['NAM', 'LIE', 'TRI', 'SAA'], 'runs_to': []},
-    {'name': 'Leipzig', 'code': 'LPZ', 'x': 567, 'y': 297, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2390000, 'passenger_cap': 30000, 'operates_to': ['ERF', 'CHM', 'DRE', 'BER', 'MAG'], 'runs_to': []},
-    {'name': 'Koln', 'code': 'KOL', 'x': 266, 'y': 329, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3820000, 'passenger_cap': 54000, 'operates_to': ['WUP', 'DUS', 'AAC', 'BON', 'SIE'], 'runs_to': []},
-    {'name': 'Stuttgart', 'code': 'STT', 'x': 386, 'y': 498, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2500000, 'passenger_cap': 32000, 'operates_to': ['KAR', 'KON', 'ULM', 'WRZ'], 'runs_to': []},
-    {'name': 'Dusseldorf', 'code': 'DUS', 'x': 262, 'y': 309, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2450000, 'passenger_cap': 31000, 'operates_to': ['DUI', 'ESS', 'WUP', 'KOL', 'AAC'], 'runs_to': []},
-    {'name': 'Nuremberg', 'code': 'NRB', 'x': 500, 'y': 464, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2110000, 'passenger_cap': 26000, 'operates_to': ['WRZ', 'AUG', 'ING', 'REG', 'PLS'], 'runs_to': []},
-    {'name': 'Bydgoszcz', 'code': 'BYD', 'x': 885, 'y': 161, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1490000, 'passenger_cap': 17000, 'operates_to': ['PIL', 'POZ', 'GRD', 'TOR'], 'runs_to': []},
-    {'name': 'Poznan', 'code': 'POZ', 'x': 828, 'y': 217, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2210000, 'passenger_cap': 27000, 'operates_to': ['BER', 'LEZ', 'PIL', 'BYD', 'LOD'], 'runs_to': []},
-    {'name': 'Wroclaw', 'code': 'WRO', 'x': 816, 'y': 329, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2620000, 'passenger_cap': 34000, 'operates_to': ['LEG', 'GLO', 'LEZ', 'PAR', 'OST', 'KAT', 'CZE'], 'runs_to': []},
-    {'name': 'Ghent', 'code': 'GHE', 'x': 84, 'y': 321, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1170000, 'passenger_cap': 13000, 'operates_to': ['BRG', 'KJK', 'ANT', 'BRU'], 'runs_to': []},
-    {'name': 'Katowice', 'code': 'KAT', 'x': 930, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1290000, 'passenger_cap': 15000, 'operates_to': ['WRO', 'CZE', 'KRA', 'OST'], 'runs_to': []},
-    {'name': 'Szczecin', 'code': 'SZZ', 'x': 684, 'y': 128, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1690000, 'passenger_cap': 20000, 'operates_to': ['ROS', 'BER', 'KSZ', 'PIL'], 'runs_to': []},
-    {'name': 'Lublin', 'code': 'LUB', 'x': 1130, 'y': 324, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1470000, 'passenger_cap': 17000, 'operates_to': ['LOD', 'SID', 'KIL', 'RZS'], 'runs_to': []},
-    {'name': 'Charleroi', 'code': 'CHA', 'x': 137, 'y': 372, 'shown': False, 'owned': False, 'clicked': False, 'cost': 900000, 'passenger_cap': 10000, 'operates_to': ['NAM', 'BRU', 'KJK'], 'runs_to': []},
-    {'name': 'Dortmund', 'code': 'DOR', 'x': 294, 'y': 281, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2350000, 'passenger_cap': 29000, 'operates_to': ['ESS', 'MUN', 'WUP'], 'runs_to': []},
-    {'name': 'Utrecht', 'code': 'UTR', 'x': 170, 'y': 241, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1580000, 'passenger_cap': 18000, 'operates_to': ['AMS', 'ROT', 'NIJ', 'ARN', 'EIN'], 'runs_to': []},
-    {'name': 'Eindhoven', 'code': 'EIN', 'x': 182, 'y': 286, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1080000, 'passenger_cap': 12000, 'operates_to': ['MAA', 'ANT', 'ROT', 'UTR', 'NIJ'], 'runs_to': []},
-    {'name': 'Groningen', 'code': 'GRO', 'x': 246, 'y': 144, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1040000, 'passenger_cap': 12000, 'operates_to': ['ZWL', 'OLD'], 'runs_to': []},
-    {'name': 'Essen', 'code': 'ESS', 'x': 271, 'y': 286, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2330000, 'passenger_cap': 29000, 'operates_to': ['ENS', 'DUI', 'DOR', 'DUS', 'WUP'], 'runs_to': []},
-    {'name': 'Hanover', 'code': 'HAN', 'x': 419, 'y': 213, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2180000, 'passenger_cap': 27000, 'operates_to': ['HAM', 'BRS', 'BRE', 'BIE', 'KAS'], 'runs_to': []},
-    {'name': 'Bremen', 'code': 'BRE', 'x': 371, 'y': 153, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2290000, 'passenger_cap': 28000, 'operates_to': ['OLD', 'BIE', 'HAM', 'HAN'], 'runs_to': []},
-    {'name': 'Munster', 'code': 'MUN', 'x': 311, 'y': 250, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1380000, 'passenger_cap': 16000, 'operates_to': ['OSN', 'ENS', 'BIE', 'DOR'], 'runs_to': []},
-    {'name': 'Bielefeld', 'code': 'BIE', 'x': 351, 'y': 241, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1450000, 'passenger_cap': 17000, 'operates_to': ['OSN', 'MUN', 'HAN', 'BRE', 'KAS'], 'runs_to': []},
-    {'name': 'Liege', 'code': 'LIE', 'x': 185, 'y': 354, 'shown': False, 'owned': False, 'clicked': False, 'cost': 880000, 'passenger_cap': 10000, 'operates_to': ['MAA', 'AAC', 'LUX', 'NAM', 'BRU', 'ANT'], 'runs_to': []},
-    {'name': 'Aachen', 'code': 'AAC', 'x': 225, 'y': 343, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1110000, 'passenger_cap': 12000, 'operates_to': ['MAA', 'LIE', 'DUS', 'KOL', 'BON'], 'runs_to': []},
-    {'name': 'Erfurt', 'code': 'ERF', 'x': 495, 'y': 323, 'shown': True, 'owned': False, 'clicked': False, 'cost': 950000, 'passenger_cap': 11000, 'operates_to': ['BRS', 'KAS', 'MAG', 'LPZ', 'CHM', 'WRZ'], 'runs_to': []},
-    {'name': 'Dresden', 'code': 'DRE', 'x': 656, 'y': 323, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2240000, 'passenger_cap': 28000, 'operates_to': ['CHM', 'LPZ', 'LIB', 'PRA', 'BER'], 'runs_to': []},
-    {'name': 'Magdeburg', 'code': 'MAG', 'x': 532, 'y': 241, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1060000, 'passenger_cap': 12000, 'operates_to': ['BRS', 'ERF', 'BER', 'LPZ'], 'runs_to': []},
-    {'name': 'Kiel', 'code': 'KIE', 'x': 444, 'y': 56, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1100000, 'passenger_cap': 12000, 'operates_to': ['FLN', 'LBK', 'HAM'], 'runs_to': []},
-    {'name': 'Flensburg', 'code': 'FLN', 'x': 404, 'y': 20, 'shown': False, 'owned': False, 'clicked': False, 'cost': 290000, 'passenger_cap': 4000, 'operates_to': ['KIE'], 'runs_to': []},
-    {'name': 'Freiburg', 'code': 'FRB', 'x': 311, 'y': 576, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1030000, 'passenger_cap': 12000, 'operates_to': ['KON', 'KAR'], 'runs_to': []},
-    {'name': 'Namur', 'code': 'NAM', 'x': 161, 'y': 371, 'shown': False, 'owned': False, 'clicked': False, 'cost': 430000, 'passenger_cap': 6000, 'operates_to': ['CHA', 'BRU', 'LIE', 'LUX'], 'runs_to': []},
-    {'name': 'Kortrijk', 'code': 'KJK', 'x': 60, 'y': 338, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['BRG', 'GHE', 'CHA'], 'runs_to': []},
-    {'name': 'Bruges', 'code': 'BRG', 'x': 56, 'y': 306, 'shown': False, 'owned': False, 'clicked': False, 'cost': 470000, 'passenger_cap': 6000, 'operates_to': ['ANT', 'GHE', 'KJK'], 'runs_to': []},
-    {'name': 'Apeldoorn', 'code': 'APL', 'x': 209, 'y': 213, 'shown': False, 'owned': False, 'clicked': False, 'cost': 720000, 'passenger_cap': 8000, 'operates_to': ['ZWL', 'ARN', 'ENS', 'AMS'], 'runs_to': []},
-    {'name': 'Zwolle', 'code': 'ZWL', 'x': 217, 'y': 189, 'shown': False, 'owned': False, 'clicked': False, 'cost': 540000, 'passenger_cap': 7000, 'operates_to': ['GRO', 'ENS', 'APL', 'AMS'], 'runs_to': []},
-    {'name': 'Nijmegen', 'code': 'NIJ', 'x': 201, 'y': 258, 'shown': False, 'owned': False, 'clicked': False, 'cost': 790000, 'passenger_cap': 9000, 'operates_to': ['ARN', 'UTR', 'EIN', 'DUI'], 'runs_to': []},
-    {'name': 'Czestochowa', 'code': 'CZE', 'x': 934, 'y': 343, 'shown': False, 'owned': False, 'clicked': False, 'cost': 980000, 'passenger_cap': 11000, 'operates_to': ['WRO', 'KAT', 'KRA', 'KIL', 'LOD'], 'runs_to': []},
-    {'name': 'Bialystok', 'code': 'BIA', 'x': 1161, 'y': 161, 'shown': True, 'owned': False, 'clicked': False, 'cost': 1310000, 'passenger_cap': 15000, 'operates_to': ['OLZ', 'WSW', 'SID'], 'runs_to': []},
-    {'name': 'Elblag', 'code': 'ELB', 'x': 953, 'y': 68, 'shown': False, 'owned': False, 'clicked': False, 'cost': 480000, 'passenger_cap': 6000, 'operates_to': ['GDA', 'OLZ'], 'runs_to': []},
-    {'name': 'Rzeszow', 'code': 'RZS', 'x': 1104, 'y': 404, 'shown': False, 'owned': False, 'clicked': False, 'cost': 870000, 'passenger_cap': 10000, 'operates_to': ['TAR', 'KIL', 'LUB'], 'runs_to': []},
-    {'name': 'Pilsen', 'code': 'PLS', 'x': 627, 'y': 425, 'shown': False, 'owned': False, 'clicked': False, 'cost': 770000, 'passenger_cap': 9000, 'operates_to': ['NRB', 'REG', 'CHM', 'PRA'], 'runs_to': []},
-    {'name': 'Pardubice', 'code': 'PAR', 'x': 761, 'y': 404, 'shown': False, 'owned': False, 'clicked': False, 'cost': 300000, 'passenger_cap': 5000, 'operates_to': ['LIB', 'PRA', 'OLO', 'BRN', 'WRO'], 'runs_to': []},
-    {'name': 'Wurzburg', 'code': 'WRZ', 'x': 439, 'y': 429, 'shown': False, 'owned': False, 'clicked': False, 'cost': 530000, 'passenger_cap': 6000, 'operates_to': ['FRA', 'MAN', 'NRB', 'STT', 'ULM', 'ERF'], 'runs_to': []},
-    {'name': 'Mannheim', 'code': 'MAN', 'x': 345, 'y': 445, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1350000, 'passenger_cap': 15000, 'operates_to': ['SAA', 'KAR', 'WIE', 'FRA', 'WRZ'], 'runs_to': []},
-    {'name': 'Kassel', 'code': 'KAS', 'x': 414, 'y': 293, 'shown': False, 'owned': False, 'clicked': False, 'cost': 900000, 'passenger_cap': 10000, 'operates_to': ['BIE', 'HAN', 'BRS', 'ERF', 'MAR'], 'runs_to': []},
-    {'name': 'Chemnitz', 'code': 'CHM', 'x': 590, 'y': 334, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1100000, 'passenger_cap': 12000, 'operates_to': ['LPZ', 'DRE', 'PLS', 'ERF'], 'runs_to': []},
-    {'name': 'Oldenburg', 'code': 'OLD', 'x': 332, 'y': 144, 'shown': False, 'owned': False, 'clicked': False, 'cost': 750000, 'passenger_cap': 9000, 'operates_to': ['GRO', 'BRE', 'OSN'], 'runs_to': []},
-    {'name': 'Rostock', 'code': 'ROS', 'x': 536, 'y': 76, 'shown': False, 'owned': False, 'clicked': False, 'cost': 930000, 'passenger_cap': 10000, 'operates_to': ['LBK', 'SCH', 'BER', 'SZZ'], 'runs_to': []},
-    {'name': 'Lubeck', 'code': 'LBK', 'x': 461, 'y': 89, 'shown': False, 'owned': False, 'clicked': False, 'cost': 960000, 'passenger_cap': 11000, 'operates_to': ['KIE', 'HAM', 'SCH', 'ROS'], 'runs_to': []},
-    {'name': 'Slupsk', 'code': 'SLP', 'x': 825, 'y': 40, 'shown': False, 'owned': False, 'clicked': False, 'cost': 310000, 'passenger_cap': 5000, 'operates_to': ['KSZ', 'GDA'], 'runs_to': []},
-    {'name': 'Koszalin', 'code': 'KSZ', 'x': 786, 'y': 64, 'shown': False, 'owned': False, 'clicked': False, 'cost': 410000, 'passenger_cap': 5000, 'operates_to': ['SLP', 'SZZ', 'PIL'], 'runs_to': []},
-    {'name': 'Olsztyn', 'code': 'OLZ', 'x': 1014, 'y': 105, 'shown': False, 'owned': False, 'clicked': False, 'cost': 760000, 'passenger_cap': 9000, 'operates_to': ['ELB', 'BIA', 'GRB', 'WSW'], 'runs_to': []},
-    {'name': 'Kielce', 'code': 'KIL', 'x': 1022, 'y': 343, 'shown': False, 'owned': False, 'clicked': False, 'cost': 860000, 'passenger_cap': 10000, 'operates_to': ['LOD', 'CZE', 'KRA', 'RZS', 'LUB'], 'runs_to': []},
-    {'name': 'Plock', 'code': 'PLK', 'x': 994, 'y': 208, 'shown': False, 'owned': False, 'clicked': False, 'cost': 480000, 'passenger_cap': 6000, 'operates_to': ['TOR', 'LOD', 'WSW'], 'runs_to': []},
-    {'name': 'Braunschweig', 'code': 'BRS', 'x': 462, 'y': 221, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1090000, 'passenger_cap': 12000, 'operates_to': ['HAN', 'KAS', 'ERF', 'MAG'], 'runs_to': []},
-    {'name': 'Ulm', 'code': 'ULM', 'x': 431, 'y': 519, 'shown': False, 'owned': False, 'clicked': False, 'cost': 520000, 'passenger_cap': 6000, 'operates_to': ['STT', 'KON', 'AUG', 'WRZ'], 'runs_to': []},
-    {'name': 'Konstanz', 'code': 'KON', 'x': 382, 'y': 591, 'shown': False, 'owned': False, 'clicked': False, 'cost': 270000, 'passenger_cap': 4000, 'operates_to': ['FRB', 'MUC', 'STT', 'ULM'], 'runs_to': []},
-    {'name': 'Augsburg', 'code': 'AUG', 'x': 470, 'y': 523, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1320000, 'passenger_cap': 15000, 'operates_to': ['NRB', 'ING', 'MUC', 'ULM'], 'runs_to': []},
-    {'name': 'Regensburg', 'code': 'REG', 'x': 551, 'y': 491, 'shown': False, 'owned': False, 'clicked': False, 'cost': 660000, 'passenger_cap': 8000, 'operates_to': ['PLS', 'NRB', 'ING', 'MUC'], 'runs_to': []},
-    {'name': 'Ingolstadt', 'code': 'ING', 'x': 510, 'y': 512, 'shown': False, 'owned': False, 'clicked': False, 'cost': 590000, 'passenger_cap': 7000, 'operates_to': ['NRB', 'REG', 'AUG', 'MUC'], 'runs_to': []},
-    {'name': 'Koblenz', 'code': 'KOB', 'x': 297, 'y': 378, 'shown': False, 'owned': False, 'clicked': False, 'cost': 450000, 'passenger_cap': 6000, 'operates_to': ['BON', 'WIE', 'TRI', 'SIE'], 'runs_to': []},
-    {'name': 'Olomouc', 'code': 'OLO', 'x': 845, 'y': 439, 'shown': False, 'owned': False, 'clicked': False, 'cost': 370000, 'passenger_cap': 5000, 'operates_to': ['PAR', 'BRN', 'ZLI', 'OST'], 'runs_to': []},
-    {'name': 'Zlin', 'code': 'ZLI', 'x': 861, 'y': 470, 'shown': False, 'owned': False, 'clicked': False, 'cost': 180000, 'passenger_cap': 4000, 'operates_to': ['OLO', 'OST', 'BRN'], 'runs_to': []},
-    {'name': 'Pila', 'code': 'PIL', 'x': 813, 'y': 153, 'shown': False, 'owned': False, 'clicked': False, 'cost': 180000, 'passenger_cap': 4000, 'operates_to': ['SZZ', 'KSZ', 'BYD', 'POZ'], 'runs_to': []},
-    {'name': 'Glogow', 'code': 'GLO', 'x': 764, 'y': 282, 'shown': False, 'owned': False, 'clicked': False, 'cost': 120000, 'passenger_cap': 3000, 'operates_to': ['LEZ', 'LEG', 'WRO'], 'runs_to': []},
-    {'name': 'Karlsruhe', 'code': 'KAR', 'x': 337, 'y': 487, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1370000, 'passenger_cap': 16000, 'operates_to': ['SAA', 'MAN', 'STT', 'FRB'], 'runs_to': []},
-    {'name': 'Saarbrucken', 'code': 'SAA', 'x': 257, 'y': 462, 'shown': False, 'owned': False, 'clicked': False, 'cost': 790000, 'passenger_cap': 9000, 'operates_to': ['LUX', 'TRI', 'MAN', 'KAR'], 'runs_to': []},
-    {'name': 'Trier', 'code': 'TRI', 'x': 244, 'y': 417, 'shown': False, 'owned': False, 'clicked': False, 'cost': 430000, 'passenger_cap': 6000, 'operates_to': ['LUX', 'SAA', 'KOB'], 'runs_to': []},
-    {'name': 'Wiesbaden', 'code': 'WIE', 'x': 332, 'y': 398, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1230000, 'passenger_cap': 14000, 'operates_to': ['FRA', 'KOB', 'MAN'], 'runs_to': []},
-    {'name': 'Bonn', 'code': 'BON', 'x': 274, 'y': 354, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1430000, 'passenger_cap': 16000, 'operates_to': ['KOB', 'AAC', 'KOL', 'SIE'], 'runs_to': []},
-    {'name': 'Wuppertal', 'code': 'WUP', 'x': 290, 'y': 314, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1530000, 'passenger_cap': 18000, 'operates_to': ['DOR', 'ESS', 'DUS', 'KOL', 'SIE'], 'runs_to': []},
-    {'name': 'Duisburg', 'code': 'DUI', 'x': 241, 'y': 282, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2040000, 'passenger_cap': 25000, 'operates_to': ['ESS', 'DUS', 'NIJ', 'EIN'], 'runs_to': []},
-    {'name': 'Marburg', 'code': 'MAR', 'x': 377, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['KAS', 'SIE', 'FRA'], 'runs_to': []},
-    {'name': 'Schwerin', 'code': 'SCH', 'x': 510, 'y': 113, 'shown': False, 'owned': False, 'clicked': False, 'cost': 340000, 'passenger_cap': 5000, 'operates_to': ['ROS', 'LBK', 'HAM'], 'runs_to': []},
-    {'name': 'Torun', 'code': 'TOR', 'x': 909, 'y': 173, 'shown': False, 'owned': False, 'clicked': False, 'cost': 880000, 'passenger_cap': 10000, 'operates_to': ['BYD', 'GBD', 'PLK', 'LOD'], 'runs_to': []},
-    {'name': 'Leszno', 'code': 'LEZ', 'x': 786, 'y': 262, 'shown': False, 'owned': False, 'clicked': False, 'cost': 50000, 'passenger_cap': 3000, 'operates_to': ['GLO', 'WRO', 'POZ'], 'runs_to': []},
-    {'name': 'Siegen', 'code': 'SIE', 'x': 326, 'y': 339, 'shown': False, 'owned': False, 'clicked': False, 'cost': 380000, 'passenger_cap': 5000, 'operates_to': ['WUP', 'KOL', 'MAR', 'FRA', 'BON', 'KOB'], 'runs_to': []},
-    {'name': 'Liberec', 'code': 'LIB', 'x': 723, 'y': 343, 'shown': False, 'owned': False, 'clicked': False, 'cost': 390000, 'passenger_cap': 5000, 'operates_to': ['DRE', 'PRA', 'PAR', 'LEG'], 'runs_to': []},
-    {'name': 'Legnica', 'code': 'LEG', 'x': 764, 'y': 318, 'shown': False, 'owned': False, 'clicked': False, 'cost': 360000, 'passenger_cap': 5000, 'operates_to': ['GLO', 'WRO', 'LIB'], 'runs_to': []},
-    {'name': 'Grudziadz', 'code': 'GRD', 'x': 916, 'y': 133, 'shown': False, 'owned': False, 'clicked': False, 'cost': 330000, 'passenger_cap': 5000, 'operates_to': ['GDA', 'OLZ', 'BYD', 'TOR'], 'runs_to': []},
-    {'name': 'Siedlce', 'code': 'SID', 'x': 1127, 'y': 229, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['WSW', 'BIA', 'LUB'], 'runs_to': []},
-    {'name': 'Tarnow', 'code': 'TAR', 'x': 1051, 'y': 408, 'shown': False, 'owned': False, 'clicked': False, 'cost': 420000, 'passenger_cap': 5000, 'operates_to': ['KRA', 'RZS'], 'runs_to': []},
-    {'name': 'Arnhem', 'code': 'ARN', 'x': 201, 'y': 233, 'shown': False, 'owned': False, 'clicked': False, 'cost': 720000, 'passenger_cap': 8000, 'operates_to': ['UTR', 'NIJ', 'ENS', 'ZWL', 'AMS'], 'runs_to': []},
-    {'name': 'Maastricht', 'code': 'MAA', 'x': 201, 'y': 329, 'shown': False, 'owned': False, 'clicked': False, 'cost': 490000, 'passenger_cap': 6000, 'operates_to': ['AAC', 'LIE', 'EIN'], 'runs_to': []},
-    {'name': 'Osnabruck', 'code': 'OSN', 'x': 326, 'y': 217, 'shown': False, 'owned': False, 'clicked': False, 'cost': 750000, 'passenger_cap': 8000, 'operates_to': ['OLD', 'BIE', 'MUN', 'ENS'], 'runs_to': []},
-    {'name': 'Enschede', 'code': 'ENS', 'x': 258, 'y': 213, 'shown': False, 'owned': False, 'clicked': False, 'cost': 690000, 'passenger_cap': 8000, 'operates_to': ['ZWL', 'APL', 'ARN', 'OSN', 'MUN', 'ESS'], 'runs_to': []}
-]
-
 trains = [
 {'make': 'Express', 'model': 'DT-4', 'icon': express_red, 'shown': False, 'unlocked': False, 'cost': 300000, 'train_type': 'Diesel', 'capacity': 200, 'speed': 100, 'profit_per_person_per_km': 0.025, 'desc': 'The most basic train of the lot. Small yet reliable for transporting your first passengers, or for serving new connections.', 'level': 0},
 {'make': 'Express', 'model': 'DT-5A', 'icon': express_orange, 'shown': False, 'unlocked': False, 'cost': 340000, 'train_type': 'Diesel', 'capacity': 250, 'speed': 100, 'profit_per_person_per_km': 0.025, 'level': 0},
@@ -493,8 +399,269 @@ def get_angle(unit, total):
     return 2 * math.pi * unit / total - math.pi / 2
 
 
+
+
+
+
+
+class Tile:
+    def __init__(self, img, top, right, bottom, left):
+        self.img = img
+        self.top = top
+        self.right = right
+        self.bottom = bottom
+        self.left = left
+
+
+
+first_names = [
+    "Ash", "Bath", "Bay", "Beaver", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
+    "Brad", "Brent", "Bridge", "Brook", "Brown", "Cam", "Cedar", "Charl", "Chest", "Clear",
+    "Clifton", "Clinton", "Coal", "Clover", "Col", "Cran", "Crow", "Cumber", "Daven", "Day",
+    "Deer", "Dover", "Down", "Dun", "East", "Edge", "Elm", "Elk", "Fair", "Farm",
+    "Fayette", "Fern", "Fish", "Flat", "Forest", "Fort", "Fountain", "Fox", "Frank", "Freder",
+    "Glen", "Gold", "Green", "Greer", "Ham", "Han", "Hart", "Hazel", "Hemp", "Hen",
+    "High", "Hill", "Hol", "Hope", "Hun", "Iron", "Jackson", "Jam", "Jeff", "John",
+    "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
+    "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "Mart", "May",
+    "Mid", "Mill", "Milton", "Mon", "Mont", "Mount", "Moun", "New", "North", "Oak",
+    "Oce", "Olive", "Orchard", "Ox", "Park", "Peach", "Pine", "Plain", "Pleasant", "Port",
+    "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
+    "Ruther", "Saint", "Salem", "Salt", "San", "Sand", "Sandy", "Scot", "Shel", "Silver",
+    "Smith", "Snow", "South", "Spring", "Stan", "Star", "Stone", "Sun", "Syl",
+    "Tall", "Temple", "Thor", "Three", "Tim", "Twin", "Union", "Valley", "Vern", "Wake",
+    "Wash", "Water", "West", "White", "Wild", "Willow", "Win", "Wood", "York",
+]
+
+last_names = [
+    "ville", "ton", "ham", "field", "bury", "ford", "land", "wood", "port", "dale",
+    "ridge", "side", "hill", "town", "view", "grove", "creek", "spring", "falls", "lake",
+    "bay", "point", "beach", "bend", "summit", "peak", "cross", "fort", "cove", "brook",
+    "plains", "groves", "heights", "moor", "hurst", "worth", "combe", "fell", "leigh", "well",
+    "gate", "head", "stone", "wick", "holt", "burn", "thorpe", "fleet", "march", "den", "cumbe"
+]
+
+tiles = []
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_1.png"), "green", "green", "green", "green"))
+
+for tile in tiles[0:1]:
+    greens = 0
+    if tile.top == "green":
+        greens += 1
+    elif tile.top in ["desert-green", "green-desert"]:
+        greens += 0.4
+
+    if tile.left == "green":
+        greens += 1
+    elif tile.left in ["desert-green", "green-desert"]:
+        greens += 0.4
+
+    if tile.right == "green":
+        greens += 1
+    elif tile.right in ["desert-green", "green-desert"]:
+        greens += 0.4
+
+    if tile.bottom == "green":
+        greens += 1
+    elif tile.bottom in ["desert-green", "green-desert"]:
+        greens += 0.4
+
+    if greens >= 2:
+        tiles.append(tile)
+    if greens >= 3:
+        tiles.append(tile)
+    if greens == 4:
+        tiles.append(tile)
+    
+TILE_SIZE = 100
+
+tile_order = []
+for slot in range((width-350//TILE_SIZE)*(height-250//TILE_SIZE)):
+    tile_order.append(tile)
+    # good = False
+    # while True:
+    #     tile = random.choice(tiles[0:1])
+    #     while True:
+    #         if slot == 0:
+    #             tile_order.append(tile)
+    #             good = True
+    #             break
+                
+    #         elif tile.left == tile_order[-1].right and (slot < (width//TILE_SIZE) or tile_order[-width//TILE_SIZE].bottom == tile.top):
+    #             tile_order.append(tile)
+    #             good = True
+    #             break
+    #         else:
+    #             break
+    #     if good:
+    #         break
+
+num_points = 50
+points = np.random.rand(num_points, 2)
+points *= [width-350, height-250]  # Scale to screen size    
+points += [25, 25]
+
+cities = []
+valid_points = []
+deletions = 0
+for index, point in enumerate(points):
+    city_name = str(random.choice(first_names)+random.choice(last_names))
+    city_loc = pygame.Vector2(point[0], point[1])
+    good = True
+    for item in cities:
+        if item["loc"].x-70 <= city_loc.x <= item["loc"].x+70 and item["loc"].y-70 <= city_loc.y <= item["loc"].y+70:
+            good = False
+            deletions += 1
+    if good:
+        cities.append({"name":city_name, "loc":city_loc})
+        valid_points.append([city_loc.x, city_loc.y])
+
+valid_points = np.array(valid_points)
+tri = Delaunay(valid_points)    
+
+int_points = [tuple(map(int, p)) for p in valid_points]
+
+# exclusion rects
+RECT_SIZE = 65 
+half = RECT_SIZE // 2
+exclude_rects = [
+    {
+        "rect": pygame.Rect(x - half, y - half, RECT_SIZE, RECT_SIZE),
+        "center": (x, y)
+    }
+    for x, y in int_points
+]
+
+def triangle_overlaps_other_rects(tri_pts, rects):
+    for i in range(3):
+        p1 = tri_pts[i]
+        p2 = tri_pts[(i + 1) % 3]
+        for rect_info in rects:
+            cx, cy = rect_info["center"]
+            # Skip if this rect belongs to an endpoint
+            if (p1 == (cx, cy)) or (p2 == (cx, cy)):
+                continue
+            if rect_info["rect"].clipline(p1, p2):
+                return True
+    return False
+
+
+
+
+
+
+
+
+
 while running:
-    for event in pygame.event.get(exclude=pygame.MOUSEBUTTONUP):
+    stations = [
+        {'name': 'Amsterdam', 'code': 'AMS', 'x': 258, 'y': 354, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3410000, 'passenger_cap': 47000, 'operates_to': ['HAG', 'ROT', 'UTR', 'ARN', 'APL', 'ZWL'], 'runs_to': []},
+{'name': 'Berlin', 'code': 'BER', 'x': 1018, 'y': 322, 'shown': False, 'owned': False, 'clicked': False, 'cost': 10000000, 'passenger_cap': 188000, 'operates_to': ['ROS', 'SZZ', 'POZ', 'MAG', 'LPZ', 'DRE'], 'runs_to': []},
+{'name': 'Prague', 'code': 'PRA', 'x': 1107, 'y': 643, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4470000, 'passenger_cap': 66000, 'operates_to': ['PLS', 'DRE', 'PAR', 'LIB', 'BRN'], 'runs_to': []},
+{'name': 'Brussels', 'code': 'BRU', 'x': 206, 'y': 541, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4080000, 'passenger_cap': 59000, 'operates_to': ['GHE', 'CHA', 'NAM', 'LIE', 'ANT'], 'runs_to': []},
+{'name': 'Warsaw', 'code': 'WSW', 'x': 1699, 'y': 360, 'shown': False, 'owned': False, 'clicked': False, 'cost': 5830000, 'passenger_cap': 93000, 'operates_to': ['PLK', 'LOD', 'SID', 'BIA', 'OLZ'], 'runs_to': []},
+{'name': 'Brno', 'code': 'BRN', 'x': 1294, 'y': 760, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1630000, 'passenger_cap': 19000, 'operates_to': ['PRA', 'PAR', 'OLO', 'ZLI'], 'runs_to': []},
+{'name': 'Gdansk', 'code': 'GDA', 'x': 1454, 'y': 83, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1950000, 'passenger_cap': 24000, 'operates_to': ['ELB', 'GRD', 'SLP'], 'runs_to': []},
+{'name': 'Lodz', 'code': 'LOD', 'x': 1578, 'y': 432, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2610000, 'passenger_cap': 34000, 'operates_to': ['PLK', 'TOR', 'POZ', 'WSW', 'LUB', 'KIL', 'CZE'], 'runs_to': []},      
+{'name': 'Krakow', 'code': 'KRA', 'x': 1597, 'y': 637, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3010000, 'passenger_cap': 40000, 'operates_to': ['TAR', 'KIL', 'CZE', 'KAT'], 'runs_to': []},
+{'name': 'Rotterdam', 'code': 'ROT', 'x': 206, 'y': 413, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2590000, 'passenger_cap': 33000, 'operates_to': ['HAG', 'UTR', 'AMS', 'ANT', 'EIN'], 'runs_to': []},
+{'name': 'The Hague', 'code': 'HAG', 'x': 194, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2260000, 'passenger_cap': 28000, 'operates_to': ['ROT', 'AMS'], 'runs_to': []},
+{'name': 'Antwerp', 'code': 'ANT', 'x': 206, 'y': 490, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2150000, 'passenger_cap': 26000, 'operates_to': ['GHE', 'BRG', 'BRU', 'ROT', 'EIN'], 'runs_to': []},
+{'name': 'Ostrava', 'code': 'OST', 'x': 1429, 'y': 675, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1270000, 'passenger_cap': 14000, 'operates_to': ['OLO', 'ZLI', 'WRO', 'KAT'], 'runs_to': []},
+{'name': 'Munich', 'code': 'MUC', 'x': 837, 'y': 894, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4910000, 'passenger_cap': 74000, 'operates_to': ['KON', 'AUG', 'ING', 'REG'], 'runs_to': []},
+{'name': 'Frankfurt', 'code': 'FRA', 'x': 579, 'y': 637, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2900000, 'passenger_cap': 38000, 'operates_to': ['WIE', 'MAN', 'WRZ', 'MAR', 'SIE'], 'runs_to': []},
+{'name': 'Hamburg', 'code': 'HAM', 'x': 685, 'y': 198, 'shown': False, 'owned': False, 'clicked': False, 'cost': 5810000, 'passenger_cap': 93000, 'operates_to': ['KIE', 'LBK', 'SCH', 'BRE', 'HAN'], 'runs_to': []},
+{'name': 'Luxembourg', 'code': 'LUX', 'x': 347, 'y': 693, 'shown': False, 'owned': False, 'clicked': False, 'cost': 530000, 'passenger_cap': 6000, 'operates_to': ['NAM', 'LIE', 'TRI', 'SAA'], 'runs_to': []},
+{'name': 'Leipzig', 'code': 'LPZ', 'x': 907, 'y': 476, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2390000, 'passenger_cap': 30000, 'operates_to': ['ERF', 'CHM', 'DRE', 'BER', 'MAG'], 'runs_to': []},
+{'name': 'Koln', 'code': 'KOL', 'x': 426, 'y': 526, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3820000, 'passenger_cap': 54000, 'operates_to': ['WUP', 'DUS', 'AAC', 'BON', 'SIE'], 'runs_to': []},
+{'name': 'Stuttgart', 'code': 'STT', 'x': 618, 'y': 797, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2500000, 'passenger_cap': 32000, 'operates_to': ['KAR', 'KON', 'ULM', 'WRZ'], 'runs_to': []},
+{'name': 'Dusseldorf', 'code': 'DUS', 'x': 419, 'y': 494, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2450000, 'passenger_cap': 31000, 'operates_to': ['DUI', 'ESS', 'WUP', 'KOL', 'AAC'], 'runs_to': []},
+{'name': 'Nuremberg', 'code': 'NRB', 'x': 800, 'y': 742, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2110000, 'passenger_cap': 26000, 'operates_to': ['WRZ', 'AUG', 'ING', 'REG', 'PLS'], 'runs_to': []},
+{'name': 'Bydgoszcz', 'code': 'BYD', 'x': 1416, 'y': 258, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1490000, 'passenger_cap': 17000, 'operates_to': ['PIL', 'POZ', 'GRD', 'TOR'], 'runs_to': []},
+{'name': 'Poznan', 'code': 'POZ', 'x': 1325, 'y': 347, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2210000, 'passenger_cap': 27000, 'operates_to': ['BER', 'LEZ', 'PIL', 'BYD', 'LOD'], 'runs_to': []},
+{'name': 'Wroclaw', 'code': 'WRO', 'x': 1306, 'y': 526, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2620000, 'passenger_cap': 34000, 'operates_to': ['LEG', 'GLO', 'LEZ', 'PAR', 'OST', 'KAT', 'CZE'], 'runs_to': []},   
+{'name': 'Ghent', 'code': 'GHE', 'x': 134, 'y': 514, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1170000, 'passenger_cap': 13000, 'operates_to': ['BRG', 'KJK', 'ANT', 'BRU'], 'runs_to': []},
+{'name': 'Katowice', 'code': 'KAT', 'x': 1488, 'y': 618, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1290000, 'passenger_cap': 15000, 'operates_to': ['WRO', 'CZE', 'KRA', 'OST'], 'runs_to': []},
+{'name': 'Szczecin', 'code': 'SZZ', 'x': 1094, 'y': 205, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1690000, 'passenger_cap': 20000, 'operates_to': ['ROS', 'BER', 'KSZ', 'PIL'], 'runs_to': []},
+{'name': 'Lublin', 'code': 'LUB', 'x': 1808, 'y': 518, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1470000, 'passenger_cap': 17000, 'operates_to': ['LOD', 'SID', 'KIL', 'RZS'], 'runs_to': []},
+{'name': 'Charleroi', 'code': 'CHA', 'x': 219, 'y': 595, 'shown': False, 'owned': False, 'clicked': False, 'cost': 900000, 'passenger_cap': 10000, 'operates_to': ['NAM', 'BRU', 'KJK'], 'runs_to': []},
+{'name': 'Dortmund', 'code': 'DOR', 'x': 470, 'y': 450, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2350000, 'passenger_cap': 29000, 'operates_to': ['ESS', 'MUN', 'WUP'], 'runs_to': []},
+{'name': 'Utrecht', 'code': 'UTR', 'x': 272, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1580000, 'passenger_cap': 18000, 'operates_to': ['AMS', 'ROT', 'NIJ', 'ARN', 'EIN'], 'runs_to': []},
+{'name': 'Eindhoven', 'code': 'EIN', 'x': 291, 'y': 458, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1080000, 'passenger_cap': 12000, 'operates_to': ['MAA', 'ANT', 'ROT', 'UTR', 'NIJ'], 'runs_to': []},
+{'name': 'Groningen', 'code': 'GRO', 'x': 394, 'y': 230, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1040000, 'passenger_cap': 12000, 'operates_to': ['ZWL', 'OLD'], 'runs_to': []},
+{'name': 'Essen', 'code': 'ESS', 'x': 434, 'y': 458, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2330000, 'passenger_cap': 29000, 'operates_to': ['ENS', 'DUI', 'DOR', 'DUS', 'WUP'], 'runs_to': []},
+{'name': 'Hanover', 'code': 'HAN', 'x': 670, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2180000, 'passenger_cap': 27000, 'operates_to': ['HAM', 'BRS', 'BRE', 'BIE', 'KAS'], 'runs_to': []},
+{'name': 'Bremen', 'code': 'BRE', 'x': 594, 'y': 245, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2290000, 'passenger_cap': 28000, 'operates_to': ['OLD', 'BIE', 'HAM', 'HAN'], 'runs_to': []},
+{'name': 'Munster', 'code': 'MUN', 'x': 498, 'y': 400, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1380000, 'passenger_cap': 16000, 'operates_to': ['OSN', 'ENS', 'BIE', 'DOR'], 'runs_to': []},
+{'name': 'Bielefeld', 'code': 'BIE', 'x': 562, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1450000, 'passenger_cap': 17000, 'operates_to': ['OSN', 'MUN', 'HAN', 'BRE', 'KAS'], 'runs_to': []},
+{'name': 'Liege', 'code': 'LIE', 'x': 296, 'y': 566, 'shown': False, 'owned': False, 'clicked': False, 'cost': 880000, 'passenger_cap': 10000, 'operates_to': ['MAA', 'AAC', 'LUX', 'NAM', 'BRU', 'ANT'], 'runs_to': []},
+{'name': 'Aachen', 'code': 'AAC', 'x': 360, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1110000, 'passenger_cap': 12000, 'operates_to': ['MAA', 'LIE', 'DUS', 'KOL', 'BON'], 'runs_to': []},
+{'name': 'Erfurt', 'code': 'ERF', 'x': 792, 'y': 517, 'shown': False, 'owned': False, 'clicked': False, 'cost': 950000, 'passenger_cap': 11000, 'operates_to': ['BRS', 'KAS', 'MAG', 'LPZ', 'CHM', 'WRZ'], 'runs_to': []},
+{'name': 'Dresden', 'code': 'DRE', 'x': 1050, 'y': 517, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2240000, 'passenger_cap': 28000, 'operates_to': ['CHM', 'LPZ', 'LIB', 'PRA', 'BER'], 'runs_to': []},
+{'name': 'Magdeburg', 'code': 'MAG', 'x': 851, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1060000, 'passenger_cap': 12000, 'operates_to': ['BRS', 'ERF', 'BER', 'LPZ'], 'runs_to': []},
+{'name': 'Kiel', 'code': 'KIE', 'x': 710, 'y': 90, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1100000, 'passenger_cap': 12000, 'operates_to': ['FLN', 'LBK', 'HAM'], 'runs_to': []},
+{'name': 'Flensburg', 'code': 'FLN', 'x': 646, 'y': 32, 'shown': False, 'owned': False, 'clicked': False, 'cost': 290000, 'passenger_cap': 4000, 'operates_to': ['KIE'], 'runs_to': []},
+{'name': 'Freiburg', 'code': 'FRB', 'x': 498, 'y': 922, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1030000, 'passenger_cap': 12000, 'operates_to': ['KON', 'KAR'], 'runs_to': []},
+{'name': 'Namur', 'code': 'NAM', 'x': 258, 'y': 594, 'shown': False, 'owned': False, 'clicked': False, 'cost': 430000, 'passenger_cap': 6000, 'operates_to': ['CHA', 'BRU', 'LIE', 'LUX'], 'runs_to': []},
+{'name': 'Kortrijk', 'code': 'KJK', 'x': 96, 'y': 541, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['BRG', 'GHE', 'CHA'], 'runs_to': []},
+{'name': 'Bruges', 'code': 'BRG', 'x': 90, 'y': 490, 'shown': False, 'owned': False, 'clicked': False, 'cost': 470000, 'passenger_cap': 6000, 'operates_to': ['ANT', 'GHE', 'KJK'], 'runs_to': []},
+{'name': 'Apeldoorn', 'code': 'APL', 'x': 334, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 720000, 'passenger_cap': 8000, 'operates_to': ['ZWL', 'ARN', 'ENS', 'AMS'], 'runs_to': []},
+{'name': 'Zwolle', 'code': 'ZWL', 'x': 347, 'y': 302, 'shown': False, 'owned': False, 'clicked': False, 'cost': 540000, 'passenger_cap': 7000, 'operates_to': ['GRO', 'ENS', 'APL', 'AMS'], 'runs_to': []},
+{'name': 'Nijmegen', 'code': 'NIJ', 'x': 322, 'y': 413, 'shown': False, 'owned': False, 'clicked': False, 'cost': 790000, 'passenger_cap': 9000, 'operates_to': ['ARN', 'UTR', 'EIN', 'DUI'], 'runs_to': []},
+{'name': 'Czestochowa', 'code': 'CZE', 'x': 1494, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 980000, 'passenger_cap': 11000, 'operates_to': ['WRO', 'KAT', 'KRA', 'KIL', 'LOD'], 'runs_to': []},
+{'name': 'Bialystok', 'code': 'BIA', 'x': 1858, 'y': 258, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1310000, 'passenger_cap': 15000, 'operates_to': ['OLZ', 'WSW', 'SID'], 'runs_to': []},
+{'name': 'Elblag', 'code': 'ELB', 'x': 1525, 'y': 109, 'shown': False, 'owned': False, 'clicked': False, 'cost': 480000, 'passenger_cap': 6000, 'operates_to': ['GDA', 'OLZ'], 'runs_to': []},
+{'name': 'Rzeszow', 'code': 'RZS', 'x': 1766, 'y': 646, 'shown': False, 'owned': False, 'clicked': False, 'cost': 870000, 'passenger_cap': 10000, 'operates_to': ['TAR', 'KIL', 'LUB'], 'runs_to': []},
+{'name': 'Pilsen', 'code': 'PLS', 'x': 1003, 'y': 680, 'shown': False, 'owned': False, 'clicked': False, 'cost': 770000, 'passenger_cap': 9000, 'operates_to': ['NRB', 'REG', 'CHM', 'PRA'], 'runs_to': []},
+{'name': 'Pardubice', 'code': 'PAR', 'x': 1218, 'y': 646, 'shown': False, 'owned': False, 'clicked': False, 'cost': 300000, 'passenger_cap': 5000, 'operates_to': ['LIB', 'PRA', 'OLO', 'BRN', 'WRO'], 'runs_to': []},
+{'name': 'Wurzburg', 'code': 'WRZ', 'x': 702, 'y': 686, 'shown': False, 'owned': False, 'clicked': False, 'cost': 530000, 'passenger_cap': 6000, 'operates_to': ['FRA', 'MAN', 'NRB', 'STT', 'ULM', 'ERF'], 'runs_to': []},
+{'name': 'Mannheim', 'code': 'MAN', 'x': 552, 'y': 712, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1350000, 'passenger_cap': 15000, 'operates_to': ['SAA', 'KAR', 'WIE', 'FRA', 'WRZ'], 'runs_to': []},
+{'name': 'Kassel', 'code': 'KAS', 'x': 662, 'y': 469, 'shown': False, 'owned': False, 'clicked': False, 'cost': 900000, 'passenger_cap': 10000, 'operates_to': ['BIE', 'HAN', 'BRS', 'ERF', 'MAR'], 'runs_to': []},
+{'name': 'Chemnitz', 'code': 'CHM', 'x': 944, 'y': 534, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1100000, 'passenger_cap': 12000, 'operates_to': ['LPZ', 'DRE', 'PLS', 'ERF'], 'runs_to': []},
+{'name': 'Oldenburg', 'code': 'OLD', 'x': 531, 'y': 230, 'shown': False, 'owned': False, 'clicked': False, 'cost': 750000, 'passenger_cap': 9000, 'operates_to': ['GRO', 'BRE', 'OSN'], 'runs_to': []},
+{'name': 'Rostock', 'code': 'ROS', 'x': 858, 'y': 122, 'shown': False, 'owned': False, 'clicked': False, 'cost': 930000, 'passenger_cap': 10000, 'operates_to': ['LBK', 'SCH', 'BER', 'SZZ'], 'runs_to': []},
+{'name': 'Lubeck', 'code': 'LBK', 'x': 738, 'y': 142, 'shown': False, 'owned': False, 'clicked': False, 'cost': 960000, 'passenger_cap': 11000, 'operates_to': ['KIE', 'HAM', 'SCH', 'ROS'], 'runs_to': []},
+{'name': 'Slupsk', 'code': 'SLP', 'x': 1320, 'y': 64, 'shown': False, 'owned': False, 'clicked': False, 'cost': 310000, 'passenger_cap': 5000, 'operates_to': ['KSZ', 'GDA'], 'runs_to': []},
+{'name': 'Koszalin', 'code': 'KSZ', 'x': 1258, 'y': 102, 'shown': False, 'owned': False, 'clicked': False, 'cost': 410000, 'passenger_cap': 5000, 'operates_to': ['SLP', 'SZZ', 'PIL'], 'runs_to': []},
+{'name': 'Olsztyn', 'code': 'OLZ', 'x': 1622, 'y': 168, 'shown': False, 'owned': False, 'clicked': False, 'cost': 760000, 'passenger_cap': 9000, 'operates_to': ['ELB', 'BIA', 'GRB', 'WSW'], 'runs_to': []},
+{'name': 'Kielce', 'code': 'KIL', 'x': 1635, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 860000, 'passenger_cap': 10000, 'operates_to': ['LOD', 'CZE', 'KRA', 'RZS', 'LUB'], 'runs_to': []},
+{'name': 'Plock', 'code': 'PLK', 'x': 1590, 'y': 333, 'shown': False, 'owned': False, 'clicked': False, 'cost': 480000, 'passenger_cap': 6000, 'operates_to': ['TOR', 'LOD', 'WSW'], 'runs_to': []},
+{'name': 'Braunschweig', 'code': 'BRS', 'x': 739, 'y': 354, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1090000, 'passenger_cap': 12000, 'operates_to': ['HAN', 'KAS', 'ERF', 'MAG'], 'runs_to': []},
+{'name': 'Ulm', 'code': 'ULM', 'x': 690, 'y': 830, 'shown': False, 'owned': False, 'clicked': False, 'cost': 520000, 'passenger_cap': 6000, 'operates_to': ['STT', 'KON', 'AUG', 'WRZ'], 'runs_to': []},
+{'name': 'Konstanz', 'code': 'KON', 'x': 611, 'y': 946, 'shown': False, 'owned': False, 'clicked': False, 'cost': 270000, 'passenger_cap': 4000, 'operates_to': ['FRB', 'MUC', 'STT', 'ULM'], 'runs_to': []},
+{'name': 'Augsburg', 'code': 'AUG', 'x': 752, 'y': 837, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1320000, 'passenger_cap': 15000, 'operates_to': ['NRB', 'ING', 'MUC', 'ULM'], 'runs_to': []},
+{'name': 'Regensburg', 'code': 'REG', 'x': 882, 'y': 786, 'shown': False, 'owned': False, 'clicked': False, 'cost': 660000, 'passenger_cap': 8000, 'operates_to': ['PLS', 'NRB', 'ING', 'MUC'], 'runs_to': []},
+{'name': 'Ingolstadt', 'code': 'ING', 'x': 816, 'y': 819, 'shown': False, 'owned': False, 'clicked': False, 'cost': 590000, 'passenger_cap': 7000, 'operates_to': ['NRB', 'REG', 'AUG', 'MUC'], 'runs_to': []},
+{'name': 'Koblenz', 'code': 'KOB', 'x': 475, 'y': 605, 'shown': False, 'owned': False, 'clicked': False, 'cost': 450000, 'passenger_cap': 6000, 'operates_to': ['BON', 'WIE', 'TRI', 'SIE'], 'runs_to': []},
+{'name': 'Olomouc', 'code': 'OLO', 'x': 1352, 'y': 702, 'shown': False, 'owned': False, 'clicked': False, 'cost': 370000, 'passenger_cap': 5000, 'operates_to': ['PAR', 'BRN', 'ZLI', 'OST'], 'runs_to': []},
+{'name': 'Zlin', 'code': 'ZLI', 'x': 1378, 'y': 752, 'shown': False, 'owned': False, 'clicked': False, 'cost': 180000, 'passenger_cap': 4000, 'operates_to': ['OLO', 'OST', 'BRN'], 'runs_to': []},
+{'name': 'Pila', 'code': 'PIL', 'x': 1301, 'y': 245, 'shown': False, 'owned': False, 'clicked': False, 'cost': 180000, 'passenger_cap': 4000, 'operates_to': ['SZZ', 'KSZ', 'BYD', 'POZ'], 'runs_to': []},
+{'name': 'Glogow', 'code': 'GLO', 'x': 1222, 'y': 451, 'shown': False, 'owned': False, 'clicked': False, 'cost': 120000, 'passenger_cap': 3000, 'operates_to': ['LEZ', 'LEG', 'WRO'], 'runs_to': []},
+{'name': 'Karlsruhe', 'code': 'KAR', 'x': 539, 'y': 779, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1370000, 'passenger_cap': 16000, 'operates_to': ['SAA', 'MAN', 'STT', 'FRB'], 'runs_to': []},
+{'name': 'Saarbrucken', 'code': 'SAA', 'x': 411, 'y': 739, 'shown': False, 'owned': False, 'clicked': False, 'cost': 790000, 'passenger_cap': 9000, 'operates_to': ['LUX', 'TRI', 'MAN', 'KAR'], 'runs_to': []},
+{'name': 'Trier', 'code': 'TRI', 'x': 390, 'y': 667, 'shown': False, 'owned': False, 'clicked': False, 'cost': 430000, 'passenger_cap': 6000, 'operates_to': ['LUX', 'SAA', 'KOB'], 'runs_to': []},
+{'name': 'Wiesbaden', 'code': 'WIE', 'x': 531, 'y': 637, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1230000, 'passenger_cap': 14000, 'operates_to': ['FRA', 'KOB', 'MAN'], 'runs_to': []},
+{'name': 'Bonn', 'code': 'BON', 'x': 438, 'y': 566, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1430000, 'passenger_cap': 16000, 'operates_to': ['KOB', 'AAC', 'KOL', 'SIE'], 'runs_to': []},
+{'name': 'Wuppertal', 'code': 'WUP', 'x': 464, 'y': 502, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1530000, 'passenger_cap': 18000, 'operates_to': ['DOR', 'ESS', 'DUS', 'KOL', 'SIE'], 'runs_to': []},
+{'name': 'Duisburg', 'code': 'DUI', 'x': 386, 'y': 451, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2040000, 'passenger_cap': 25000, 'operates_to': ['ESS', 'DUS', 'NIJ', 'EIN'], 'runs_to': []},
+{'name': 'Marburg', 'code': 'MAR', 'x': 603, 'y': 546, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['KAS', 'SIE', 'FRA'], 'runs_to': []},
+{'name': 'Schwerin', 'code': 'SCH', 'x': 816, 'y': 181, 'shown': False, 'owned': False, 'clicked': False, 'cost': 340000, 'passenger_cap': 5000, 'operates_to': ['ROS', 'LBK', 'HAM'], 'runs_to': []},
+{'name': 'Torun', 'code': 'TOR', 'x': 1454, 'y': 277, 'shown': False, 'owned': False, 'clicked': False, 'cost': 880000, 'passenger_cap': 10000, 'operates_to': ['BYD', 'GBD', 'PLK', 'LOD'], 'runs_to': []},
+{'name': 'Leszno', 'code': 'LEZ', 'x': 1258, 'y': 419, 'shown': False, 'owned': False, 'clicked': False, 'cost': 50000, 'passenger_cap': 3000, 'operates_to': ['GLO', 'WRO', 'POZ'], 'runs_to': []},
+{'name': 'Siegen', 'code': 'SIE', 'x': 522, 'y': 542, 'shown': False, 'owned': False, 'clicked': False, 'cost': 380000, 'passenger_cap': 5000, 'operates_to': ['WUP', 'KOL', 'MAR', 'FRA', 'BON', 'KOB'], 'runs_to': []},
+{'name': 'Liberec', 'code': 'LIB', 'x': 1157, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 390000, 'passenger_cap': 5000, 'operates_to': ['DRE', 'PRA', 'PAR', 'LEG'], 'runs_to': []},
+{'name': 'Legnica', 'code': 'LEG', 'x': 1222, 'y': 509, 'shown': False, 'owned': False, 'clicked': False, 'cost': 360000, 'passenger_cap': 5000, 'operates_to': ['GLO', 'WRO', 'LIB'], 'runs_to': []},
+{'name': 'Grudziadz', 'code': 'GRD', 'x': 1466, 'y': 213, 'shown': False, 'owned': False, 'clicked': False, 'cost': 330000, 'passenger_cap': 5000, 'operates_to': ['GDA', 'OLZ', 'BYD', 'TOR'], 'runs_to': []},
+{'name': 'Siedlce', 'code': 'SID', 'x': 1803, 'y': 366, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['WSW', 'BIA', 'LUB'], 'runs_to': []},
+{'name': 'Tarnow', 'code': 'TAR', 'x': 1682, 'y': 653, 'shown': False, 'owned': False, 'clicked': False, 'cost': 420000, 'passenger_cap': 5000, 'operates_to': ['KRA', 'RZS'], 'runs_to': []},
+{'name': 'Arnhem', 'code': 'ARN', 'x': 322, 'y': 373, 'shown': False, 'owned': False, 'clicked': False, 'cost': 720000, 'passenger_cap': 8000, 'operates_to': ['UTR', 'NIJ', 'ENS', 'ZWL', 'AMS'], 'runs_to': []},
+{'name': 'Maastricht', 'code': 'MAA', 'x': 322, 'y': 526, 'shown': False, 'owned': False, 'clicked': False, 'cost': 490000, 'passenger_cap': 6000, 'operates_to': ['AAC', 'LIE', 'EIN'], 'runs_to': []},
+{'name': 'Osnabruck', 'code': 'OSN', 'x': 522, 'y': 347, 'shown': False, 'owned': False, 'clicked': False, 'cost': 750000, 'passenger_cap': 8000, 'operates_to': ['OLD', 'BIE', 'MUN', 'ENS'], 'runs_to': []},
+{'name': 'Enschede', 'code': 'ENS', 'x': 413, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 690000, 'passenger_cap': 8000, 'operates_to': ['ZWL', 'APL', 'ARN', 'OSN', 'MUN', 'ESS'], 'runs_to': []}]
+    
+# int(round((495 * map.get_width())/init_map_w)+map_loc.x)
+
+    for event in pygame.event.get(exclude= [pygame.MOUSEBUTTONUP]):
         if event.type == pygame.QUIT:
             running = False
 
@@ -521,7 +688,29 @@ while running:
     if game:
         # draws map - map has already been adjusted to fill screen size
         screen.fill(pygame.Color(254, 254, 233))
-        screen.blit(map,(0,0))
+
+        x_across = 0
+        y_down = 0
+        for slot in range((width-350//TILE_SIZE)*((height-250)//TILE_SIZE)):
+            screen.blit(tile_order[slot].img, (x_across, y_down))
+            x_across += TILE_SIZE
+
+            if x_across >= width:
+                x_across = 0
+                y_down += TILE_SIZE
+
+        for simplex in tri.simplices:
+            tri_pts = [int_points[i] for i in simplex]
+            if not triangle_overlaps_other_rects(tri_pts, exclude_rects):
+                pygame.draw.polygon(screen, "black", tri_pts, 1)
+            
+        for city in cities:
+            if screen.get_at((int(city["loc"].x), int(city["loc"].y))) == pygame.Color(63, 72, 204):
+                cities.remove(city)
+                
+            pygame.draw.circle(screen, "red", city["loc"], 10)
+            text = font_h4.render(city["name"], True, 'black')
+            screen.blit(text, city["loc"])
 
         # tips
         tips("","","",font_h5,font_h5,font_h5)
@@ -619,13 +808,13 @@ while running:
 
             text = font_h3.render(title, True, "white")
             text = pygame.transform.rotate(text, 90)
-            rect = pygame.Rect(map.get_width()-20-extra_add, y_down, 40+extra_add, TAB_HEIGHT)
+            rect = pygame.Rect((width-300)-20-extra_add, y_down, 40+extra_add, TAB_HEIGHT)
             pygame.draw.rect(screen, color, rect, border_top_left_radius=16, border_bottom_left_radius=16)
-            screen.blit(text, (map.get_width()-10-extra_add, y_down+(TAB_HEIGHT/2)-(text.get_height()/2)))
+            screen.blit(text, ((width-300)-10-extra_add, y_down+(TAB_HEIGHT/2)-(text.get_height()/2)))
             title_rects.append(rect)
             y_down += TAB_HEIGHT + 10
 
-        rect = pygame.Rect(map.get_width()+18, 0, width-map.get_width()-18, height)
+        rect = pygame.Rect((width-300)+18, 0, width-(width-300)-18, height)
         pygame.draw.rect(screen, COLOR, rect)
 
         for rect in title_rects:
@@ -930,10 +1119,7 @@ while running:
                     text = font_h4.render(f"Line Type: {item['train_type']}", True, "black")
                     screen.blit(text, (x_across+8, y_down+14+H4_SIZE*3))
 
-
-
-                    pygame.draw.line(screen, "black", (x_across+175, y_down+8), (x_across+175, y_down+100), width=8)
-
+                    pygame.draw.line(screen, "black", (x_across+175, y_down+8), (x_across+175, y_down+100), width=6)
 
 
                     # level graph
@@ -958,18 +1144,6 @@ while running:
                     font_h3.set_bold(False)
                         
                     
-
-
-
-
-
-
-                        
-
-
-
-
-
                 if item in upgrades:
                     pass
 
@@ -1061,22 +1235,24 @@ while running:
 
                     # determining backing colour based on cost and players money - adds a clearer visualisation of what the player can do with station
                     if station in stations and not station["owned"] and station["cost"] > euros:
-                        bg_color = pygame.Color(217, 49, 30)
+                        text_color = pygame.Color(255, 49, 0)
                     elif station in stations and not station["owned"]:
-                        bg_color = pygame.Color(210,210,210)
+                        text_color = "white"
                     else:
-                        bg_color = "yellow"
+                        text_color = "yellow"
 
-                    rect = pygame.Rect(station["x"] - 12, station["y"] - 30, 29, H4_SIZE+4)
-                    pygame.draw.rect(screen, bg_color, rect)
-                    text = font_h4.render(station["code"], True, "black")
+                    rect = pygame.Rect(station["x"] - 18, station["y"] - 38, 41, H4_SIZE+12)
+                    pygame.draw.rect(screen, COLOR, rect, border_radius = 13)
+                    font_h4.set_bold(True)
+                    text = font_h4.render(station["code"], True, text_color)
                     screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2+1, rect[1]+(rect[3]/2)-text.get_height()/2))
+                    font_h4.set_bold(False)
 
         # show station labels on click
         for station in stations:
 
             # station labels
-            if station["clicked"] and not line_build: 
+            if station["clicked"] and not line_build and station["shown"]: 
                 draw_station(station, pygame.Color(54, 153, 43))
                 BOX_WIDTH = font_h4.render("XXXXXXXXXXXX  XXX", True, "black").get_width()
                 BOX_HEIGHT = H4_SIZE * 3 + 12
@@ -1175,8 +1351,10 @@ while running:
         pygame.draw.rect(screen, "yellow", rect)
         print_text("Owned", font_h4, "black", 31, 50)
 
-        text = font_h5.render(f'{round(hour)}:{round(minute)}', True, "black")
+        text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
         screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
+
+
 
     pygame.display.flip()
 
@@ -1193,7 +1371,7 @@ while running:
     dt = clock.tick(1000)/1000
 
     # date
-    seconds_since_date_update += dt*6 
+    seconds_since_date_update += dt 
     if seconds_since_date_update >= 24:
         seconds_since_date_update = 0
         day += 1
