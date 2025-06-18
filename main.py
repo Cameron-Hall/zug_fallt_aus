@@ -53,6 +53,7 @@ zoom_level = 0
 start = 7
 end = 21
 trains_running = False
+loop = True
 
 # sizes
 width = screen.get_width()
@@ -215,58 +216,58 @@ trains = [
 owned_trains = []
 lines = [
     # Reds
-    {"class": "Red", "name": "Red-1", "color": pygame.Color(255, 102, 102),  "shown": True, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Red", "name": "Red-2", "color": pygame.Color(255, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Red", "name": "Red-3", "color": pygame.Color(204, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Red", "name": "Red-4", "color": pygame.Color(153, 0, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-1", "color": pygame.Color(255, 102, 102),  "shown": True, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-2", "color": pygame.Color(255, 0, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-3", "color": pygame.Color(204, 0, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Red", "name": "Red-4", "color": pygame.Color(153, 0, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Oranges
-    {"class": "Orange", "name": "Orange-1", "color": pygame.Color(255, 200, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Orange", "name": "Orange-2", "color": pygame.Color(255, 150, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Orange", "name": "Orange-3", "color": pygame.Color(255, 100, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Orange", "name": "Orange-4", "color": pygame.Color(255, 50, 0),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-1", "color": pygame.Color(255, 200, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-2", "color": pygame.Color(255, 150, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-3", "color": pygame.Color(255, 100, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Orange", "name": "Orange-4", "color": pygame.Color(255, 50, 0),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Yellows
-    {"class": "Yellow", "name": "Yellow-1", "color": pygame.Color(255, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Yellow", "name": "Yellow-2", "color": pygame.Color(210, 210, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Yellow", "name": "Yellow-3", "color": pygame.Color(150, 150, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Yellow", "name": "Yellow-4", "color": pygame.Color(70, 70, 0),   "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-1", "color": pygame.Color(255, 255, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-2", "color": pygame.Color(210, 210, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-3", "color": pygame.Color(150, 150, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Yellow", "name": "Yellow-4", "color": pygame.Color(70, 70, 0),   "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Greens
-    {"class": "Green", "name": "Green-1", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Green", "name": "Green-2", "color": pygame.Color(0, 190, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Green", "name": "Green-3", "color": pygame.Color(0, 120, 0), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Green", "name": "Green-4", "color": pygame.Color(0, 70, 0),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-1", "color": pygame.Color(0, 255, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-2", "color": pygame.Color(0, 190, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-3", "color": pygame.Color(0, 120, 0), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Green", "name": "Green-4", "color": pygame.Color(0, 70, 0),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Light Blues
-    {"class": "Light Blue", "name": "Blue-L1", "color": pygame.Color(80, 225, 225), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Light Blue", "name": "Blue-L2", "color": pygame.Color(0, 190, 190),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Light Blue", "name": "Blue-L3", "color": pygame.Color(0, 140, 140),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Light Blue", "name": "Blue-L4", "color": pygame.Color(0, 70, 70),    "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L1", "color": pygame.Color(80, 225, 225), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L2", "color": pygame.Color(0, 190, 190),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L3", "color": pygame.Color(0, 140, 140),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Light Blue", "name": "Blue-L4", "color": pygame.Color(0, 70, 70),    "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Blues
-    {"class": "Blue", "name": "Blue-D1", "color": pygame.Color(80, 80, 255), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Blue", "name": "Blue-D2", "color": pygame.Color(0, 0, 255),   "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Blue", "name": "Blue-D3", "color": pygame.Color(0, 0, 110),   "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Blue", "name": "Blue-D4", "color": pygame.Color(0, 0, 40),    "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D1", "color": pygame.Color(80, 80, 255), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D2", "color": pygame.Color(0, 0, 255),   "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D3", "color": pygame.Color(0, 0, 110),   "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Blue", "name": "Blue-D4", "color": pygame.Color(0, 0, 40),    "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Purples
-    {"class": "Purple", "name": "Purple-1", "color": pygame.Color(150, 75, 150), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Purple", "name": "Purple-2", "color": pygame.Color(160, 0, 160),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Purple", "name": "Purple-3", "color": pygame.Color(110, 0, 110),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Purple", "name": "Purple-4", "color": pygame.Color(50, 0, 50),    "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-1", "color": pygame.Color(150, 75, 150), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-2", "color": pygame.Color(160, 0, 160),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-3", "color": pygame.Color(110, 0, 110),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Purple", "name": "Purple-4", "color": pygame.Color(50, 0, 50),    "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Pinks
-    {"class": "Gray", "name": "Gray-1", "color": pygame.Color(180, 180, 180), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Gray", "name": "Gray-2", "color": pygame.Color(130, 130, 130), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Gray", "name": "Gray-3", "color": pygame.Color(80, 80, 80),    "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Gray", "name": "Gray-4", "color": pygame.Color(50, 50, 50),    "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-1", "color": pygame.Color(180, 180, 180), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-2", "color": pygame.Color(130, 130, 130), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-3", "color": pygame.Color(80, 80, 80),    "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Gray", "name": "Gray-4", "color": pygame.Color(50, 50, 50),    "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
 
     # Browns
-    {"class": "Brown", "name": "Brown-1", "color": pygame.Color(181, 101, 29), "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Brown-2", "color": pygame.Color(160, 82, 45),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Brown-3", "color": pygame.Color(139, 69, 19),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0},
-    {"class": "Brown", "name": "Brown-4", "color": pygame.Color(101, 67, 33),  "shown": False, "owned": False, "finished": True, "stations": [], "trains": [], "money_earned": 0}
+    {"class": "Brown", "name": "Brown-1", "color": pygame.Color(181, 101, 29), "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown-2", "color": pygame.Color(160, 82, 45),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown-3", "color": pygame.Color(139, 69, 19),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0},
+    {"class": "Brown", "name": "Brown-4", "color": pygame.Color(101, 67, 33),  "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "money_earned": 0}
 
 ]
 upgrades = []
@@ -281,7 +282,7 @@ first_names = [
     "High", "Hill", "Hol", "Hope", "Hun", "Iron", "Jackson", "Jam", "Jeff", "John",
     "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
     "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "Mart", "May",
-    "Mid", "Mill", "Mon",  "Mount",  "New", "North", "Oak",
+    "Mid", "Mill", "Mon", "Mount",  "New", "North", "Oak",
     "Oce", "Olive", "Orchard", "Ox", "Park", "Peach", "Pine", "Plain", "Pleasant", "Port",
     "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
     "Ruther", "Saint", "Salem", "Salt", "Sand", "Scot", "Shel", "Silver",
@@ -346,42 +347,42 @@ def print_text(words, font, color, x, y):
     screen.blit(text, (x, y))
 
 
-def draw_lines(lines, stations):
+def draw_lines(lines, cities):
     for line in lines:
-        if line["stations"] != [] and item["finished"]:
-            for code in range(len(line["stations"])-1):
-                for station in stations:
-                    if station["code"] == line["stations"][code]:
-                        start_loc = station
-                    if station["code"] == line["stations"][code+1]:
-                        end_loc = station
+        if line["cities"] != [] and item["finished"]:
+            for code in range(len(line["cities"])-1):
+                for city in cities:
+                    if city.code == line["cities"][code]:
+                        start_loc = city
+                    if city.code == line["cities"][code+1]:
+                        end_loc = city
 
-                pygame.draw.line(screen, line["color"], (start_loc["x"]+2.5, start_loc["y"]+2.5), (end_loc["x"]+2.5, end_loc["y"]+2.5), width = 5)
+                pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5, start_loc.loc.y+2.5), (end_loc.loc.x+2.5, end_loc.loc.y+2.5), width = 5)
         
 
-def draw_station(station, color=None, flash=1):
-    if (pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+10) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+10)) or flash < 0.5:
-        station_inner = pygame.Rect(station["x"]-2,station["y"]-2,9,9)
+def draw_city(city, color=None, flash=1):
+    if (pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5, round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5,round(city.loc.y)+10)) or flash < 0.5:
+        city_inner = pygame.Rect(city.loc.x-2,city.loc.y-2,9,9)
 
     # no hover
     else:
-        station_inner = pygame.Rect(station["x"]-1,station["y"]-1,7,7)
-    station_outer = pygame.Rect(station["x"]-5,station["y"]-5,15,15)
+        city_inner = pygame.Rect(city.loc.x-1,city.loc.y-1,7,7)
+    city_outer = pygame.Rect(city.loc.x-5,city.loc.y-5,15,15)
 
     if color != None:
         pass
     else:
-        if not station["owned"] and station["cost"] > euros:
+        if not city.owned and city.cost > euros:
             color = pygame.Color(217, 49, 30)
-        elif not station["owned"]:
+        elif not city.owned:
             color = "white"
         else:
             color = "yellow"
 
     # pygame.Color(11,188,9)
 
-    pygame.draw.rect(screen, "black", station_outer)
-    pygame.draw.rect(screen, color, station_inner)
+    pygame.draw.rect(screen, "black", city_outer)
+    pygame.draw.rect(screen, color, city_inner)
 
 
 def tips(tip_line_1, tip_line_2, tip_line_3, font_1, font_2, font_3):
@@ -529,7 +530,7 @@ deletions = 0
 for index, point in enumerate(points):
     first_name = random.choice(first_names)
     first_names.remove(first_name)
-    city_name = str(random.choice(first_names)+random.choice(last_names))
+    city_name = str(first_name+random.choice(last_names))
     city_loc = pygame.Vector2(point[0], point[1])
     good = True
     for item in cities_base:
@@ -557,8 +558,8 @@ exclude_rects = [
     for x, y in int_points
 ]
 
-num_stations = len(int_points)
-connections = [set() for _ in range(num_stations)]
+num_cities = len(int_points)
+connections = [set() for _ in range(num_cities)]
 
 for simplex in tri.simplices:
     tri_pts = [int_points[i] for i in simplex]
@@ -580,124 +581,17 @@ for city in cities_base:
             conns = len(conn)
             runs_to = [int(x) for x in conn]
             for i, x in enumerate(runs_to):
-                runs_to[i] = cities_base[x]["name"]
+                runs_to[i] = cities_base[x]["name"][0:3].upper()
 
     cost = round(random.choice(range(10000, 20000))*(random.choice(range(8, 50))), -4)
     
     cities.append(City(city["name"], city["name"][0:3].upper(), city["loc"], cost, round(cost/50*conns), runs_to))
-    
-for city in cities:
-    print(f'{city.name} {city.code} - {city.cost}, {city.passengers}, {city.operates_to}')
+
 
     
 
 
 while running:
-    stations = [
-        {'name': 'Amsterdam', 'code': 'AMS', 'x': 258, 'y': 354, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3410000, 'passenger_cap': 47000, 'operates_to': ['HAG', 'ROT', 'UTR', 'ARN', 'APL', 'ZWL'], 'runs_to': []},
-{'name': 'Berlin', 'code': 'BER', 'x': 1018, 'y': 322, 'shown': False, 'owned': False, 'clicked': False, 'cost': 10000000, 'passenger_cap': 188000, 'operates_to': ['ROS', 'SZZ', 'POZ', 'MAG', 'LPZ', 'DRE'], 'runs_to': []},
-{'name': 'Prague', 'code': 'PRA', 'x': 1107, 'y': 643, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4470000, 'passenger_cap': 66000, 'operates_to': ['PLS', 'DRE', 'PAR', 'LIB', 'BRN'], 'runs_to': []},
-{'name': 'Brussels', 'code': 'BRU', 'x': 206, 'y': 541, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4080000, 'passenger_cap': 59000, 'operates_to': ['GHE', 'CHA', 'NAM', 'LIE', 'ANT'], 'runs_to': []},
-{'name': 'Warsaw', 'code': 'WSW', 'x': 1699, 'y': 360, 'shown': False, 'owned': False, 'clicked': False, 'cost': 5830000, 'passenger_cap': 93000, 'operates_to': ['PLK', 'LOD', 'SID', 'BIA', 'OLZ'], 'runs_to': []},
-{'name': 'Brno', 'code': 'BRN', 'x': 1294, 'y': 760, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1630000, 'passenger_cap': 19000, 'operates_to': ['PRA', 'PAR', 'OLO', 'ZLI'], 'runs_to': []},
-{'name': 'Gdansk', 'code': 'GDA', 'x': 1454, 'y': 83, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1950000, 'passenger_cap': 24000, 'operates_to': ['ELB', 'GRD', 'SLP'], 'runs_to': []},
-{'name': 'Lodz', 'code': 'LOD', 'x': 1578, 'y': 432, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2610000, 'passenger_cap': 34000, 'operates_to': ['PLK', 'TOR', 'POZ', 'WSW', 'LUB', 'KIL', 'CZE'], 'runs_to': []},      
-{'name': 'Krakow', 'code': 'KRA', 'x': 1597, 'y': 637, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3010000, 'passenger_cap': 40000, 'operates_to': ['TAR', 'KIL', 'CZE', 'KAT'], 'runs_to': []},
-{'name': 'Rotterdam', 'code': 'ROT', 'x': 206, 'y': 413, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2590000, 'passenger_cap': 33000, 'operates_to': ['HAG', 'UTR', 'AMS', 'ANT', 'EIN'], 'runs_to': []},
-{'name': 'The Hague', 'code': 'HAG', 'x': 194, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2260000, 'passenger_cap': 28000, 'operates_to': ['ROT', 'AMS'], 'runs_to': []},
-{'name': 'Antwerp', 'code': 'ANT', 'x': 206, 'y': 490, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2150000, 'passenger_cap': 26000, 'operates_to': ['GHE', 'BRG', 'BRU', 'ROT', 'EIN'], 'runs_to': []},
-{'name': 'Ostrava', 'code': 'OST', 'x': 1429, 'y': 675, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1270000, 'passenger_cap': 14000, 'operates_to': ['OLO', 'ZLI', 'WRO', 'KAT'], 'runs_to': []},
-{'name': 'Munich', 'code': 'MUC', 'x': 837, 'y': 894, 'shown': False, 'owned': False, 'clicked': False, 'cost': 4910000, 'passenger_cap': 74000, 'operates_to': ['KON', 'AUG', 'ING', 'REG'], 'runs_to': []},
-{'name': 'Frankfurt', 'code': 'FRA', 'x': 579, 'y': 637, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2900000, 'passenger_cap': 38000, 'operates_to': ['WIE', 'MAN', 'WRZ', 'MAR', 'SIE'], 'runs_to': []},
-{'name': 'Hamburg', 'code': 'HAM', 'x': 685, 'y': 198, 'shown': False, 'owned': False, 'clicked': False, 'cost': 5810000, 'passenger_cap': 93000, 'operates_to': ['KIE', 'LBK', 'SCH', 'BRE', 'HAN'], 'runs_to': []},
-{'name': 'Luxembourg', 'code': 'LUX', 'x': 347, 'y': 693, 'shown': False, 'owned': False, 'clicked': False, 'cost': 530000, 'passenger_cap': 6000, 'operates_to': ['NAM', 'LIE', 'TRI', 'SAA'], 'runs_to': []},
-{'name': 'Leipzig', 'code': 'LPZ', 'x': 907, 'y': 476, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2390000, 'passenger_cap': 30000, 'operates_to': ['ERF', 'CHM', 'DRE', 'BER', 'MAG'], 'runs_to': []},
-{'name': 'Koln', 'code': 'KOL', 'x': 426, 'y': 526, 'shown': False, 'owned': False, 'clicked': False, 'cost': 3820000, 'passenger_cap': 54000, 'operates_to': ['WUP', 'DUS', 'AAC', 'BON', 'SIE'], 'runs_to': []},
-{'name': 'Stuttgart', 'code': 'STT', 'x': 618, 'y': 797, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2500000, 'passenger_cap': 32000, 'operates_to': ['KAR', 'KON', 'ULM', 'WRZ'], 'runs_to': []},
-{'name': 'Dusseldorf', 'code': 'DUS', 'x': 419, 'y': 494, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2450000, 'passenger_cap': 31000, 'operates_to': ['DUI', 'ESS', 'WUP', 'KOL', 'AAC'], 'runs_to': []},
-{'name': 'Nuremberg', 'code': 'NRB', 'x': 800, 'y': 742, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2110000, 'passenger_cap': 26000, 'operates_to': ['WRZ', 'AUG', 'ING', 'REG', 'PLS'], 'runs_to': []},
-{'name': 'Bydgoszcz', 'code': 'BYD', 'x': 1416, 'y': 258, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1490000, 'passenger_cap': 17000, 'operates_to': ['PIL', 'POZ', 'GRD', 'TOR'], 'runs_to': []},
-{'name': 'Poznan', 'code': 'POZ', 'x': 1325, 'y': 347, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2210000, 'passenger_cap': 27000, 'operates_to': ['BER', 'LEZ', 'PIL', 'BYD', 'LOD'], 'runs_to': []},
-{'name': 'Wroclaw', 'code': 'WRO', 'x': 1306, 'y': 526, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2620000, 'passenger_cap': 34000, 'operates_to': ['LEG', 'GLO', 'LEZ', 'PAR', 'OST', 'KAT', 'CZE'], 'runs_to': []},   
-{'name': 'Ghent', 'code': 'GHE', 'x': 134, 'y': 514, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1170000, 'passenger_cap': 13000, 'operates_to': ['BRG', 'KJK', 'ANT', 'BRU'], 'runs_to': []},
-{'name': 'Katowice', 'code': 'KAT', 'x': 1488, 'y': 618, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1290000, 'passenger_cap': 15000, 'operates_to': ['WRO', 'CZE', 'KRA', 'OST'], 'runs_to': []},
-{'name': 'Szczecin', 'code': 'SZZ', 'x': 1094, 'y': 205, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1690000, 'passenger_cap': 20000, 'operates_to': ['ROS', 'BER', 'KSZ', 'PIL'], 'runs_to': []},
-{'name': 'Lublin', 'code': 'LUB', 'x': 1808, 'y': 518, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1470000, 'passenger_cap': 17000, 'operates_to': ['LOD', 'SID', 'KIL', 'RZS'], 'runs_to': []},
-{'name': 'Charleroi', 'code': 'CHA', 'x': 219, 'y': 595, 'shown': False, 'owned': False, 'clicked': False, 'cost': 900000, 'passenger_cap': 10000, 'operates_to': ['NAM', 'BRU', 'KJK'], 'runs_to': []},
-{'name': 'Dortmund', 'code': 'DOR', 'x': 470, 'y': 450, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2350000, 'passenger_cap': 29000, 'operates_to': ['ESS', 'MUN', 'WUP'], 'runs_to': []},
-{'name': 'Utrecht', 'code': 'UTR', 'x': 272, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1580000, 'passenger_cap': 18000, 'operates_to': ['AMS', 'ROT', 'NIJ', 'ARN', 'EIN'], 'runs_to': []},
-{'name': 'Eindhoven', 'code': 'EIN', 'x': 291, 'y': 458, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1080000, 'passenger_cap': 12000, 'operates_to': ['MAA', 'ANT', 'ROT', 'UTR', 'NIJ'], 'runs_to': []},
-{'name': 'Groningen', 'code': 'GRO', 'x': 394, 'y': 230, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1040000, 'passenger_cap': 12000, 'operates_to': ['ZWL', 'OLD'], 'runs_to': []},
-{'name': 'Essen', 'code': 'ESS', 'x': 434, 'y': 458, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2330000, 'passenger_cap': 29000, 'operates_to': ['ENS', 'DUI', 'DOR', 'DUS', 'WUP'], 'runs_to': []},
-{'name': 'Hanover', 'code': 'HAN', 'x': 670, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2180000, 'passenger_cap': 27000, 'operates_to': ['HAM', 'BRS', 'BRE', 'BIE', 'KAS'], 'runs_to': []},
-{'name': 'Bremen', 'code': 'BRE', 'x': 594, 'y': 245, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2290000, 'passenger_cap': 28000, 'operates_to': ['OLD', 'BIE', 'HAM', 'HAN'], 'runs_to': []},
-{'name': 'Munster', 'code': 'MUN', 'x': 498, 'y': 400, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1380000, 'passenger_cap': 16000, 'operates_to': ['OSN', 'ENS', 'BIE', 'DOR'], 'runs_to': []},
-{'name': 'Bielefeld', 'code': 'BIE', 'x': 562, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1450000, 'passenger_cap': 17000, 'operates_to': ['OSN', 'MUN', 'HAN', 'BRE', 'KAS'], 'runs_to': []},
-{'name': 'Liege', 'code': 'LIE', 'x': 296, 'y': 566, 'shown': False, 'owned': False, 'clicked': False, 'cost': 880000, 'passenger_cap': 10000, 'operates_to': ['MAA', 'AAC', 'LUX', 'NAM', 'BRU', 'ANT'], 'runs_to': []},
-{'name': 'Aachen', 'code': 'AAC', 'x': 360, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1110000, 'passenger_cap': 12000, 'operates_to': ['MAA', 'LIE', 'DUS', 'KOL', 'BON'], 'runs_to': []},
-{'name': 'Erfurt', 'code': 'ERF', 'x': 792, 'y': 517, 'shown': False, 'owned': False, 'clicked': False, 'cost': 950000, 'passenger_cap': 11000, 'operates_to': ['BRS', 'KAS', 'MAG', 'LPZ', 'CHM', 'WRZ'], 'runs_to': []},
-{'name': 'Dresden', 'code': 'DRE', 'x': 1050, 'y': 517, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2240000, 'passenger_cap': 28000, 'operates_to': ['CHM', 'LPZ', 'LIB', 'PRA', 'BER'], 'runs_to': []},
-{'name': 'Magdeburg', 'code': 'MAG', 'x': 851, 'y': 386, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1060000, 'passenger_cap': 12000, 'operates_to': ['BRS', 'ERF', 'BER', 'LPZ'], 'runs_to': []},
-{'name': 'Kiel', 'code': 'KIE', 'x': 710, 'y': 90, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1100000, 'passenger_cap': 12000, 'operates_to': ['FLN', 'LBK', 'HAM'], 'runs_to': []},
-{'name': 'Flensburg', 'code': 'FLN', 'x': 646, 'y': 32, 'shown': False, 'owned': False, 'clicked': False, 'cost': 290000, 'passenger_cap': 4000, 'operates_to': ['KIE'], 'runs_to': []},
-{'name': 'Freiburg', 'code': 'FRB', 'x': 498, 'y': 922, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1030000, 'passenger_cap': 12000, 'operates_to': ['KON', 'KAR'], 'runs_to': []},
-{'name': 'Namur', 'code': 'NAM', 'x': 258, 'y': 594, 'shown': False, 'owned': False, 'clicked': False, 'cost': 430000, 'passenger_cap': 6000, 'operates_to': ['CHA', 'BRU', 'LIE', 'LUX'], 'runs_to': []},
-{'name': 'Kortrijk', 'code': 'KJK', 'x': 96, 'y': 541, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['BRG', 'GHE', 'CHA'], 'runs_to': []},
-{'name': 'Bruges', 'code': 'BRG', 'x': 90, 'y': 490, 'shown': False, 'owned': False, 'clicked': False, 'cost': 470000, 'passenger_cap': 6000, 'operates_to': ['ANT', 'GHE', 'KJK'], 'runs_to': []},
-{'name': 'Apeldoorn', 'code': 'APL', 'x': 334, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 720000, 'passenger_cap': 8000, 'operates_to': ['ZWL', 'ARN', 'ENS', 'AMS'], 'runs_to': []},
-{'name': 'Zwolle', 'code': 'ZWL', 'x': 347, 'y': 302, 'shown': False, 'owned': False, 'clicked': False, 'cost': 540000, 'passenger_cap': 7000, 'operates_to': ['GRO', 'ENS', 'APL', 'AMS'], 'runs_to': []},
-{'name': 'Nijmegen', 'code': 'NIJ', 'x': 322, 'y': 413, 'shown': False, 'owned': False, 'clicked': False, 'cost': 790000, 'passenger_cap': 9000, 'operates_to': ['ARN', 'UTR', 'EIN', 'DUI'], 'runs_to': []},
-{'name': 'Czestochowa', 'code': 'CZE', 'x': 1494, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 980000, 'passenger_cap': 11000, 'operates_to': ['WRO', 'KAT', 'KRA', 'KIL', 'LOD'], 'runs_to': []},
-{'name': 'Bialystok', 'code': 'BIA', 'x': 1858, 'y': 258, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1310000, 'passenger_cap': 15000, 'operates_to': ['OLZ', 'WSW', 'SID'], 'runs_to': []},
-{'name': 'Elblag', 'code': 'ELB', 'x': 1525, 'y': 109, 'shown': False, 'owned': False, 'clicked': False, 'cost': 480000, 'passenger_cap': 6000, 'operates_to': ['GDA', 'OLZ'], 'runs_to': []},
-{'name': 'Rzeszow', 'code': 'RZS', 'x': 1766, 'y': 646, 'shown': False, 'owned': False, 'clicked': False, 'cost': 870000, 'passenger_cap': 10000, 'operates_to': ['TAR', 'KIL', 'LUB'], 'runs_to': []},
-{'name': 'Pilsen', 'code': 'PLS', 'x': 1003, 'y': 680, 'shown': False, 'owned': False, 'clicked': False, 'cost': 770000, 'passenger_cap': 9000, 'operates_to': ['NRB', 'REG', 'CHM', 'PRA'], 'runs_to': []},
-{'name': 'Pardubice', 'code': 'PAR', 'x': 1218, 'y': 646, 'shown': False, 'owned': False, 'clicked': False, 'cost': 300000, 'passenger_cap': 5000, 'operates_to': ['LIB', 'PRA', 'OLO', 'BRN', 'WRO'], 'runs_to': []},
-{'name': 'Wurzburg', 'code': 'WRZ', 'x': 702, 'y': 686, 'shown': False, 'owned': False, 'clicked': False, 'cost': 530000, 'passenger_cap': 6000, 'operates_to': ['FRA', 'MAN', 'NRB', 'STT', 'ULM', 'ERF'], 'runs_to': []},
-{'name': 'Mannheim', 'code': 'MAN', 'x': 552, 'y': 712, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1350000, 'passenger_cap': 15000, 'operates_to': ['SAA', 'KAR', 'WIE', 'FRA', 'WRZ'], 'runs_to': []},
-{'name': 'Kassel', 'code': 'KAS', 'x': 662, 'y': 469, 'shown': False, 'owned': False, 'clicked': False, 'cost': 900000, 'passenger_cap': 10000, 'operates_to': ['BIE', 'HAN', 'BRS', 'ERF', 'MAR'], 'runs_to': []},
-{'name': 'Chemnitz', 'code': 'CHM', 'x': 944, 'y': 534, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1100000, 'passenger_cap': 12000, 'operates_to': ['LPZ', 'DRE', 'PLS', 'ERF'], 'runs_to': []},
-{'name': 'Oldenburg', 'code': 'OLD', 'x': 531, 'y': 230, 'shown': False, 'owned': False, 'clicked': False, 'cost': 750000, 'passenger_cap': 9000, 'operates_to': ['GRO', 'BRE', 'OSN'], 'runs_to': []},
-{'name': 'Rostock', 'code': 'ROS', 'x': 858, 'y': 122, 'shown': False, 'owned': False, 'clicked': False, 'cost': 930000, 'passenger_cap': 10000, 'operates_to': ['LBK', 'SCH', 'BER', 'SZZ'], 'runs_to': []},
-{'name': 'Lubeck', 'code': 'LBK', 'x': 738, 'y': 142, 'shown': False, 'owned': False, 'clicked': False, 'cost': 960000, 'passenger_cap': 11000, 'operates_to': ['KIE', 'HAM', 'SCH', 'ROS'], 'runs_to': []},
-{'name': 'Slupsk', 'code': 'SLP', 'x': 1320, 'y': 64, 'shown': False, 'owned': False, 'clicked': False, 'cost': 310000, 'passenger_cap': 5000, 'operates_to': ['KSZ', 'GDA'], 'runs_to': []},
-{'name': 'Koszalin', 'code': 'KSZ', 'x': 1258, 'y': 102, 'shown': False, 'owned': False, 'clicked': False, 'cost': 410000, 'passenger_cap': 5000, 'operates_to': ['SLP', 'SZZ', 'PIL'], 'runs_to': []},
-{'name': 'Olsztyn', 'code': 'OLZ', 'x': 1622, 'y': 168, 'shown': False, 'owned': False, 'clicked': False, 'cost': 760000, 'passenger_cap': 9000, 'operates_to': ['ELB', 'BIA', 'GRB', 'WSW'], 'runs_to': []},
-{'name': 'Kielce', 'code': 'KIL', 'x': 1635, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 860000, 'passenger_cap': 10000, 'operates_to': ['LOD', 'CZE', 'KRA', 'RZS', 'LUB'], 'runs_to': []},
-{'name': 'Plock', 'code': 'PLK', 'x': 1590, 'y': 333, 'shown': False, 'owned': False, 'clicked': False, 'cost': 480000, 'passenger_cap': 6000, 'operates_to': ['TOR', 'LOD', 'WSW'], 'runs_to': []},
-{'name': 'Braunschweig', 'code': 'BRS', 'x': 739, 'y': 354, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1090000, 'passenger_cap': 12000, 'operates_to': ['HAN', 'KAS', 'ERF', 'MAG'], 'runs_to': []},
-{'name': 'Ulm', 'code': 'ULM', 'x': 690, 'y': 830, 'shown': False, 'owned': False, 'clicked': False, 'cost': 520000, 'passenger_cap': 6000, 'operates_to': ['STT', 'KON', 'AUG', 'WRZ'], 'runs_to': []},
-{'name': 'Konstanz', 'code': 'KON', 'x': 611, 'y': 946, 'shown': False, 'owned': False, 'clicked': False, 'cost': 270000, 'passenger_cap': 4000, 'operates_to': ['FRB', 'MUC', 'STT', 'ULM'], 'runs_to': []},
-{'name': 'Augsburg', 'code': 'AUG', 'x': 752, 'y': 837, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1320000, 'passenger_cap': 15000, 'operates_to': ['NRB', 'ING', 'MUC', 'ULM'], 'runs_to': []},
-{'name': 'Regensburg', 'code': 'REG', 'x': 882, 'y': 786, 'shown': False, 'owned': False, 'clicked': False, 'cost': 660000, 'passenger_cap': 8000, 'operates_to': ['PLS', 'NRB', 'ING', 'MUC'], 'runs_to': []},
-{'name': 'Ingolstadt', 'code': 'ING', 'x': 816, 'y': 819, 'shown': False, 'owned': False, 'clicked': False, 'cost': 590000, 'passenger_cap': 7000, 'operates_to': ['NRB', 'REG', 'AUG', 'MUC'], 'runs_to': []},
-{'name': 'Koblenz', 'code': 'KOB', 'x': 475, 'y': 605, 'shown': False, 'owned': False, 'clicked': False, 'cost': 450000, 'passenger_cap': 6000, 'operates_to': ['BON', 'WIE', 'TRI', 'SIE'], 'runs_to': []},
-{'name': 'Olomouc', 'code': 'OLO', 'x': 1352, 'y': 702, 'shown': False, 'owned': False, 'clicked': False, 'cost': 370000, 'passenger_cap': 5000, 'operates_to': ['PAR', 'BRN', 'ZLI', 'OST'], 'runs_to': []},
-{'name': 'Zlin', 'code': 'ZLI', 'x': 1378, 'y': 752, 'shown': False, 'owned': False, 'clicked': False, 'cost': 180000, 'passenger_cap': 4000, 'operates_to': ['OLO', 'OST', 'BRN'], 'runs_to': []},
-{'name': 'Pila', 'code': 'PIL', 'x': 1301, 'y': 245, 'shown': False, 'owned': False, 'clicked': False, 'cost': 180000, 'passenger_cap': 4000, 'operates_to': ['SZZ', 'KSZ', 'BYD', 'POZ'], 'runs_to': []},
-{'name': 'Glogow', 'code': 'GLO', 'x': 1222, 'y': 451, 'shown': False, 'owned': False, 'clicked': False, 'cost': 120000, 'passenger_cap': 3000, 'operates_to': ['LEZ', 'LEG', 'WRO'], 'runs_to': []},
-{'name': 'Karlsruhe', 'code': 'KAR', 'x': 539, 'y': 779, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1370000, 'passenger_cap': 16000, 'operates_to': ['SAA', 'MAN', 'STT', 'FRB'], 'runs_to': []},
-{'name': 'Saarbrucken', 'code': 'SAA', 'x': 411, 'y': 739, 'shown': False, 'owned': False, 'clicked': False, 'cost': 790000, 'passenger_cap': 9000, 'operates_to': ['LUX', 'TRI', 'MAN', 'KAR'], 'runs_to': []},
-{'name': 'Trier', 'code': 'TRI', 'x': 390, 'y': 667, 'shown': False, 'owned': False, 'clicked': False, 'cost': 430000, 'passenger_cap': 6000, 'operates_to': ['LUX', 'SAA', 'KOB'], 'runs_to': []},
-{'name': 'Wiesbaden', 'code': 'WIE', 'x': 531, 'y': 637, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1230000, 'passenger_cap': 14000, 'operates_to': ['FRA', 'KOB', 'MAN'], 'runs_to': []},
-{'name': 'Bonn', 'code': 'BON', 'x': 438, 'y': 566, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1430000, 'passenger_cap': 16000, 'operates_to': ['KOB', 'AAC', 'KOL', 'SIE'], 'runs_to': []},
-{'name': 'Wuppertal', 'code': 'WUP', 'x': 464, 'y': 502, 'shown': False, 'owned': False, 'clicked': False, 'cost': 1530000, 'passenger_cap': 18000, 'operates_to': ['DOR', 'ESS', 'DUS', 'KOL', 'SIE'], 'runs_to': []},
-{'name': 'Duisburg', 'code': 'DUI', 'x': 386, 'y': 451, 'shown': False, 'owned': False, 'clicked': False, 'cost': 2040000, 'passenger_cap': 25000, 'operates_to': ['ESS', 'DUS', 'NIJ', 'EIN'], 'runs_to': []},
-{'name': 'Marburg', 'code': 'MAR', 'x': 603, 'y': 546, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['KAS', 'SIE', 'FRA'], 'runs_to': []},
-{'name': 'Schwerin', 'code': 'SCH', 'x': 816, 'y': 181, 'shown': False, 'owned': False, 'clicked': False, 'cost': 340000, 'passenger_cap': 5000, 'operates_to': ['ROS', 'LBK', 'HAM'], 'runs_to': []},
-{'name': 'Torun', 'code': 'TOR', 'x': 1454, 'y': 277, 'shown': False, 'owned': False, 'clicked': False, 'cost': 880000, 'passenger_cap': 10000, 'operates_to': ['BYD', 'GBD', 'PLK', 'LOD'], 'runs_to': []},
-{'name': 'Leszno', 'code': 'LEZ', 'x': 1258, 'y': 419, 'shown': False, 'owned': False, 'clicked': False, 'cost': 50000, 'passenger_cap': 3000, 'operates_to': ['GLO', 'WRO', 'POZ'], 'runs_to': []},
-{'name': 'Siegen', 'code': 'SIE', 'x': 522, 'y': 542, 'shown': False, 'owned': False, 'clicked': False, 'cost': 380000, 'passenger_cap': 5000, 'operates_to': ['WUP', 'KOL', 'MAR', 'FRA', 'BON', 'KOB'], 'runs_to': []},
-{'name': 'Liberec', 'code': 'LIB', 'x': 1157, 'y': 549, 'shown': False, 'owned': False, 'clicked': False, 'cost': 390000, 'passenger_cap': 5000, 'operates_to': ['DRE', 'PRA', 'PAR', 'LEG'], 'runs_to': []},
-{'name': 'Legnica', 'code': 'LEG', 'x': 1222, 'y': 509, 'shown': False, 'owned': False, 'clicked': False, 'cost': 360000, 'passenger_cap': 5000, 'operates_to': ['GLO', 'WRO', 'LIB'], 'runs_to': []},
-{'name': 'Grudziadz', 'code': 'GRD', 'x': 1466, 'y': 213, 'shown': False, 'owned': False, 'clicked': False, 'cost': 330000, 'passenger_cap': 5000, 'operates_to': ['GDA', 'OLZ', 'BYD', 'TOR'], 'runs_to': []},
-{'name': 'Siedlce', 'code': 'SID', 'x': 1803, 'y': 366, 'shown': False, 'owned': False, 'clicked': False, 'cost': 200000, 'passenger_cap': 4000, 'operates_to': ['WSW', 'BIA', 'LUB'], 'runs_to': []},
-{'name': 'Tarnow', 'code': 'TAR', 'x': 1682, 'y': 653, 'shown': False, 'owned': False, 'clicked': False, 'cost': 420000, 'passenger_cap': 5000, 'operates_to': ['KRA', 'RZS'], 'runs_to': []},
-{'name': 'Arnhem', 'code': 'ARN', 'x': 322, 'y': 373, 'shown': False, 'owned': False, 'clicked': False, 'cost': 720000, 'passenger_cap': 8000, 'operates_to': ['UTR', 'NIJ', 'ENS', 'ZWL', 'AMS'], 'runs_to': []},
-{'name': 'Maastricht', 'code': 'MAA', 'x': 322, 'y': 526, 'shown': False, 'owned': False, 'clicked': False, 'cost': 490000, 'passenger_cap': 6000, 'operates_to': ['AAC', 'LIE', 'EIN'], 'runs_to': []},
-{'name': 'Osnabruck', 'code': 'OSN', 'x': 522, 'y': 347, 'shown': False, 'owned': False, 'clicked': False, 'cost': 750000, 'passenger_cap': 8000, 'operates_to': ['OLD', 'BIE', 'MUN', 'ENS'], 'runs_to': []},
-{'name': 'Enschede', 'code': 'ENS', 'x': 413, 'y': 341, 'shown': False, 'owned': False, 'clicked': False, 'cost': 690000, 'passenger_cap': 8000, 'operates_to': ['ZWL', 'APL', 'ARN', 'OSN', 'MUN', 'ESS'], 'runs_to': []}]
-    
 # int(round((495 * map.get_width())/init_map_w)+map_loc.x)
 
     for event in pygame.event.get(exclude= [pygame.MOUSEBUTTONUP]):
@@ -738,18 +632,18 @@ while running:
                 x_across = 0
                 y_down += TILE_SIZE
 
-        for simplex in tri.simplices:
-            tri_pts = [int_points[i] for i in simplex]
-            if not triangle_overlaps_other_rects(tri_pts, exclude_rects):
-                pygame.draw.polygon(screen, "black", tri_pts, 1)
+        # for simplex in tri.simplices:
+        #     tri_pts = [int_points[i] for i in simplex]
+        #     if not triangle_overlaps_other_rects(tri_pts, exclude_rects):
+        #         pygame.draw.polygon(screen, "black", tri_pts, 1)
             
-        for city in cities:
-            if screen.get_at((int(city.loc.x), int(city.loc.y))) == pygame.Color(63, 72, 204):
-                cities.remove(city)
+        # for city in cities:
+        #     if screen.get_at((int(city.loc.x), int(city.loc.y))) == pygame.Color(63, 72, 204):
+        #         cities.remove(city)
                 
-            pygame.draw.circle(screen, "red", city.loc, 10)
-            text = font_h4.render(city.code, True, 'black')
-            screen.blit(text, city.loc)
+        #     pygame.draw.circle(screen, "red", city.loc, 10)
+        #     text = font_h4.render(city.code, True, 'black')
+        #     screen.blit(text, city.loc)
 
         # tips
         tips("","","",font_h5,font_h5,font_h5)
@@ -948,7 +842,7 @@ while running:
                     # line owned
                     else:
                         # line owned, not built
-                        if not item["stations"]:
+                        if not item["cities"]:
                             rect = pygame.Rect(x_across+350, y_down+SPACING, 150-SPACING, (height-y_down-SPACING*3)/2)
                             pygame.draw.rect(screen, pygame.Color(54, 153, 43), rect)
                             text = font_h3.render("Build", True, "white")
@@ -970,7 +864,7 @@ while running:
                             screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*2/3)-(text.get_height()/2)))
 
                             if button_check(rect):
-                                item["stations"] = []
+                                item["cities"] = []
 
                         y_down += (height-y_down-SPACING*3)/2+SPACING*2
 
@@ -995,38 +889,38 @@ while running:
                             text = font_h3.render("in progress", True, "white")
                             screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*2/3)-(text.get_height()/2)))
                             
-                            for station in stations:
+                            for city in cities:
                                 key = pygame.key.get_pressed()
-                                rect = pygame.Rect(station["x"]-5, station["y"]-5, 15, 15)
-                                if item["stations"] == [] and button_check(rect) and item["owned"] and station["owned"]:
-                                    item["stations"].append(station["code"])
+                                rect = pygame.Rect(city.loc.x-5, city.loc.y-5, 15, 15)
+                                if item["cities"] == [] and button_check(rect) and item["owned"] and city.owned:
+                                    item["cities"].append(city.code)
                                     pygame.draw.rect(screen, "red", rect)
-                                elif button_check(rect) and item["stations"][-1] in station["operates_to"] and len(item["stations"]) < 10 and station["code"] not in item["stations"] and station["owned"]:
-                                    item["stations"].append(station["code"])
+                                elif button_check(rect) and item["cities"][-1] in city.operates_to and len(item["cities"]) < 10 and city.code not in item["cities"] and city.owned:
+                                    item["cities"].append(city.code)
                                     pygame.draw.rect(screen, "red", rect)
                                 elif key[pygame.K_RETURN]:
                                     item["finished"] = True
                                     line_build = False
                                 elif key[pygame.K_ESCAPE]:
-                                    item["stations"] = []
+                                    item["cities"] = []
                                     line_build = False
                                 else:
                                     pass
                                 flash_lines = []
-                                if item["stations"] != [] and not item["finished"]:
-                                    for station in stations:
-                                        if item["stations"][-1] == station["code"]:
-                                            for dest in station["operates_to"]:
-                                                flash_lines.append({"stations": [station["code"], dest], "color": pygame.Color(160,160,160)})
+                                if item["cities"] != [] and not item["finished"]:
+                                    for city in cities:
+                                        if item["cities"][-1] == city.code:
+                                            for dest in city.operates_to:
+                                                flash_lines.append({"cities": [city.code, dest], "color": pygame.Color(160,160,160)})
                             
-                            tips("Current Line Path", ", ".join(item["stations"]) if len(item["stations"]) > 0 else "None", "Press enter to finish building line, or escape to cancel build", font_h4, font_h3, font_h4)
+                            tips("Current Line Path", ", ".join(item["cities"]) if len(item["cities"]) > 0 else "None", "Press enter to finish building line, or escape to cancel build", font_h4, font_h3, font_h4)
 
                     # other line details
                     y_down = (height - 200) + H3_SIZE+SPACING*2
 
                     text = font_h4.render(f"Line Route:", True, "black")
                     screen.blit(text, (x_across+8, y_down+8))
-                    text = font_h4.render(f"{','.join(item['stations'])}", True, "black")
+                    text = font_h4.render(f"{','.join(item['cities'])}", True, "black")
                     screen.blit(text, (x_across+8, y_down+8+H4_SIZE))
 
                 if item in trains:
@@ -1197,25 +1091,25 @@ while running:
         font_h2_diff.set_bold(False)
 
         # money
-        # passive from stations
-        for station in stations:
+        # passive from cities
+        for city in cities:
             pass
 
         # from trains on lines
         for line in lines:
-            if line["owned"] and line["stations"] != [] and line["finished"]:
+            if line["owned"] and line["cities"] != [] and line["finished"]:
                 euros_per_trip = 0
                 distance = 0
-                for station in range(len(line["stations"])-1):
-                    for code in stations:
-                        if code["code"] == line["stations"][station]:
+                for city in range(len(line["cities"])-1):
+                    for code in cities:
+                        if code.code == line["cities"][city]:
                             start_loc = code
-                        if code["code"] == line["stations"][station+1]:
+                        if code.code == line["cities"][city+1]:
                             end_loc = code
                         if start_loc == None or end_loc == None:
                             pass
                         else:
-                            distance += round(math.sqrt((start_loc["x"] - end_loc["x"])**2 + (start_loc["y"] - end_loc["y"])**2))
+                            distance += round(math.sqrt((start_loc.loc.x - end_loc.loc.x)**2 + (start_loc.loc.y - end_loc.loc.y)**2))
 
                 for train in owned_trains:
                     if train.line == line["name"]:
@@ -1223,12 +1117,14 @@ while running:
                         trip_time = distance / train.speed
                         train.trip_hr = trip_time // 60
                         train.trip_min = trip_time % 60
-                        if hour == start and minute >= 0:
+                        if hour == start and minute >= 0 and loop:
                             trains_running = True
                             train.last_hr = start
                             train.last_min = 0
+                            loop = False
                         if hour == end:
                             trains_running = False
+                            loop = True
 
                         if trains_running:
                             train.next_hr = train.last_hr + train.trip_hr
@@ -1239,8 +1135,9 @@ while running:
                             if train.next_hr >= end:
                                 pass
                             else:
-                                if hour == train.next_hr and minute in range(int(train.next_min)-10, int(train.next_min+15)) or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
+                                if hour == train.next_hr and minute >= train.next_min or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
                                     euros += euros_per_trip
+                                    print(euros)
                                     train.last_hr = train.next_hr
                                     train.last_min = train.next_min
                                     income_statements.append(f'{list(months.keys())[month-1]} {round(day)}{" " if round(day)<10 else ""} {0 if round(train.next_hr)<10 else ""}{round(train.next_hr)}:{0 if round(train.next_min)<10 else ""}{round(train.next_min)} | {line["name"]:<8} | ${round(euros_per_trip)}')                           
@@ -1248,86 +1145,86 @@ while running:
         # drawing on map
         # draw lines
         if flash > 0.5:
-            draw_lines(flash_lines+lines, stations)
+            draw_lines(flash_lines+lines, cities)
         else:
-            draw_lines(lines, stations)
+            draw_lines(lines, cities)
         
-        # draw stations
-        for station in stations:
-            if station["shown"]:
-                draw_station(station)
+        # draw cities
+        for city in cities:
+            if city.shown:
+                draw_city(city)
 
-        # hover labels - will show when mouse is hovering over station icon on map
-        # makes hover labels not show if currently clicked into the menu for another station
+        # hover labels - will show when mouse is hovering over city icon on map
+        # makes hover labels not show if currently clicked into the menu for another city
         hover = True
-        for station in stations:
-            if station["clicked"]:
+        for city in cities:
+            if city.clicked:
                 hover = False
             else:
                 pass
         
         # if hovering allowed, show hover labels
         if hover:
-            # detecting mouse pos relative to each station
-            for station in stations:
-                if pygame.mouse.get_pos()[0] in range(station["x"]-5,station["x"]+10) and pygame.mouse.get_pos()[1] in range(station["y"]-5,station["y"]+10) and station["shown"]:
+            # detecting mouse pos relative to each city
+            for city in cities:
+                if pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5,round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5, round(city.loc.y)+10) and city.shown:
 
-                    # determining backing colour based on cost and players money - adds a clearer visualisation of what the player can do with station
-                    if station in stations and not station["owned"] and station["cost"] > euros:
+                    # determining backing colour based on cost and players money - adds a clearer visualisation of what the player can do with city
+                    if city in cities and not city.owned and city.cost > euros:
                         text_color = pygame.Color(255, 49, 0)
-                    elif station in stations and not station["owned"]:
+                    elif city in cities and not city.owned:
                         text_color = "white"
                     else:
                         text_color = "yellow"
 
-                    rect = pygame.Rect(station["x"] - 18, station["y"] - 38, 41, H4_SIZE+12)
+                    rect = pygame.Rect(city.loc.x - 18, city.loc.y - 38, 41, H4_SIZE+12)
                     pygame.draw.rect(screen, COLOR, rect, border_radius = 13)
                     font_h4.set_bold(True)
-                    text = font_h4.render(station["code"], True, text_color)
+                    text = font_h4.render(city.code, True, text_color)
                     screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2+1, rect[1]+(rect[3]/2)-text.get_height()/2))
                     font_h4.set_bold(False)
 
-        # show station labels on click
-        for station in stations:
+        # show city labels on click
+        for city in cities:
 
-            # station labels
-            if station["clicked"] and not line_build and station["shown"]: 
-                draw_station(station, pygame.Color(54, 153, 43))
+            # city labels
+            if city.clicked and not line_build and city.shown: 
+                draw_city(city, pygame.Color(54, 153, 43))
                 BOX_WIDTH = font_h4.render("XXXXXXXXXXXX  XXX", True, "black").get_width()
                 BOX_HEIGHT = H4_SIZE * 3 + 12
                 # box down
-                if station["y"] - (H5_SIZE * 5 + 30) < 20:
-                    box = pygame.Vector2(station["x"] - 65, station["y"] + ((H5_SIZE * 5 + 15)-H5_SIZE * 5) + 5) # used V2 then rect
+                if city.loc.y - (H5_SIZE * 5 + 30) < 20:
+                    box = pygame.Vector2(city.loc.x - 65, city.loc.y + ((H5_SIZE * 5 + 15)-H5_SIZE * 5) + 5) # used V2 then rect
                     rect = pygame.Rect(box.x, box.y, BOX_WIDTH, BOX_HEIGHT) 
                 # box up
                 else:
-                    box = pygame.Vector2(station["x"] - 65, station["y"] - (H5_SIZE * 5 + 15))
+                    box = pygame.Vector2(city.loc.x - 65, city.loc.y - (H5_SIZE * 5 + 15))
                     rect = pygame.Rect(box.x, box.y, BOX_WIDTH, BOX_HEIGHT) 
 
                 pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
 
                 # printing name details in top corners of box
-                print_text(f"{station['name']}", font_h4, "black", box.x+4, box.y+2)
+                print_text(f"{city.name}", font_h4, "black", box.x+4, box.y+2)
                 font_h4.set_bold(True)
-                text = font_h4.render(station['code'], True, "black")
+                text = font_h4.render(city.code, True, "black")
                 screen.blit(text, (box.x+rect[2]-text.get_width()-4, box.y+2))
                 font_h4.set_bold(False)
 
-                # shows purchase button for if the station is NOT owned
-                if not station["owned"]:
+                # shows purchase button for if the city is NOT owned
+                if not city.owned:
 
-                    if euros > station["cost"]:
+                    if euros > city.cost:
                         color = pygame.Color(39, 143, 31)
                         words_1 = "PURCHASE"
-                        words_2 = str(station["cost"])
+                        words_2 = str(city.cost)
                     else:
                         color = "red"
                         words_1 = "CAN'T AFFORD"
-                        words_2 = str(station["cost"])
+                        words_2 = str(city.cost)
 
                     rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
                     pygame.draw.rect(screen, color, rect)
-                    # printing purchase details on station
+                    # printing purchase details on city
                     text = font_h4.render(words_1, True, "white")
                     screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*1/3)-(text.get_height()/2)-1))
                     text = font_h4.render(words_2, True, "white")
@@ -1335,19 +1232,19 @@ while running:
 
                     # checks for if user is clicking the purchase button or not
                     if button_check(rect):
-                        if euros > station["cost"]:
-                            station["owned"] = True
-                            euros -= station["cost"]
-                            for dest in station["operates_to"]:
-                                for item in stations:
-                                    if dest == item["code"]:
-                                        item["shown"] = True
+                        if euros > city.cost:
+                            city.owned = True
+                            euros -= city.cost
+                            for dest in city.operates_to:
+                                for item in cities:
+                                    if dest == item.code:
+                                        item.shown = True
                             
 
                         # add money changes etc here
                 
-                # shows 'owned' button if station is owned - may change
-                if station["owned"]:
+                # shows 'owned' button if city is owned - may change
+                if city.owned:
                     rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
                     pygame.draw.rect(screen, pygame.Color(160, 160, 160), rect)
 
@@ -1356,17 +1253,17 @@ while running:
                     screen.blit(text, ((rect[0]+rect[2]/2) - text.get_width()/2, (rect[1]+rect[3]/2) - text.get_height()/2))
                     font_h4.set_bold(False)
 
-            # rect checking for each station - finds which station was clicked
-            rect = pygame.Rect(station["x"]-5, station["y"]-5, 15, 15)
+            # rect checking for each city - finds which city was clicked
+            rect = pygame.Rect(city.loc.x-5, city.loc.y-5, 15, 15)
             if button_check(rect):
-                for clicked in stations:       # makes every other stations  
-                    clicked["clicked"] = False # 'clicked' status False, then sets 
-                station["clicked"] = True      # the correct stations status to True
+                for clicked in cities:       # makes every other cities  
+                    clicked.clicked = False # 'clicked' status False, then sets 
+                city.clicked = True      # the correct cities status to True
 
-        # removing large station labels when clicked elsewhere
+        # removing large city labels when clicked elsewhere
         if button_check(pygame.Rect(0,0,width,height)):
-            for station in stations:
-                station["clicked"] = False
+            for city in cities:
+                city.clicked = False
 
         # # map key
         # # can't afford key
@@ -1393,6 +1290,8 @@ while running:
         text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
         screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
 
+        print(f"{hour}:{minute}")
+
 
 
     pygame.display.flip()
@@ -1404,6 +1303,8 @@ while running:
         flash -= 1
 
     flash = 0
+
+    
 
 
     # dt is time between frames, makes flashing smoother.
