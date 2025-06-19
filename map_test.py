@@ -52,8 +52,41 @@ last_names = [
 
 tiles = []
 tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_1.png"), "green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_2.png"), "desert", "desert", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_3.png"), "desert", "green-desert", "green", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_4.png"), "green", "desert-green", "desert", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_5.png"), "desert-green", "green", "desert-green", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_6.png"), "green-desert", "desert", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_7.png"), "desert", "desert", "green-desert", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_8.png"), "green", "green", "desert-green", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_9.png"), "green", "desert-green", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_10.png"), "desert", "green-desert", "desert-green", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_11.png"), "desert-green", "desert-green", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_12.png"), "green-desert", "green-desert", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_13.png"), "desert-green", "green", "green", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_14.png"), "green-desert", "desert", "desert", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_15.png"), "green", "desert", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_16.png"), "green-desert", "desert", "desert", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_17.png"), "desert-green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_18.png"), "desert-green", "green", "green", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_19.png"), "desert", "desert", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_20.png"), "green", "green", "green", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_21.png"), "desert", "desert", "desert", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_22.png"), "green-desert", "desert", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_23.png"), "desert-green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_24.png"), "green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_25.png"), "green", "desert-green", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_26.png"), "green", "desert-green", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_27.png"), "green", "green", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_28.png"), "desert-green", "green", "green", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_29.png"), "green", "desert", "desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_30.png"), "green", "desert", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_31.png"), "green-desert", "green-desert", "desert-green", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_32.png"), "green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_33.png"), "green", "desert-green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_34.png"), "green", "desert", "desert", "desert-green"))
 
-for tile in tiles[0:1]:
+for tile in tiles:
     greens = 0
     if tile.top == "green":
         greens += 1
@@ -88,7 +121,7 @@ tile_order = []
 for slot in range((width//TILE_SIZE)*(height//TILE_SIZE)):
     good = False
     while True:
-        tile = random.choice(tiles[0:1])
+        tile = random.choice(tiles)
         while True:
             if slot == 0:
                 tile_order.append(tile)

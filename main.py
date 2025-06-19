@@ -180,38 +180,38 @@ months = {"Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul
 
 # lists
 trains = [
-{'make': 'Express', 'model': 'DT-4', 'icon': express_red, 'shown': False, 'unlocked': False, 'cost': 300000, 'train_type': 'Diesel', 'capacity': 200, 'speed': 100, 'profit_per_person_per_km': 0.025, 'desc': 'The most basic train of the lot. Small yet reliable for transporting your first passengers, or for serving new connections.', 'level': 0},
-{'make': 'Express', 'model': 'DT-5A', 'icon': express_orange, 'shown': False, 'unlocked': False, 'cost': 340000, 'train_type': 'Diesel', 'capacity': 250, 'speed': 100, 'profit_per_person_per_km': 0.025, 'level': 0},
-{'make': 'Express', 'model': 'DT-5B', 'icon': express_green, 'shown': False, 'unlocked': False, 'cost': 350000, 'train_type': 'Diesel', 'capacity': 250, 'speed': 110, 'profit_per_person_per_km': 0.028, 'level': 0},
-{'make': 'Express', 'model': 'DT-6', 'icon': express_blue, 'shown': False, 'unlocked': False, 'cost': 400000, 'train_type': 'Diesel', 'capacity': 300, 'speed': 112, 'profit_per_person_per_km': 0.03, 'level': 0},
-{'make': 'RailSpark', 'model': 'Ember', 'icon': railspark_ember, 'shown': False, 'unlocked': False, 'cost': 650000, 'train_type': 'Diesel', 'capacity': 400, 'speed': 105, 'profit_per_person_per_km': 0.025, 'level': 0},
-{'make': 'RailSpark', 'model': 'Torrent', 'icon': railspark_torrent, 'shown': False, 'unlocked': False, 'cost': 600000, 'train_type': 'Diesel', 'capacity': 200, 'speed': 160, 'profit_per_person_per_km': 0.04, 'level': 0},
-{'make': 'RailSpark', 'model': 'Bulb', 'icon': railspark_bulb, 'shown': False, 'unlocked': False, 'cost': 200000, 'train_type': 'Electric', 'capacity': 100, 'speed': 140, 'profit_per_person_per_km': 0.05, 'level': 0},
-{'make': 'RailSpark', 'model': 'Mystic', 'icon': railspark_mystic, 'shown': False, 'unlocked': False, 'cost': 2500000, 'train_type': 'Electric', 'capacity': 375, 'speed': 180, 'profit_per_person_per_km': 0.06, 'level': 0},
-{'make': 'North Star', 'model': 'Ursa', 'icon': north_star_green, 'shown': False, 'unlocked': False, 'cost': 500000, 'train_type': 'Diesel', 'capacity': 500, 'speed': 80, 'profit_per_person_per_km': 0.02, 'level': 0},
-{'make': 'North Star', 'model': 'Maris', 'icon': north_star_red, 'shown': False, 'unlocked': False, 'cost': 320000, 'train_type': 'Electric', 'capacity': 200, 'speed': 120, 'profit_per_person_per_km': 0.03, 'level': 0},
-{'make': 'North Star', 'model': 'Polaris', 'icon': north_star_purple, 'shown': False, 'unlocked': False, 'cost': 1600000, 'train_type': 'Electric', 'capacity': 400, 'speed': 134, 'profit_per_person_per_km': 0.045, 'level': 0},
-{'make': 'North Star', 'model': 'Polaris-2', 'icon': north_star_yellow, 'shown': False, 'unlocked': False, 'cost': 2150000, 'train_type': 'Electric', 'capacity': 500, 'speed': 150, 'profit_per_person_per_km': 0.045, 'level': 0},
-{'make': 'Thompson Lines', 'model': 'AC-76', 'icon': thompson_lines_red, 'shown': False, 'unlocked': False, 'cost': 150000, 'train_type': 'Diesel', 'capacity': 150, 'speed': 110, 'profit_per_person_per_km': 0.02, 'level': 0},
-{'make': 'Thompson Lines', 'model': 'AC-77', 'icon': thompson_lines_blue, 'shown': False, 'unlocked': False, 'cost': 160000, 'train_type': 'Diesel', 'capacity': 150, 'speed': 120, 'profit_per_person_per_km': 0.02, 'level': 0},
-{'make': 'Erlington Works', 'model': 'Jubilee-A', 'icon': erlington_works, 'shown': False, 'unlocked': False, 'cost': 900000, 'train_type': 'Electric', 'capacity': 50, 'speed': 50, 'profit_per_person_per_km': 1.0, 'level': 0},
-{'make': 'Erlington Works', 'model': 'Jubilee-B', 'icon': erlington_works_2, 'shown': False, 'unlocked': False, 'cost': 1100000, 'train_type': 'Electric', 'capacity': 75, 'speed': 75, 'profit_per_person_per_km': 0.5, 'level': 0},
-{'make': 'Royal', 'model': 'Bronze', 'icon': royal_bronze, 'shown': False, 'unlocked': False, 'cost': 3620000, 'train_type': 'Electric', 'capacity': 200, 'speed': 150, 'profit_per_person_per_km': 0.2, 'level': 0},
-{'make': 'Royal', 'model': 'Silver', 'icon': royal_silver, 'shown': False, 'unlocked': False, 'cost': 4200000, 'train_type': 'Electric', 'capacity': 100, 'speed': 170, 'profit_per_person_per_km': 0.5, 'level': 0},
-{'make': 'Royal', 'model': 'Gold', 'icon': royal_gold, 'shown': False, 'unlocked': False, 'cost': 5000000, 'train_type': 'Electric', 'capacity': 50, 'speed': 185, 'profit_per_person_per_km': 1.0, 'level': 0},
-{'make': 'Royal', 'model': 'Diamond', 'icon': royal_diamond, 'shown': False, 'unlocked': False, 'cost': 9900000, 'train_type': 'MagLev', 'capacity': 20, 'speed': 200, 'profit_per_person_per_km': 4.0, 'level': 0},
-{'make': 'Mr Peng Enterprises', 'model': 'Peng-01', 'icon': peng_enterprises, 'shown': False, 'unlocked': False, 'cost': 43000000, 'train_type': 'Electric', 'capacity': 500, 'speed': 200, 'profit_per_person_per_km': 0.055, 'level': 0},
-{'make': 'Guangdong Star', 'model': 'Star of China', 'icon': guangdong_star, 'shown': False, 'unlocked': False, 'cost': 850000000, 'train_type': 'MagLev', 'capacity': 800, 'speed': 250, 'profit_per_person_per_km': 0.6, 'level': 0},
-{'make': 'Wang Li', 'model': 'Wang-01', 'icon': wang_li, 'shown': False, 'unlocked': False, 'cost': 18000000, 'train_type': 'Diesel', 'capacity': 1200, 'speed': 150, 'profit_per_person_per_km': 0.02, 'level': 0},
-{'make': 'Yangtze Monos', 'model': 'Current', 'icon': yangtze_monos, 'shown': False, 'unlocked': False, 'cost': 11500000, 'train_type': 'Monorail', 'capacity': 100, 'speed': 120, 'profit_per_person_per_km': 0.2, 'level': 0},
-{'make': 'West Network', 'model': 'Bullet', 'icon': west_network, 'shown': False, 'unlocked': False, 'cost': 600000000, 'train_type': 'MagLev', 'capacity': 600, 'speed': 300, 'profit_per_person_per_km': 0.4, 'level': 0},
-{'make': 'Great Northern', 'model': 'Piercer', 'icon': great_northern, 'shown': False, 'unlocked': False, 'cost': 12250000, 'train_type': 'Electric', 'capacity': 300, 'speed': 180, 'profit_per_person_per_km': 0.05, 'level': 0},
-{'make': 'Southern Star', 'model': 'Solo', 'icon': southern_star, 'shown': False, 'unlocked': False, 'cost': 24000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 200, 'profit_per_person_per_km': 0.2, 'level': 0},
-{'make': 'Eastern Power', 'model': 'Taurus', 'icon': eastern_power, 'shown': False, 'unlocked': False, 'cost': 9000000, 'train_type': 'Diesel', 'capacity': 900, 'speed': 100, 'profit_per_person_per_km': 0.04, 'level': 0},
-{'make': 'Red Hill', 'model': 'Baron', 'icon': red_hill, 'shown': False, 'unlocked': False, 'cost': 2500000, 'train_type': 'Diesel', 'capacity': 500, 'speed': 150, 'profit_per_person_per_km': 0.03, 'level': 0},
-{'make': 'Blue Hill', 'model': 'Ocean', 'icon': blue_hill, 'shown': False, 'unlocked': False, 'cost': 2500000, 'train_type': 'Electric', 'capacity': 500, 'speed': 150, 'profit_per_person_per_km': 0.03, 'level': 0},
-{'make': 'Hermann Monorails', 'model': 'HM-11W', 'icon': hermann_green, 'shown': False, 'unlocked': False, 'cost': 11000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 140, 'profit_per_person_per_km': 0.2, 'level': 0},
-{'make': 'Hermann Monorails', 'model': 'HM-12W', 'icon': hermann_orange, 'shown': False, 'unlocked': False, 'cost': 12000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 150, 'profit_per_person_per_km': 0.2, 'level': 0},
+{'make': 'Express', 'model': 'DT-4', 'icon': express_red, 'shown': False, 'unlocked': False, 'cost': 300000, 'train_type': 'Diesel', 'capacity': 200, 'speed': 100, 'ppppkm': 0.025, 'desc': 'The most basic train of the lot. Small yet reliable for transporting your first passengers, or for serving new connections.', 'level': 0},
+{'make': 'Express', 'model': 'DT-5A', 'icon': express_orange, 'shown': False, 'unlocked': False, 'cost': 340000, 'train_type': 'Diesel', 'capacity': 250, 'speed': 100, 'ppppkm': 0.025, 'level': 0},
+{'make': 'Express', 'model': 'DT-5B', 'icon': express_green, 'shown': False, 'unlocked': False, 'cost': 350000, 'train_type': 'Diesel', 'capacity': 250, 'speed': 110, 'ppppkm': 0.028, 'level': 0},
+{'make': 'Express', 'model': 'DT-6', 'icon': express_blue, 'shown': False, 'unlocked': False, 'cost': 400000, 'train_type': 'Diesel', 'capacity': 300, 'speed': 112, 'ppppkm': 0.03, 'level': 0},
+{'make': 'RailSpark', 'model': 'Ember', 'icon': railspark_ember, 'shown': False, 'unlocked': False, 'cost': 650000, 'train_type': 'Diesel', 'capacity': 400, 'speed': 105, 'ppppkm': 0.025, 'level': 0},
+{'make': 'RailSpark', 'model': 'Torrent', 'icon': railspark_torrent, 'shown': False, 'unlocked': False, 'cost': 600000, 'train_type': 'Diesel', 'capacity': 200, 'speed': 160, 'ppppkm': 0.04, 'level': 0},
+{'make': 'RailSpark', 'model': 'Bulb', 'icon': railspark_bulb, 'shown': False, 'unlocked': False, 'cost': 200000, 'train_type': 'Electric', 'capacity': 100, 'speed': 140, 'ppppkm': 0.05, 'level': 0},
+{'make': 'RailSpark', 'model': 'Mystic', 'icon': railspark_mystic, 'shown': False, 'unlocked': False, 'cost': 2500000, 'train_type': 'Electric', 'capacity': 375, 'speed': 180, 'ppppkm': 0.06, 'level': 0},
+{'make': 'North Star', 'model': 'Ursa', 'icon': north_star_green, 'shown': False, 'unlocked': False, 'cost': 500000, 'train_type': 'Diesel', 'capacity': 500, 'speed': 80, 'ppppkm': 0.02, 'level': 0},
+{'make': 'North Star', 'model': 'Maris', 'icon': north_star_red, 'shown': False, 'unlocked': False, 'cost': 320000, 'train_type': 'Electric', 'capacity': 200, 'speed': 120, 'ppppkm': 0.03, 'level': 0},
+{'make': 'North Star', 'model': 'Polaris', 'icon': north_star_purple, 'shown': False, 'unlocked': False, 'cost': 1600000, 'train_type': 'Electric', 'capacity': 400, 'speed': 134, 'ppppkm': 0.045, 'level': 0},
+{'make': 'North Star', 'model': 'Polaris-2', 'icon': north_star_yellow, 'shown': False, 'unlocked': False, 'cost': 2150000, 'train_type': 'Electric', 'capacity': 500, 'speed': 150, 'ppppkm': 0.045, 'level': 0},
+{'make': 'Thompson Lines', 'model': 'AC-76', 'icon': thompson_lines_red, 'shown': False, 'unlocked': False, 'cost': 150000, 'train_type': 'Diesel', 'capacity': 150, 'speed': 110, 'ppppkm': 0.02, 'level': 0},
+{'make': 'Thompson Lines', 'model': 'AC-77', 'icon': thompson_lines_blue, 'shown': False, 'unlocked': False, 'cost': 160000, 'train_type': 'Diesel', 'capacity': 150, 'speed': 120, 'ppppkm': 0.02, 'level': 0},
+{'make': 'Erlington Works', 'model': 'Jubilee-A', 'icon': erlington_works, 'shown': False, 'unlocked': False, 'cost': 900000, 'train_type': 'Electric', 'capacity': 50, 'speed': 50, 'ppppkm': 1.0, 'level': 0},
+{'make': 'Erlington Works', 'model': 'Jubilee-B', 'icon': erlington_works_2, 'shown': False, 'unlocked': False, 'cost': 1100000, 'train_type': 'Electric', 'capacity': 75, 'speed': 75, 'ppppkm': 0.5, 'level': 0},
+{'make': 'Royal', 'model': 'Bronze', 'icon': royal_bronze, 'shown': False, 'unlocked': False, 'cost': 3620000, 'train_type': 'Electric', 'capacity': 200, 'speed': 150, 'ppppkm': 0.2, 'level': 0},
+{'make': 'Royal', 'model': 'Silver', 'icon': royal_silver, 'shown': False, 'unlocked': False, 'cost': 4200000, 'train_type': 'Electric', 'capacity': 100, 'speed': 170, 'ppppkm': 0.5, 'level': 0},
+{'make': 'Royal', 'model': 'Gold', 'icon': royal_gold, 'shown': False, 'unlocked': False, 'cost': 5000000, 'train_type': 'Electric', 'capacity': 50, 'speed': 185, 'ppppkm': 1.0, 'level': 0},
+{'make': 'Royal', 'model': 'Diamond', 'icon': royal_diamond, 'shown': False, 'unlocked': False, 'cost': 9900000, 'train_type': 'MagLev', 'capacity': 20, 'speed': 200, 'ppppkm': 4.0, 'level': 0},
+{'make': 'Mr Peng Enterprises', 'model': 'Peng-01', 'icon': peng_enterprises, 'shown': False, 'unlocked': False, 'cost': 43000000, 'train_type': 'Electric', 'capacity': 500, 'speed': 200, 'ppppkm': 0.055, 'level': 0},
+{'make': 'Guangdong Star', 'model': 'Star of China', 'icon': guangdong_star, 'shown': False, 'unlocked': False, 'cost': 850000000, 'train_type': 'MagLev', 'capacity': 800, 'speed': 250, 'ppppkm': 0.6, 'level': 0},
+{'make': 'Wang Li', 'model': 'Wang-01', 'icon': wang_li, 'shown': False, 'unlocked': False, 'cost': 18000000, 'train_type': 'Diesel', 'capacity': 1200, 'speed': 150, 'ppppkm': 0.02, 'level': 0},
+{'make': 'Yangtze Monos', 'model': 'Current', 'icon': yangtze_monos, 'shown': False, 'unlocked': False, 'cost': 11500000, 'train_type': 'Monorail', 'capacity': 100, 'speed': 120, 'ppppkm': 0.2, 'level': 0},
+{'make': 'West Network', 'model': 'Bullet', 'icon': west_network, 'shown': False, 'unlocked': False, 'cost': 600000000, 'train_type': 'MagLev', 'capacity': 600, 'speed': 300, 'ppppkm': 0.4, 'level': 0},
+{'make': 'Great Northern', 'model': 'Piercer', 'icon': great_northern, 'shown': False, 'unlocked': False, 'cost': 12250000, 'train_type': 'Electric', 'capacity': 300, 'speed': 180, 'ppppkm': 0.05, 'level': 0},
+{'make': 'Southern Star', 'model': 'Solo', 'icon': southern_star, 'shown': False, 'unlocked': False, 'cost': 24000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 200, 'ppppkm': 0.2, 'level': 0},
+{'make': 'Eastern Power', 'model': 'Taurus', 'icon': eastern_power, 'shown': False, 'unlocked': False, 'cost': 9000000, 'train_type': 'Diesel', 'capacity': 900, 'speed': 100, 'ppppkm': 0.04, 'level': 0},
+{'make': 'Red Hill', 'model': 'Baron', 'icon': red_hill, 'shown': False, 'unlocked': False, 'cost': 2500000, 'train_type': 'Diesel', 'capacity': 500, 'speed': 150, 'ppppkm': 0.03, 'level': 0},
+{'make': 'Blue Hill', 'model': 'Ocean', 'icon': blue_hill, 'shown': False, 'unlocked': False, 'cost': 2500000, 'train_type': 'Electric', 'capacity': 500, 'speed': 150, 'ppppkm': 0.03, 'level': 0},
+{'make': 'Hermann Monorails', 'model': 'HM-11W', 'icon': hermann_green, 'shown': False, 'unlocked': False, 'cost': 11000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 140, 'ppppkm': 0.2, 'level': 0},
+{'make': 'Hermann Monorails', 'model': 'HM-12W', 'icon': hermann_orange, 'shown': False, 'unlocked': False, 'cost': 12000000, 'train_type': 'Monorail', 'capacity': 200, 'speed': 150, 'ppppkm': 0.2, 'level': 0},
 ]
 owned_trains = []
 lines = [
@@ -279,15 +279,15 @@ first_names = [
     "Deer", "Dover", "Down", "Dun", "East", "Edge", "Elm", "Elk", "Fair", "Farm",
     "Fayette", "Fern", "Fish", "Flat", "Fort", "Fountain", "Fox", "Frank", "Freder",
     "Glen", "Gold", "Green", "Ham", "Han", "Hart", "Hazel", "Hemp", "Hen",
-    "High", "Hill", "Hol", "Hope", "Hun", "Iron", "Jackson", "Jam", "Jeff", "John",
+    "High", "Hill", "Hol", "Hope", "Hun", "Iron", "John",
     "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
     "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "Mart", "May",
     "Mid", "Mill", "Mon", "Mount",  "New", "North", "Oak",
-    "Oce", "Olive", "Orchard", "Ox", "Park", "Peach", "Pine", "Plain", "Pleasant", "Port",
+    "Oce", "Olive", "Ox", "Park", "Peach", "Pine", "Plain", "Port",
     "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
-    "Ruther", "Saint", "Salem", "Salt", "Sand", "Scot", "Shel", "Silver",
-    "Smith", "Snow", "South", "Spring", "Stan", "Stone", "Stock", "Sun", "Syl",
-    "Tall", "Three", "Tim", "Twin", "Union", "Valley", "Vern", "Wake",
+    "Ruther", "Saint", "Salt", "Sand", "Scot", "Shel", "Silver",
+    "Smith", "Snow", "South", "Spring", "Stan", "Stock", "Sun", "Syl",
+    "Tall", "Three", "Tim", "Twin", "Valley", "Vern", "Wake",
     "Wash", "Water", "West", "White", "Willow", "Win", "Wood", "York",
 ]
 last_names = [
@@ -297,7 +297,6 @@ last_names = [
     "plains", "groves", "heights", "moor", "hurst", "worth", "combe", "fell", "leigh", "well",
     "gate", "head", "stone", "wick", "holt", "burn", "thorpe", "fleet", "march", "den", "cumbe"
 ]
-
 
 # classes
 class Train:
@@ -457,12 +456,41 @@ def triangle_overlaps_other_rects(tri_pts, rects):
                 return True
     return False
 
-
-
-
-
 tiles = []
 tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_1.png"), "green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_2.png"), "desert", "desert", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_3.png"), "desert", "green-desert", "green", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_4.png"), "green", "desert-green", "desert", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_5.png"), "desert-green", "green", "desert-green", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_6.png"), "green-desert", "desert", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_7.png"), "desert", "desert", "green-desert", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_8.png"), "green", "green", "desert-green", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_9.png"), "green", "desert-green", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_10.png"), "desert", "green-desert", "desert-green", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_11.png"), "desert-green", "desert-green", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_12.png"), "green-desert", "green-desert", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_13.png"), "desert-green", "green", "green", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_14.png"), "green-desert", "desert", "desert", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_15.png"), "green", "desert", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_16.png"), "green-desert", "desert", "desert", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_17.png"), "desert-green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_18.png"), "desert-green", "green", "green", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_19.png"), "desert", "desert", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_20.png"), "green", "green", "green", "green-desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_21.png"), "desert", "desert", "desert", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_22.png"), "green-desert", "desert", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_23.png"), "desert-green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_24.png"), "green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_25.png"), "green", "desert-green", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_26.png"), "green", "desert-green", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_27.png"), "green", "green", "desert", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_28.png"), "desert-green", "green", "green", "desert"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_29.png"), "green", "desert", "desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_30.png"), "green", "desert", "green-desert", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_31.png"), "green-desert", "green-desert", "desert-green", "desert-green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_32.png"), "green", "green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_33.png"), "green", "desert-green", "green", "green"))
+tiles.append(Tile(pygame.image.load("zug_fallt_aus/assets/procedural_tiles/tile_34.png"), "green", "desert", "desert", "desert-green"))
 
 for tile in tiles[0:1]:
     greens = 0
@@ -497,25 +525,28 @@ for tile in tiles[0:1]:
 TILE_SIZE = 100
 
 tile_order = []
-for slot in range((width-350//TILE_SIZE)*(height-250//TILE_SIZE)):
-    tile_order.append(tile)
-    # good = False
-    # while True:
-    #     tile = random.choice(tiles[0:1])
-    #     while True:
-    #         if slot == 0:
-    #             tile_order.append(tile)
-    #             good = True
-    #             break
+
+# for i in range(0, (width//TILE_SIZE)):
+#     tile_order.append(tiles[0])
+
+for slot in range(((width//TILE_SIZE))*(height//TILE_SIZE)):
+    good = False
+    while True:
+        tile = random.choice(tiles)
+        while True:
+            if slot == 0:
+                tile_order.append(tile)
+                good = True
+                break
                 
-    #         elif tile.left == tile_order[-1].right and (slot < (width//TILE_SIZE) or tile_order[-width//TILE_SIZE].bottom == tile.top):
-    #             tile_order.append(tile)
-    #             good = True
-    #             break
-    #         else:
-    #             break
-    #     if good:
-    #         break
+            elif tile.left == tile_order[-1].right and (slot < ((width//TILE_SIZE)) or tile_order[-(width//TILE_SIZE)].bottom == tile.top):
+                tile_order.append(tile)
+                good = True
+                break
+            else:
+                break
+        if good:
+            break
 
 # generating city points based on specified amounts
 num_points = 50
@@ -624,26 +655,18 @@ while running:
 
         x_across = 0
         y_down = 0
-        for slot in range((width-350//TILE_SIZE)*((height-250)//TILE_SIZE)):
+        for slot in range(((width//TILE_SIZE))*(height//TILE_SIZE)):
             screen.blit(tile_order[slot].img, (x_across, y_down))
             x_across += TILE_SIZE
 
-            if x_across >= width:
+            if x_across >= ((width//TILE_SIZE))*TILE_SIZE:
                 x_across = 0
                 y_down += TILE_SIZE
 
-        # for simplex in tri.simplices:
-        #     tri_pts = [int_points[i] for i in simplex]
-        #     if not triangle_overlaps_other_rects(tri_pts, exclude_rects):
-        #         pygame.draw.polygon(screen, "black", tri_pts, 1)
-            
-        # for city in cities:
-        #     if screen.get_at((int(city.loc.x), int(city.loc.y))) == pygame.Color(63, 72, 204):
-        #         cities.remove(city)
-                
-        #     pygame.draw.circle(screen, "red", city.loc, 10)
-        #     text = font_h4.render(city.code, True, 'black')
-        #     screen.blit(text, city.loc)
+        for simplex in tri.simplices:
+            tri_pts = [int_points[i] for i in simplex]
+            if not triangle_overlaps_other_rects(tri_pts, exclude_rects):
+                pygame.draw.polygon(screen, "black", tri_pts, 1)
 
         # tips
         tips("","","",font_h5,font_h5,font_h5)
@@ -969,7 +992,7 @@ while running:
                                     lines[line_rects.index(rect)]["trains"].append(item["model"])
 
                                     # create Train with Train class
-                                    owned_trains.append(Train(item["model"], lines[line_rects.index(rect)]["name"], item["capacity"], item["profit_per_person_per_km"], item["speed"]))
+                                    owned_trains.append(Train(item["model"], lines[line_rects.index(rect)]["name"], item["capacity"], item["ppppkm"], item["speed"]))
 
                                     menu_page = "Trains"
                                     train_purchase = False
@@ -1006,8 +1029,10 @@ while running:
                                 elif item["model"] in ["Diamond"]:
                                     item["capacity"] += 2
 
+                                item["capacity"] = round(item["capacity"], 3)
+
                                 # train speed
-                                if item ["model"] in ["Solo"]:
+                                if item["model"] in ["Solo"]:
                                     item["speed"] += 0
                                 elif item["model"] in ["HM-11W", "HM-12W"]:
                                     item["speed"] += 2
@@ -1039,7 +1064,31 @@ while running:
                                     elif item["speed"] >= 230:
                                         item["speed"] += 30
 
+                                item["speed"] = round(item["speed"], 3)
+
                                 # train profit
+                                if item["model"] in ["Diamond"]:
+                                    item["ppppkm"] += 0.2
+                                elif item["model"] in ["Gold"]:
+                                    item["ppppkm"] += 0.2 if item["ppppkm"] < 2 else 0.05
+                                elif item["model"] in ["Jubilee-A", "Jubilee-B", "Silver"]:
+                                    item["ppppkm"] += 0.1 if item["ppppkm"] < 1.5 else 0.05
+                                elif item["model"] in ["Star of China", "Bronze"]:
+                                    item["ppppkm"] += 0.05
+                                elif item["model"] in ["Bullet", "Current", "Solo"]:
+                                    item["ppppkm"] += 0.02
+                                elif item["model"] in ["HM-11W", "HM-12W"]:
+                                    item["ppppkm"] += 0.015
+                                elif item["model"] in ["Mystic", "Bulb", "Peng-01", "Piercer"]:
+                                    item["ppppkm"] += 0.01 if item["ppppkm"] < 0.1 else 0.005
+                                elif item["model"] in ["Taurus", "Baron", "Ocean", "Ember", "Torrent", "Maris", "Polaris", "Polaris-2"]:
+                                    item["ppppkm"] += 0.008 if item["ppppkm"] < 0.06 else 0.005
+                                elif item["model"] in ["DT-4", "DT-5A", "DT-5B", "DT-6", "Ursa", "AC-76", "AC-77", "Wang-01"]:
+                                    item["ppppkm"] += 0.005
+
+                                item["ppppkm"] = round(item["ppppkm"], 3)
+                                
+                                
 
                     y_down = height - 200
                     y_down += H3_SIZE+SPACING*2
@@ -1047,7 +1096,7 @@ while running:
                     screen.blit(text, (x_across+8, y_down+8))
                     text = font_h4.render(f"Capacity: {item['capacity']}", True, "black")
                     screen.blit(text, (x_across+8, y_down+10+H4_SIZE))
-                    text = font_h4.render(f"Earnings: {item['profit_per_person_per_km']}", True, "black")
+                    text = font_h4.render(f"Earnings: {item['ppppkm']}", True, "black")
                     screen.blit(text, (x_across+8, y_down+12+H4_SIZE*2))
                     text = font_h4.render(f"Line Type: {item['train_type']}", True, "black")
                     screen.blit(text, (x_across+8, y_down+14+H4_SIZE*3))
@@ -1137,7 +1186,6 @@ while running:
                             else:
                                 if hour == train.next_hr and minute >= train.next_min or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
                                     euros += euros_per_trip
-                                    print(euros)
                                     train.last_hr = train.next_hr
                                     train.last_min = train.next_min
                                     income_statements.append(f'{list(months.keys())[month-1]} {round(day)}{" " if round(day)<10 else ""} {0 if round(train.next_hr)<10 else ""}{round(train.next_hr)}:{0 if round(train.next_min)<10 else ""}{round(train.next_min)} | {line["name"]:<8} | ${round(euros_per_trip)}')                           
@@ -1289,10 +1337,6 @@ while running:
 
         text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
         screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
-
-        print(f"{hour}:{minute}")
-
-
 
     pygame.display.flip()
 
