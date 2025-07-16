@@ -192,7 +192,7 @@ grey = pygame.Color(170,170,170)
 COLOR = pygame.Color(61, 72, 138)
 
 # values
-euros = 500000000
+euros = 10000000
 COST_PER_KM = 100
 
 # date calc things
@@ -413,7 +413,7 @@ def draw_lines(lines, cities):
                 pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5, start_loc.loc.y+2.5), (end_loc.loc.x+2.5, end_loc.loc.y+2.5), width = 5)
         
 
-def draw_city(city, color=None, flash=1):
+def draw_city(city, color, flash=1):
     if (pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5, round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5,round(city.loc.y)+10)) and hover:
         city_inner = pygame.Rect(city.loc.x-2,city.loc.y-2,9,9)
 
@@ -423,14 +423,13 @@ def draw_city(city, color=None, flash=1):
     city_outer = pygame.Rect(city.loc.x-5,city.loc.y-5,15,15)
 
     if color != None:
-        pass
+        color = color
+    elif not city.owned and city.cost > euros:
+        color = pygame.Color(217, 49, 30)
+    elif not city.owned:
+        color = "white"
     else:
-        if not city.owned and city.cost > euros:
-            color = pygame.Color(217, 49, 30)
-        elif not city.owned:
-            color = "white"
-        else:
-            color = "yellow"
+        color = "yellow"
 
     # pygame.Color(11,188,9)
 
@@ -736,11 +735,21 @@ while running:
             draw_lines(flash_lines+lines, cities)
         else:
             draw_lines(lines, cities)
-        
         # draw cities
         for city in cities:
-            if city.shown:
-                draw_city(city)
+            draw = False
+            if line_build != None:
+                for line in lines:
+                    if line_build == line:
+                        if city.code in line["cities"]:
+                            draw_city(city, line["color"])
+                            draw = True
+                    else:
+                        pass
+                if not draw:
+                    draw_city(city, None)
+            elif city.shown:
+                draw_city(city, None)
 
         # hover labels - will show when mouse is hovering over city icon on map
         # makes hover labels not show if currently clicked into the menu for another city
@@ -1059,6 +1068,9 @@ while running:
                         elif train_purchase:
                             color = (160,160,160,180)
                             words = "Choose Line"
+                        elif item["stored"] > 0:
+                            color = (54, 153, 43, 180)
+                            words = f'Purchase - FREE'
                         else:
                             color = (54, 153, 43, 180)
                             words = f'Purchase - {e_euros(item["cost"])}'
@@ -1073,7 +1085,10 @@ while running:
                             menu_page = "Lines"
                             for rect in line_rects:
                                 if button_check(rect) and lines[line_rects.index(rect)]["owned"] and item["cost"] <= euros:
-                                    euros -= item["cost"]
+                                    if item["stored"] > 0:
+                                        item["stored"] -= 1
+                                    else:
+                                        euros -= item["cost"]
                                     lines[line_rects.index(rect)]["trains"].append(item["model"])
 
                                     # create Train with Train class
@@ -1234,6 +1249,21 @@ while running:
             color = "black" if item["color"] in ["Yellow-1", "Yellow-2", "Blue-L1", "Red-1"] else "white"
             text = font_h3.render(f'Building {item["name"].upper()} Line - {", ".join(item["cities"])}', True, color)
             screen.blit(text, ((rect[3]-text.get_height())/2, (rect[3]/2)-(text.get_height()/2)))
+
+            text = font_h3.render("Cancel Build", True, "white")
+            rect = pygame.Rect(width-282-57-text.get_width()-20, 3, text.get_width()+24, 34)
+            pygame.draw.rect(screen, "white", rect, border_radius = 20)
+            cancel_rect = pygame.Rect(width-282-55-text.get_width()-20, 5, text.get_width()+20, 30)
+            pygame.draw.rect(screen, "red", cancel_rect, border_radius = 20)
+            screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
+            t_w = text.get_width()
+
+            text = font_h3.render("Finish Build", True, "white")
+            rect = pygame.Rect(width-282-57-t_w-20-10-text.get_width()-20, 3, text.get_width()+24, 34)
+            pygame.draw.rect(screen, "white", rect, border_radius = 20)
+            enter_rect = pygame.Rect(width-282-55-t_w-20-10-text.get_width()-20, 5, text.get_width()+20, 30)
+            pygame.draw.rect(screen, (53, 143, 34), enter_rect, border_radius = 20)
+            screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
             
             for city in cities:
                 key = pygame.key.get_pressed()
@@ -1242,11 +1272,11 @@ while running:
                     item["cities"].append(city.code)
                 elif button_check(rect) and item["cities"][-1] in city.operates_to and len(item["cities"]) < 10 and city.code not in item["cities"] and city.owned:
                     item["cities"].append(city.code)
-                elif key[pygame.K_RETURN]:
+                elif key[pygame.K_RETURN] or button_check(enter_rect):
                     item["finished"] = True
                     line_build = None
                     item["shown"] = True
-                elif key[pygame.K_ESCAPE]:
+                elif key[pygame.K_ESCAPE] or button_check(cancel_rect):
                     item["cities"] = []
                     line_build = None
                     item["shown"] = True
@@ -1312,10 +1342,14 @@ while running:
                 line_rects.append(rect)
 
                 if line_tab == "owned":
-                    if lines[line]["owned"]:
+                    if lines[line]["owned"] and len(lines[line]["cities"]) > 0 and lines[line]["finished"]:
                         pygame.draw.circle(screen, (39, 143, 31), (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
                         pygame.draw.line(screen, "white", (x_across+ROW_HEIGHT-4, y_down+ROW_HEIGHT+2), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
                         pygame.draw.line(screen, "white", (x_across+ROW_HEIGHT+5, y_down+ROW_HEIGHT-4), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
+                    elif lines[line]["owned"]:
+                        pygame.draw.circle(screen, (255, 255, 0), (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
+                        pygame.draw.line(screen, "black", (x_across+ROW_HEIGHT-4, y_down+ROW_HEIGHT+2), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
+                        pygame.draw.line(screen, "black", (x_across+ROW_HEIGHT+5, y_down+ROW_HEIGHT-4), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
                     else:
                         pygame.draw.circle(screen, (150,150,150), (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
                         text = font_h4.render("X", True, "white")
@@ -1356,9 +1390,6 @@ while running:
 
             # mini info line_tab selection
             for tab in ["owned", "type"]:
-                rect = pygame.Rect(x_across+SPACING, y_down+SPACING+2, 140-SPACING-SPACING/2, ROW_HEIGHT-2)
-                pygame.draw.rect(screen, "white", rect)
-
                 rect = pygame.Rect(x_across+SPACING, y_down+SPACING+2, 20, ROW_HEIGHT-2)
                 pygame.draw.rect(screen, (54, 153, 43), rect)
                 font_h4.set_bold(True)
@@ -1436,12 +1467,13 @@ while running:
                 rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-8, ROW_HEIGHT-8)
                 screen.blit(trains[train]["icon"], (x_across+SPACING, y_down+SPACING))
 
-                if trains[train]['stored'] > 0:
-                    pygame.draw.circle(screen, "white", (x_across+ROW_HEIGHT, y_down+ROW_HEIGHT), 10)
-                    text = font_h4.render(str(trains[train]["stored"]), True, "black")
-                    screen.blit(text, (x_across+ROW_HEIGHT-text.get_width()/2, y_down+ROW_HEIGHT-text.get_height()/2))
-
                 train_rects.append(rect)
+
+                if train_tab == "stored":
+                    if trains[train]['stored'] > 0:
+                        pygame.draw.circle(screen, "white", (x_across+ROW_HEIGHT, y_down+ROW_HEIGHT), 10)
+                        text = font_h4.render(str(trains[train]["stored"]), True, "black")
+                        screen.blit(text, (x_across+ROW_HEIGHT-text.get_width()/2, y_down+ROW_HEIGHT-text.get_height()/2))
 
                 if x_across == width - 76:
                     x_across = width - 280
@@ -1454,6 +1486,44 @@ while running:
                     for item in trains+lines+upgrades:
                         item["shown"] = False
                     trains[train_rects.index(rect)]["shown"] = True
+
+            # train tab
+            for tab in ["stored"]:
+                rect = pygame.Rect(x_across+SPACING, y_down+SPACING+2, 20, ROW_HEIGHT-2)
+                pygame.draw.rect(screen, (54, 153, 43), rect)
+                font_h4.set_bold(True)
+                text = font_h4.render("O", True, "white")
+                screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/5)-text.get_height()/2))
+                text = font_h4.render("N", True, "white")
+                screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/5)-text.get_height()/2))
+                font_h4.set_bold(False)
+
+                rect = pygame.Rect(x_across+SPACING+(120-SPACING-SPACING/2), y_down+SPACING+2, 20, ROW_HEIGHT-2)
+                pygame.draw.rect(screen, "red", rect)
+                font_h4.set_bold(True)
+                text = font_h4.render("O", True, "white")
+                screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/4)-text.get_height()/2))
+                text = font_h4.render("F", True, "white")
+                screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/4)-text.get_height()/2))
+                text = font_h4.render("F", True, "white")
+                screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/4)-text.get_height()/2))
+                font_h4.set_bold(False)
+
+                if train_tab == tab:
+                    rect = pygame.Rect(x_across+SPACING+20, y_down+SPACING+2, 120-SPACING-SPACING/2, ROW_HEIGHT-2)
+                else:
+                    rect = pygame.Rect(x_across+SPACING, y_down+SPACING+2, 120-SPACING-SPACING/2, ROW_HEIGHT-2) 
+
+                pygame.draw.rect(screen, (150,150,150), rect)
+
+                if button_check(rect):
+                    train_tab = None if train_tab == tab else tab
+
+                if tab == "stored":
+                    text = font_h4.render("Amount", True, "white")
+                    screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/3)-text.get_height()/2+1))
+                    text = font_h4.render("Stored", True, "white")
+                    screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/3)-text.get_height()/2+1))
 
         if menu_page == "Upgrades":
             upgrade_rects = []
@@ -1673,7 +1743,16 @@ while running:
                                     train.last_hr = train.next_hr
                                     train.last_min = train.next_min
                                     income_statements.append(f'{list(months.keys())[month-1]} {round(day)}{" " if round(day)<10 else ""} {0 if round(train.next_hr)<10 else ""}{round(train.next_hr)}:{0 if round(train.next_min)<10 else ""}{round(train.next_min)} | {line["name"]:<8} | ${round(euros_per_trip)}') 
-            
+
+        # hotkeys
+        key = pygame.key.get_pressed()
+        
+        if key[pygame.K_l]:
+            menu_page = "Lines"
+        elif key[pygame.K_t]:
+            menu_page = "Trains"
+        elif key[pygame.K_u]:
+            menu_page = "Upgrades"
        
         # # map key
         # # can't afford key
@@ -1697,8 +1776,8 @@ while running:
         # pygame.draw.rect(screen, "yellow", rect)
         # print_text("Owned", font_h4, "black", 31, 50)
 
-        text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
-        screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
+        # text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
+        # screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
 
     pygame.display.flip()
 
