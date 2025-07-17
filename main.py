@@ -210,7 +210,7 @@ trains = [
 {'make': 'RailSpark', 'model': 'Mystic', 'icon': railspark_mystic, 'shown': False, 'owned': False, 'cost': 2500000, 'train_type': 'Electric', 'capacity': 375, 'speed': 180, 'ppppkm': 0.06, 'level': 0, "stored": 0},
 {'make': 'North Star', 'model': 'Ursa', 'icon': north_star_green, 'shown': False, 'owned': False, 'cost': 500000, 'train_type': 'Diesel', 'capacity': 500, 'speed': 80, 'ppppkm': 0.02, 'level': 0, "stored": 0},
 {'make': 'North Star', 'model': 'Maris', 'icon': north_star_red, 'shown': False, 'owned': False, 'cost': 320000, 'train_type': 'Electric', 'capacity': 200, 'speed': 120, 'ppppkm': 0.03, 'level': 0, "stored": 0},
-{'make': 'North Star', 'model': 'Polaris', 'icon': north_star_purple, 'shown': False, 'owned': False, 'cost': 1600000, 'train_type': 'Electric', 'capacity': 400, 'speed': 134, 'ppppkm': 0.045, 'level': 0, "stored": 4},
+{'make': 'North Star', 'model': 'Polaris', 'icon': north_star_purple, 'shown': False, 'owned': False, 'cost': 1600000, 'train_type': 'Electric', 'capacity': 400, 'speed': 134, 'ppppkm': 0.045, 'level': 0, "stored": 0},
 {'make': 'North Star', 'model': 'Polaris-2', 'icon': north_star_yellow, 'shown': False, 'owned': False, 'cost': 2150000, 'train_type': 'Electric', 'capacity': 500, 'speed': 150, 'ppppkm': 0.045, 'level': 0, "stored": 0},
 {'make': 'Thompson Lines', 'model': 'AC-76', 'icon': thompson_lines_red, 'shown': False, 'owned': False, 'cost': 150000, 'train_type': 'Diesel', 'capacity': 150, 'speed': 110, 'ppppkm': 0.02, 'level': 0, "stored": 0},
 {'make': 'Thompson Lines', 'model': 'AC-77', 'icon': thompson_lines_blue, 'shown': False, 'owned': False, 'cost': 160000, 'train_type': 'Diesel', 'capacity': 150, 'speed': 120, 'ppppkm': 0.02, 'level': 0, "stored": 0},
@@ -402,7 +402,7 @@ def print_text(words, font, color, x, y):
 
 def draw_lines(lines, cities):
     for line in lines:
-        if line["cities"] != [] and line["finished"]:
+        if line["cities"] != []:
             for code in range(len(line["cities"])-1):
                 for city in cities:
                     if city.code == line["cities"][code]:
@@ -1264,6 +1264,17 @@ while running:
             enter_rect = pygame.Rect(width-282-55-t_w-20-10-text.get_width()-20, 5, text.get_width()+20, 30)
             pygame.draw.rect(screen, (53, 143, 34), enter_rect, border_radius = 20)
             screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
+
+            fake_lines = []
+            if len(item["cities"]) > 0:
+                for loc in [item["cities"][0], item["cities"][-1]]:
+                    for city in cities:
+                        if city.code == loc:
+                            loc = city
+                    for dest in loc.operates_to:
+                        fake_lines.append({"cities": [dest, loc.code], "color": (140,140,140)})
+                draw_lines(fake_lines, cities)
+
             
             for city in cities:
                 key = pygame.key.get_pressed()
@@ -1331,29 +1342,30 @@ while running:
             for line in range(len(lines)):
                 color = lines[line]["color"]
                 
-                rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-4, ROW_HEIGHT-4)
-                pygame.draw.rect(screen, pygame.Color(min(255, color.r+50), min(255, color.g+50), min(255, color.b+50)), rect)
-                rect = pygame.Rect(x_across+SPACING+4, y_down+SPACING+4, ROW_HEIGHT-4, ROW_HEIGHT-4)
-                pygame.draw.rect(screen, color//pygame.Color(2,2,2), rect)
-                rect = pygame.Rect(x_across+SPACING+4, y_down+SPACING+4, ROW_HEIGHT-8, ROW_HEIGHT-8)
-                pygame.draw.rect(screen, color, rect)
+                if lines[line]["shown"]:
+                    rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT, ROW_HEIGHT)
+                    pygame.draw.rect(screen, "white", rect, border_radius=8)
+                pygame.draw.polygon(screen, color, [(x_across+SPACING+4,                y_down+SPACING+ROW_HEIGHT*4/5), 
+                                                    (x_across+SPACING+ROW_HEIGHT*4/5,   y_down+SPACING+4),
+                                                    (x_across+SPACING+ROW_HEIGHT-4,     y_down+SPACING+ROW_HEIGHT*1/5),
+                                                    (x_across+SPACING+ROW_HEIGHT*1/5,   y_down+SPACING+ROW_HEIGHT-4)])
 
-                rect = pygame.Rect(x_across, y_down, ROW_HEIGHT, ROW_HEIGHT)
+                rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT, ROW_HEIGHT)
                 line_rects.append(rect)
 
                 if line_tab == "owned":
                     if lines[line]["owned"] and len(lines[line]["cities"]) > 0 and lines[line]["finished"]:
-                        pygame.draw.circle(screen, (39, 143, 31), (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
-                        pygame.draw.line(screen, "white", (x_across+ROW_HEIGHT-4, y_down+ROW_HEIGHT+2), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
-                        pygame.draw.line(screen, "white", (x_across+ROW_HEIGHT+5, y_down+ROW_HEIGHT-4), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
+                        pygame.draw.circle(screen, (39, 143, 31), (x_across+ROW_HEIGHT-5, y_down+ROW_HEIGHT-5), 10)
+                        pygame.draw.line(screen, "white", (x_across+ROW_HEIGHT-11, y_down+ROW_HEIGHT-5), (x_across+ROW_HEIGHT-7 ,y_down+ROW_HEIGHT), width=2)
+                        pygame.draw.line(screen, "white", (x_across+ROW_HEIGHT-2, y_down+ROW_HEIGHT-11), (x_across+ROW_HEIGHT-7 ,y_down+ROW_HEIGHT), width=2)
                     elif lines[line]["owned"]:
-                        pygame.draw.circle(screen, (255, 255, 0), (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
-                        pygame.draw.line(screen, "black", (x_across+ROW_HEIGHT-4, y_down+ROW_HEIGHT+2), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
-                        pygame.draw.line(screen, "black", (x_across+ROW_HEIGHT+5, y_down+ROW_HEIGHT-4), (x_across+ROW_HEIGHT ,y_down+ROW_HEIGHT+7), width=2)
+                        pygame.draw.circle(screen, (255, 255, 0), (x_across+ROW_HEIGHT-5, y_down+ROW_HEIGHT-5), 10)
+                        pygame.draw.line(screen, "black", (x_across+ROW_HEIGHT-11, y_down+ROW_HEIGHT-5), (x_across+ROW_HEIGHT-7 ,y_down+ROW_HEIGHT), width=2)
+                        pygame.draw.line(screen, "black", (x_across+ROW_HEIGHT-2, y_down+ROW_HEIGHT-11), (x_across+ROW_HEIGHT-7 ,y_down+ROW_HEIGHT), width=2)
                     else:
-                        pygame.draw.circle(screen, (150,150,150), (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
+                        pygame.draw.circle(screen, (150,150,150), (x_across+ROW_HEIGHT-5, y_down+ROW_HEIGHT-5), 10)
                         text = font_h4.render("X", True, "white")
-                        screen.blit(lock, (x_across+ROW_HEIGHT+2-lock.get_width()/2, y_down+ROW_HEIGHT+2-lock.get_height()/2-1))
+                        screen.blit(lock, (x_across+ROW_HEIGHT-5-lock.get_width()/2, y_down+ROW_HEIGHT-5-lock.get_height()/2-1))
                 
                 elif line_tab == "type":
                     if lines[line]["type"] == "Standard":
@@ -1366,14 +1378,14 @@ while running:
                         color = (0, 162, 232)
 
                     if lines[line]["owned"]:
-                        pygame.draw.circle(screen, color, (x_across+ROW_HEIGHT+2, y_down+ROW_HEIGHT+2), 10)
+                        pygame.draw.circle(screen, color, (x_across+ROW_HEIGHT-5, y_down+ROW_HEIGHT-5), 10)
                         color = "black" if lines[line]["type"] == "Electric" else "white"
                         text = font_h1.render(lines[line]["type"][0], True, color)
                         if lines[line]["type"][0] == "M":
                             text= pygame.transform.scale(text, (14, 14))
                         else:
                             text= pygame.transform.scale(text, (10, 14))
-                        screen.blit(text, (x_across+ROW_HEIGHT+2-text.get_width()/2, y_down+ROW_HEIGHT+2-text.get_height()/2))
+                        screen.blit(text, (x_across+ROW_HEIGHT-5-text.get_width()/2, y_down+ROW_HEIGHT-5-text.get_height()/2))
 
                 if x_across == width - 76:
                     x_across = width - 280
