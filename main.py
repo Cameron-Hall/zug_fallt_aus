@@ -1,7 +1,5 @@
 import math
 import pygame
-import pygame_widgets
-from pygame_widgets.slider import Slider
 import numpy as np
 from scipy.spatial import Delaunay
 import random
@@ -56,6 +54,7 @@ b = 100
 
 info_draw = False
 type_change = False
+deletion = False
 
 menu_page = 'Lines'
 
@@ -242,54 +241,7 @@ trains = [
 ]
 owned_trains = []
 lines = [
-    # Reds
-    {"class": "Red", "name": "Red-1", "color": pygame.Color(255, 102, 102), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Red", "name": "Red-2", "color": pygame.Color(255, 0, 0),     "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Red", "name": "Red-3", "color": pygame.Color(204, 0, 0),     "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Red", "name": "Red-4", "color": pygame.Color(153, 0, 0),     "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Oranges
-    # {"class": "Orange", "name": "Orange-1", "color": pygame.Color(255, 200, 0), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Orange", "name": "Orange-2", "color": pygame.Color(255, 150, 0), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Orange", "name": "Orange-3", "color": pygame.Color(255, 100, 0), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Orange", "name": "Orange-4", "color": pygame.Color(255, 50, 0),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Yellows
-    # {"class": "Yellow", "name": "Yellow-1", "color": pygame.Color(255, 255, 0), "type": "Electric", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Yellow", "name": "Yellow-2", "color": pygame.Color(210, 210, 0), "type": "Electric", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Yellow", "name": "Yellow-3", "color": pygame.Color(150, 150, 0), "type": "Electric", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Yellow", "name": "Yellow-4", "color": pygame.Color(70, 70, 0),   "type": "Electric", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Greens
-    # {"class": "Green", "name": "Green-1", "color": pygame.Color(0, 255, 0), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Green", "name": "Green-2", "color": pygame.Color(0, 190, 0), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Green", "name": "Green-3", "color": pygame.Color(0, 120, 0), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Green", "name": "Green-4", "color": pygame.Color(0, 70, 0),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Light Blues
-    # {"class": "Light Blue", "name": "Blue-L1", "color": pygame.Color(80, 225, 225), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Light Blue", "name": "Blue-L2", "color": pygame.Color(0, 190, 190),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Light Blue", "name": "Blue-L3", "color": pygame.Color(0, 140, 140),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Light Blue", "name": "Blue-L4", "color": pygame.Color(0, 70, 70),    "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Blues
-    # {"class": "Blue", "name": "Blue-D1", "color": pygame.Color(80, 80, 255), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Blue", "name": "Blue-D2", "color": pygame.Color(0, 0, 255),   "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Blue", "name": "Blue-D3", "color": pygame.Color(0, 0, 110),   "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Blue", "name": "Blue-D4", "color": pygame.Color(0, 0, 40),    "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Purples
-    # {"class": "Purple", "name": "Purple-1", "color": pygame.Color(150, 75, 150), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Purple", "name": "Purple-2", "color": pygame.Color(160, 0, 160),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Purple", "name": "Purple-3", "color": pygame.Color(110, 0, 110),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Purple", "name": "Purple-4", "color": pygame.Color(50, 0, 50),    "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-
-    # # Browns
-    # {"class": "Brown", "name": "Brown-1", "color": pygame.Color(181, 101, 29), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Brown", "name": "Brown-2", "color": pygame.Color(160, 82, 45),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Brown", "name": "Brown-3", "color": pygame.Color(139, 69, 19),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},
-    # {"class": "Brown", "name": "Brown-4", "color": pygame.Color(101, 67, 33),  "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0}
-
+    {"name": "Line-1", "color": pygame.Color(255, 102, 102), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},  
 ]
 upgrades = [
     {"name": "Night Owl 1",     "cost": 1000000,  "predecessor": [],                              "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will run for an extra hour each night, meaning your trains will finish running at 10pm."},
@@ -305,7 +257,7 @@ upgrades = [
 ]
 # place names
 first_names = [
-    "Ash", "Bath", "Bay", "Beaver", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
+    "Ash", "Bath", "Bay", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
     "Brad", "Brent", "Bridge", "Brook", "Cam", "Cedar", "Charl", "Chest", "Clear",
     "Clifton", "Coal", "Clover", "Col", "Cran", "Crow", "Daven", "Day",
     "Deer", "Dover", "Down", "Dun", "East", "Edge", "Elm", "Elk", "Fair", "Farm",
@@ -320,7 +272,7 @@ first_names = [
     "Ruther", "Saint", "Salt", "Sand", "Scot", "Shel", "Silver",
     "Smith", "Snow", "South", "Spring", "Stan", "Stock", "Sun", "Syl",
     "Tall", "Three", "Tim", "Twin", "Valley", "Vern", "Wake",
-    "Wash", "Water", "West", "White", "Willow", "Win", "Wood", "York",
+    "Wash", "Water", "West", "Wheel", "White", "Willow", "Win", "Wood", "York",
 ]
 last_names = [
     "ville", "ton", "ham", "field", "bury", "ford", "land", "wood", "port", "dale",
@@ -407,6 +359,19 @@ def print_text(words, font, color, x, y):
     screen.blit(text, (x, y))
 
 
+def direction_to_vertical(x1, y1, x2, y2):
+    dx = x2 - x1
+    dy = y2 - y1
+    angle_rad = math.atan2(dx, dy)  # angle to vertical
+    angle_deg = math.degrees(angle_rad)
+
+    # Classify angle
+    if -45 <= angle_deg <= 45 or abs(angle_deg) >= 135:
+        return "vertical"
+    else:
+        return "horizontal"
+
+
 def draw_lines(lines, cities):
     for line in lines:
         if line["cities"] != []:
@@ -414,10 +379,33 @@ def draw_lines(lines, cities):
                 for city in cities:
                     if city.code == line["cities"][code]:
                         start_loc = city
-                    if city.code == line["cities"][code+1]:
+                    elif city.code == line["cities"][code+1]:
                         end_loc = city
 
-                pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5, start_loc.loc.y+2.5), (end_loc.loc.x+2.5, end_loc.loc.y+2.5), width = 5)
+                for path in paths:
+                    if (path["start"] == start_loc.code or path["end"] == start_loc.code) and (path["start"] == end_loc.code or path["end"] == end_loc.code):
+                        z1 = path["lines"]  # Number of lines
+                        path["running_total"] += 1
+                        z2 = path["running_total"]
+
+
+                # Given two points (x1, y1) and (x2, y2)
+                x1, y1 = start_loc.loc.x, start_loc.loc.y
+                x2, y2 = end_loc.loc.x, end_loc.loc.y
+
+                dir = direction_to_vertical(x1, y1, x2, y2)
+
+                if z1 % 2 == 0:
+                    offset = (z1/2)*-5 + z2*5 
+                else:
+                    offset = (z1/2)*-5 + z2*5
+
+                if dir == "vertical":
+                    pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5), (end_loc.loc.x+2.5+offset, end_loc.loc.y+2.5), width = 5)
+                elif dir == "horizontal":
+                    pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5, start_loc.loc.y+2.5+offset), (end_loc.loc.x+2.5, end_loc.loc.y+2.5+offset), width = 5)
+
+                
 
                 if line["type"] == "Electric":
                     spacing = 10
@@ -455,6 +443,13 @@ def draw_lines(lines, cities):
                     # Draw connecting line
                     if len(points) > 1:
                         pygame.draw.lines(screen, yellow, False, points, 2)
+                
+                elif line["type"] == "Monorail":
+                    pygame.draw.line(screen, "white", (start_loc.loc.x+2.5, start_loc.loc.y+2.5), (end_loc.loc.x+2.5, end_loc.loc.y+2.5), width = 1)
+
+    for path in paths:
+        path["running_total"] = -1  # Reset running total for next frame
+
 
 def draw_city(city, color, flash=1):
     if (pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5, round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5,round(city.loc.y)+10)) and hover:
@@ -736,12 +731,25 @@ for city in cities_base:
     
     cities.append(City(city["name"], city["name"][0:3].upper(), city["loc"], cost, round(cost/50*conns), runs_to))
 
+cities_dict = {city.code: city for city in cities}
+
+paths = []
+for city in cities:
+    for dest in city.operates_to:
+        bad = False
+        for path in paths:
+            if (city.code == path["start"] or city.code == path["end"]) and (dest == path["start"] or dest == path["end"]):
+                bad = True
+        if not bad:
+            paths.append({"start": city.code, "end": dest, "lines": 0, "running_total": -1})
 
 while running:
-    events = pygame.event.get()
-    for event in pygame.event.get(exclude= [pygame.MOUSEBUTTONUP]):
+    for event in pygame.event.get(exclude=[pygame.MOUSEBUTTONUP]):
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_BACKSPACE:
+                deletion = True
 
     # checks for phantom clicks (ie. player clicks not on a button, so MOUSEBUTTONUP does not get removed from the event queue)
     if mouse_up_check:
@@ -788,6 +796,8 @@ while running:
             draw_lines(fake_lines, cities)
 
         draw_lines(lines, cities)
+
+        fake_lines = []
         # draw cities
         for city in cities:
             draw = False
@@ -840,9 +850,10 @@ while running:
 
         # show city labels on click
         for city in cities:
-
             # city labels
             if city.clicked and not line_build and city.shown: 
+                for dest in city.operates_to:
+                    fake_lines.append({"cities": [dest, city.code], "color": (150,150,150), "type": "Standard"})
                 draw_city(city, pygame.Color(54, 153, 43))
                 BOX_WIDTH = font_h4.render("XXXXXXXXXXXX  XXX", True, "black").get_width()
                 BOX_HEIGHT = H4_SIZE * 3 + 12
@@ -1299,7 +1310,6 @@ while running:
                     popup.blit(text, (popup.get_width()/2-text.get_width()/2, 15))
                     
                     y_down = 60+H2_SIZE
-                    sliders = []
                     for color, name in zip([r,g,b], ["red", "green", "blue"]):
                         x_across = 30
                         text = font_h3.render(f"{name.title()} Value", True, "white")
@@ -1325,20 +1335,8 @@ while running:
                             x_across = x + 30
 
                         x_across = 30
-
-                        sliders.append(Slider(screen, x_across, y_down+H3_SIZE, popup.get_width()*2/3, 30, min=0, max=255, step=1))
-
                         rect = pygame.Rect(x_across+((color/255)*(popup.get_width()*2/3))-1, y_down+H3_SIZE-2, 2, 34)
                         pygame.draw.rect(popup, "white", rect)
-
-                        rect = pygame.Rect(rect[0]-10, rect[1], rect[2]+20, rect[3])
-
-                        if pygame.event.peek(pygame.MOUSEBUTTONDOWN):
-                            dx, dy = pygame.mouse.get_rel()
-                            if dx > 0 and color < 255-dx:
-                                color += dx
-                            elif dx < 0 and color > 0+(dx*-1):
-                                color -= dx
                         
                         pygame.draw.circle(popup, "black", (x_across-15, y_down+H3_SIZE+15), 10)
                         if is_mouse_over_circle((popup_loc.x+x_across-15, popup_loc.y+y_down+H3_SIZE+15), 10) and color > 1:
@@ -1352,8 +1350,6 @@ while running:
                         text = font_h3.render("+", True, "white")
                         popup.blit(text, (x_across+(popup.get_width()*2/3)+15-text.get_width()/2+1, y_down+H3_SIZE+15-text.get_height()/2-1))
 
-                        color = sliders[-1].getValue()
-
                         if name == "red":
                             r = color
                         if name == "green":
@@ -1363,35 +1359,65 @@ while running:
 
                         y_down += 90
 
-                    rect = pygame.Rect(popup.get_width()-160, popup.get_height()/2-125+30, 150, 250)
+                    same = False
+                    for line in lines:
+                        if (r,g,b) == line["color"]:
+                            same = True
+
+                    rect = pygame.Rect(popup.get_width()-160, popup.get_height()/2-125+30, 150, 200)
                     pygame.draw.rect(popup, (r,g,b), rect, border_radius = 20)
+
+                    rect = pygame.Rect(popup.get_width()-160, popup.get_height()/2+105, 150, 50)
+                    pygame.draw.rect(popup, (r, g, b), rect, width = 4, border_radius = 20)
+
+                    if same:
+                        color = (255, 0, 0)
+                    else:
+                        color = "white"
+                    text = font_h3.render("Add New Line", True, color)
+                    popup.blit(text, (rect[0]+rect[2]/2-text.get_width()/2, rect[1]+rect[3]/2-text.get_height()/2))
+
+                    if button_check(pygame.Rect(rect[0]+popup_loc.x, rect[1]+popup_loc.y, rect[2], rect[3])):
+                        if same:
+                            pass
+                        else:
+                            lines.append({"name": f"Line-{len(lines)+1}", "color": (r,g,b), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0})
+                            new_line[0]["shown"] = False
+                            lines[-1]["shown"] = True
 
                 screen.blit(popup, (200+track_outline.get_width()/14,120+track_outline.get_height()/8.57))
 
         # building line
-        fake_lines = []
         if line_build != None:
             item = lines[lines.index(line_build)]
             
             rect = pygame.Rect(0, 0, width-282, 40)
             pygame.draw.rect(screen, item["color"], rect)
-            color = "black" if item["color"] in ["Yellow-1", "Yellow-2", "Blue-L1", "Red-1"] else "white"
+            color = "black" if sum(item["color"]) > 450 else "white"
             text = font_h3.render(f'Building {item["name"].upper()} Line - {", ".join(item["cities"])}', True, color)
             screen.blit(text, ((rect[3]-text.get_height())/2, (rect[3]/2)-(text.get_height()/2)))
 
             text = font_h3.render("Cancel Build", True, "white")
-            rect = pygame.Rect(width-282-57-text.get_width()-20, 3, text.get_width()+24, 34)
+            rect = pygame.Rect(1048, 3, 144, 34)
             pygame.draw.rect(screen, "white", rect, border_radius = 20)
-            cancel_rect = pygame.Rect(width-282-55-text.get_width()-20, 5, text.get_width()+20, 30)
+            cancel_rect = pygame.Rect(1050, 5, 140, 30)
             pygame.draw.rect(screen, "red", cancel_rect, border_radius = 20)
             screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
-            t_w = text.get_width()
+            t_w = text.get_width() 
 
             text = font_h3.render("Finish Build", True, "white")
-            rect = pygame.Rect(width-282-57-t_w-20-10-text.get_width()-20, 3, text.get_width()+24, 34)
+            rect = pygame.Rect(898, 3, 144, 34)
             pygame.draw.rect(screen, "white", rect, border_radius = 20)
-            enter_rect = pygame.Rect(width-282-55-t_w-20-10-text.get_width()-20, 5, text.get_width()+20, 30)
+            enter_rect = pygame.Rect(900, 5, 140, 30)
             pygame.draw.rect(screen, (53, 143, 34), enter_rect, border_radius = 20)
+            screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
+            t_w += text.get_width()
+
+            text = font_h3.render("Undo", True, "white")
+            rect = pygame.Rect(748, 3, 144, 34)
+            pygame.draw.rect(screen, "white", rect, border_radius = 20)
+            undo_rect = pygame.Rect(750, 5, 140, 30)
+            pygame.draw.rect(screen, (255, 143, 34), undo_rect, border_radius = 20)
             screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
 
             if len(item["cities"]) > 0:
@@ -1402,7 +1428,7 @@ while running:
                     for dest in loc.operates_to:
                         for city in cities:
                             if city.code == dest:
-                                if city.owned:
+                                if city.owned and city.code not in item["cities"][1:-1]:
                                     fake_lines.append({"cities": [dest, loc.code], "color": (150,150,150), "type": "Standard"})
             
             for city in cities:
@@ -1410,8 +1436,57 @@ while running:
                 rect = pygame.Rect(city.loc.x-5, city.loc.y-5, 15, 15)
                 if item["cities"] == [] and button_check(rect) and item["owned"] and city.owned:
                     item["cities"].append(city.code)
-                elif button_check(rect) and item["cities"][-1] in city.operates_to and len(item["cities"]) < 10 and city.code not in item["cities"] and city.owned:
-                    item["cities"].append(city.code)
+                    item["build_order"].append(city.code)
+                elif button_check(rect) and len(item["cities"]) < 10 and city.owned:
+                    # Determine if city can be added to either end
+                    can_add_to_back = city.code not in item["cities"] and city.code in city.operates_to and item["cities"] and city.code in cities_dict[item["cities"][-1]].operates_to
+                    can_add_to_front = city.code not in item["cities"] and city.code in city.operates_to and item["cities"] and city.code in cities_dict[item["cities"][0]].operates_to
+
+                    # If line is empty, allow any owned city to start
+                    if not item["cities"]:
+                        item["cities"].append(city.code)
+                        item["build_order"].append(city.code)
+                    else:
+                        # Check both ends
+                        back_city_code = item["cities"][-1]
+                        front_city_code = item["cities"][0]
+                        back_city = cities_dict[back_city_code]
+                        front_city = cities_dict[front_city_code]
+
+                        can_back = city.code in back_city.operates_to and (city.code not in item["cities"] or city.code == front_city.code)
+                        can_front = city.code in front_city.operates_to and (city.code not in item["cities"] or city.code == back_city.code) 
+
+                        # If both ends are possible, pick the most recent in build_order
+                        if can_back and can_front:
+                            # Compare build_order indices
+                            back_index = item["build_order"].index(back_city_code)
+                            front_index = item["build_order"].index(front_city_code)
+                            if back_index-1 > front_index:
+                                # Add to back
+                                item["cities"].append(city.code)
+                            else:
+                                # Add to front
+                                item["cities"].insert(0, city.code)
+                            item["build_order"].append(city.code)
+                        elif can_back:
+                            item["cities"].append(city.code)
+                            item["build_order"].append(city.code)
+                        elif can_front:
+                            item["cities"].insert(0, city.code)
+                            item["build_order"].append(city.code)
+                        
+                        for city in range(len(item["cities"])-1):
+                            for path in paths:
+                                if (item["cities"][city] == path["start"] or item["cities"][city] == path["end"]) and (item["cities"][city+1] == path["start"] or item["cities"][city+1] == path["end"]):
+                                    path["lines"] += 1
+                                print(path)
+
+                        # Optionally, finish if loop is closed
+                        if len(item["cities"]) > 2 and item["cities"][0] == item["cities"][-1]:
+                            item["finished"] = True
+                            line_build = None
+                            item["shown"] = True
+
                 elif key[pygame.K_RETURN] or button_check(enter_rect):
                     item["finished"] = True
                     line_build = None
@@ -1420,6 +1495,10 @@ while running:
                     item["cities"] = []
                     line_build = None
                     item["shown"] = True
+                elif deletion or button_check(undo_rect):
+                    item["cities"].remove(item["build_order"][-1])
+                    item["build_order"].remove(item["build_order"][-1])
+                    deletion = False
                 else:
                     pass
                 flash_lines = []
@@ -1926,15 +2005,14 @@ while running:
         # pygame.draw.rect(screen, "yellow", rect)
         # print_text("Owned", font_h4, "black", 31, 50)
 
-        # text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
-        # screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
+        text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
+        screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
 
-    pygame_widgets.update(events)
     pygame.display.flip()
 
     # for flashing/pulsing items such as lines in purchase phase
     if flash < 1:
-        flash += 0.001
+        flash += 0.03
     else:
         flash -= 1
 
