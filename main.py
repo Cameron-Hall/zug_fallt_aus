@@ -396,9 +396,12 @@ def draw_lines(lines, cities):
                 dir = direction_to_vertical(x1, y1, x2, y2)
 
                 if z1 % 2 == 0:
-                    offset = (z1/2)*-5 + z2*5 
+                    offset = (z1/2)*-5 + z2*5 +2.5
                 else:
-                    offset = (z1/2)*-5 + z2*5
+                    offset = (z1/2)*-5 + z2*5 +2.5
+
+                if line in fake_lines:
+                    offset -= 2.5
 
                 if dir == "vertical":
                     pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5), (end_loc.loc.x+2.5+offset, end_loc.loc.y+2.5), width = 5)
@@ -979,7 +982,11 @@ while running:
                             popup.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*1/2)-(text.get_height()/2)))
 
                             if button_check(pygame.Rect(rect[0]+popup_loc.x, rect[1]+popup_loc.y, rect[2], rect[3])):
+                                for path in paths:
+                                    if (path["start"] == item["cities"][0] or path["end"] == item["cities"][0]) and (path["start"] == item["cities"][-1] or path["end"] == item["cities"][-1]):
+                                        path["lines"] -= 1
                                 item["cities"] = []
+
                                 for train in item["trains"]:
                                     for tren in trains:
                                         if train == tren["model"]:
@@ -1421,7 +1428,7 @@ while running:
             screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
 
             if len(item["cities"]) > 0:
-                for loc in [item["cities"][0], item["cities"][-1]]:
+                for loc in ([item["cities"][0], item["cities"][-1]] if len(item["cities"]) > 1 else [item["cities"][0]]):
                     for city in cities:
                         if city.code == loc:
                             loc = city
@@ -1429,7 +1436,17 @@ while running:
                         for city in cities:
                             if city.code == dest:
                                 if city.owned and city.code not in item["cities"][1:-1]:
-                                    fake_lines.append({"cities": [dest, loc.code], "color": (150,150,150), "type": "Standard"})
+                                    good = True
+                                    for path in paths:
+                                        if loc.code in [path["start"], path["end"]] and dest in [path["start"], path["end"]] and path["lines"] > 0:
+                                            good = False
+                                    if good:
+                                        for f in fake_lines:
+                                            if f["cities"] == [loc.code, dest]:
+                                                good = False
+                                    if good:
+                                        fake_lines.append({"cities": [dest, loc.code], "color": (150,150,150), "type": "Standard"})
+                                    
             
             for city in cities:
                 key = pygame.key.get_pressed()
@@ -1464,22 +1481,32 @@ while running:
                             if back_index-1 > front_index:
                                 # Add to back
                                 item["cities"].append(city.code)
+                                backed = True
+                                fronted = False
                             else:
                                 # Add to front
                                 item["cities"].insert(0, city.code)
+                                backed = False
+                                fronted = True
                             item["build_order"].append(city.code)
                         elif can_back:
                             item["cities"].append(city.code)
                             item["build_order"].append(city.code)
+                            backed = True
+                            fronted = False
                         elif can_front:
                             item["cities"].insert(0, city.code)
                             item["build_order"].append(city.code)
+                            backed = False
+                            fronted = True
                         
-                        for city in range(len(item["cities"])-1):
-                            for path in paths:
-                                if (item["cities"][city] == path["start"] or item["cities"][city] == path["end"]) and (item["cities"][city+1] == path["start"] or item["cities"][city+1] == path["end"]):
+                        for path in paths:
+                            if (item["build_order"][-1] in [path["start"], path["end"]]):
+                                if fronted and (item["cities"][1] in [path["start"], path["end"]]):
                                     path["lines"] += 1
-                                print(path)
+                                elif backed and (item["cities"][-2] in [path["start"], path["end"]]):
+                                    path["lines"] += 1
+                            print(path)
 
                         # Optionally, finish if loop is closed
                         if len(item["cities"]) > 2 and item["cities"][0] == item["cities"][-1]:
@@ -1496,9 +1523,13 @@ while running:
                     line_build = None
                     item["shown"] = True
                 elif deletion or button_check(undo_rect):
+                    for path in paths:
+                        if (item["build_order"][-1] == path["start"] or item["build_order"][-1] == path["end"]) and (item["cities"][-1] == path["start"] or item["cities"][-1] == path["end"]):
+                            path["lines"] -= 1
                     item["cities"].remove(item["build_order"][-1])
                     item["build_order"].remove(item["build_order"][-1])
                     deletion = False
+                    
                 else:
                     pass
                 flash_lines = []
@@ -1910,6 +1941,7 @@ while running:
                     for clicked in cities:       # makes every other cities  
                         clicked.clicked = False  # 'clicked' status False, then sets 
                     city.clicked = True          # the correct cities status to True
+                    flash = 0
             else:
                 city.clicked = False
 
