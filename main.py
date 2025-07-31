@@ -412,9 +412,13 @@ def draw_lines(lines, cities):
 
                 if line["type"] == "Electric":
                     spacing = 10
-                    offset = 4
-                    x1, y1 = (start_loc.loc.x+2, start_loc.loc.y+2)
-                    x2, y2 = (end_loc.loc.x+2, end_loc.loc.y+2)
+                    off = 4
+                    if dir == "vertical":
+                        x1, y1 = (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5)
+                        x2, y2 = (end_loc.loc.x+2.5+offset, end_loc.loc.y+2.5)
+                    elif dir == "horizontal":
+                        x1, y1 = (start_loc.loc.x+2.5, start_loc.loc.y+2.5+offset)
+                        x2, y2 = (end_loc.loc.x+2.5, end_loc.loc.y+2.5+offset)
 
                     # Direction vector from A to B
                     dx = x2 - x1
@@ -437,8 +441,8 @@ def draw_lines(lines, cities):
 
                         # Alternate offset direction
                         sign = -1 if i % 2 == 0 else 1
-                        dot_x = base_x + sign * perp_x * offset
-                        dot_y = base_y + sign * perp_y * offset
+                        dot_x = base_x + sign * perp_x * off
+                        dot_y = base_y + sign * perp_y * off
 
                         points.append((dot_x, dot_y))
                         # pygame.draw.circle(screen, yellow, (int(dot_x), int(dot_y)), 5)
@@ -448,7 +452,10 @@ def draw_lines(lines, cities):
                         pygame.draw.lines(screen, yellow, False, points, 2)
                 
                 elif line["type"] == "Monorail":
-                    pygame.draw.line(screen, "white", (start_loc.loc.x+2.5, start_loc.loc.y+2.5), (end_loc.loc.x+2.5, end_loc.loc.y+2.5), width = 1)
+                    if dir == "vertical":
+                        pygame.draw.line(screen, "white", (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5), (end_loc.loc.x+2.5+offset, end_loc.loc.y+2.5), width = 1)
+                    elif dir == "horizontal":
+                        pygame.draw.line(screen, "white", (start_loc.loc.x+2.5, start_loc.loc.y+2.5+offset), (end_loc.loc.x+2.5, end_loc.loc.y+2.5+offset), width = 1)
 
     for path in paths:
         path["running_total"] = -1  # Reset running total for next frame
@@ -788,12 +795,7 @@ while running:
                 x_across = 0
                 y_down += TILE_SIZE
 
-        # for simplex in tri.simplices:
-        #     tri_pts = [int_points[i] for i in simplex]
-        #     if not triangle_overlaps_other_rects(tri_pts, exclude_rects):
-        #         pygame.draw.polygon(screen, "black", tri_pts, 1)
-
-         # drawing on map
+        # drawing on map
         # draw lines
         if flash < 0.5:
             draw_lines(fake_lines, cities)
@@ -1506,7 +1508,6 @@ while running:
                                     path["lines"] += 1
                                 elif backed and (item["cities"][-2] in [path["start"], path["end"]]):
                                     path["lines"] += 1
-                            print(path)
 
                         # Optionally, finish if loop is closed
                         if len(item["cities"]) > 2 and item["cities"][0] == item["cities"][-1]:
@@ -1518,6 +1519,9 @@ while running:
                     item["finished"] = True
                     line_build = None
                     item["shown"] = True
+                    if len(item["cities"]) < 2:
+                        item["cities"] = []
+                        item["build_order"] = []
                 elif key[pygame.K_ESCAPE] or button_check(cancel_rect):
                     item["cities"] = []
                     line_build = None
