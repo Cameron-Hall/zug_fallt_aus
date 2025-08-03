@@ -394,10 +394,41 @@ def draw_lines(lines, cities):
                 elif dir == "horizontal":
                     pygame.draw.line(screen, line["color"], (start_loc.loc.x+2.5, start_loc.loc.y+2.5+offset), (end_loc.loc.x+2.5, end_loc.loc.y+2.5+offset), width = 5)
 
-                
+    for path in paths:
+        path["running_total"] = -1  # Reset running total for next frame
+
+    for line in lines:
+        if line["cities"] != []:
+            for code in range(len(line["cities"])-1):
+                for city in cities:
+                    if city.code == line["cities"][code]:
+                        start_loc = city
+                    elif city.code == line["cities"][code+1]:
+                        end_loc = city
+
+                for path in paths:
+                    if (path["start"] == start_loc.code or path["end"] == start_loc.code) and (path["start"] == end_loc.code or path["end"] == end_loc.code):
+                        z1 = path["lines"]  # Number of lines
+                        path["running_total"] += 1
+                        z2 = path["running_total"]
+
+
+                # Given two points (x1, y1) and (x2, y2)
+                x1, y1 = start_loc.loc.x, start_loc.loc.y
+                x2, y2 = end_loc.loc.x, end_loc.loc.y
+
+                dir = direction_to_vertical(x1, y1, x2, y2)
+
+                if z1 % 2 == 0:
+                    offset = (z1/2)*-5 + z2*5 +2.5
+                else:
+                    offset = (z1/2)*-5 + z2*5 +2.5
+
+                if line in fake_lines:
+                    offset -= 2.5                
 
                 if line["type"] == "Electric":
-                    spacing = 10
+                    spacing = 6
                     off = 4
                     if dir == "vertical":
                         x1, y1 = (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5)
@@ -442,6 +473,47 @@ def draw_lines(lines, cities):
                         pygame.draw.line(screen, "white", (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5), (end_loc.loc.x+2.5+offset, end_loc.loc.y+2.5), width = 1)
                     elif dir == "horizontal":
                         pygame.draw.line(screen, "white", (start_loc.loc.x+2.5, start_loc.loc.y+2.5+offset), (end_loc.loc.x+2.5, end_loc.loc.y+2.5+offset), width = 1)
+      
+                elif line["type"] == "MagLev":
+                    spacing = 10
+                    off = 2
+                    if dir == "vertical":
+                        x1, y1 = (start_loc.loc.x+2.5+offset, start_loc.loc.y+2.5)
+                        x2, y2 = (end_loc.loc.x+2.5+offset, end_loc.loc.y+2.5)
+                    elif dir == "horizontal":
+                        x1, y1 = (start_loc.loc.x+2.5, start_loc.loc.y+2.5+offset)
+                        x2, y2 = (end_loc.loc.x+2.5, end_loc.loc.y+2.5+offset)
+
+                    # Direction vector from A to B
+                    dx = x2 - x1
+                    dy = y2 - y1
+                    length = math.hypot(dx, dy)
+                    dir_x = dx / length
+                    dir_y = dy / length
+
+                    # Perpendicular vector (rotated 90 degrees)
+                    perp_x = -dir_y
+                    perp_y = dir_x
+
+                    num_dots = int(length // spacing)
+                    points = []
+
+                    for i in range(num_dots + 1):
+                        t = i * spacing
+                        base_x = x1 + dir_x * t
+                        base_y = y1 + dir_y * t
+
+                        # Alternate offset direction
+                        sign = -1 if i % 2 == 0 else 1
+                        dot_x = base_x + sign * perp_x * off
+                        dot_y = base_y + sign * perp_y * off
+
+                        points.append((dot_x, dot_y))
+                        # pygame.draw.circle(screen, yellow, (int(dot_x), int(dot_y)), 5)
+
+                    # Draw connecting line
+                    if len(points) > 1:
+                        pygame.draw.lines(screen, "red", False, points, 2)
 
     for path in paths:
         path["running_total"] = -1  # Reset running total for next frame
@@ -930,6 +1002,7 @@ while running:
                 # pygame.draw.rect(screen, (255, 0, 0, 180), pygame.Rect(rect[0]+popup_loc.x, rect[1]+popup_loc.y, rect[2], rect[3]))
                 if button_check(pygame.Rect(rect[0]+popup_loc.x, rect[1]+popup_loc.y, rect[2], rect[3])):
                     item["shown"] = False
+                    train_page = 0
 
                 if item in lines:   
                     text = font_h2_standard.render(f'{item["name"]} Line', True, item["color"])
@@ -1011,8 +1084,8 @@ while running:
                     rect = pygame.Rect(10, 50+H3_SIZE*4.5, 520, 100)
                     pygame.draw.rect(popup, (160,160,160), rect)
 
-                    left_button = pygame.Rect(220, 155+H3_SIZE*4.5, 35, 35)
-                    right_button = pygame.Rect(265, 155+H3_SIZE*4.5, 35, 35)
+                    left_button = pygame.Rect(230, 155+H3_SIZE*4.5, 35, 35)
+                    right_button = pygame.Rect(275, 155+H3_SIZE*4.5, 35, 35)
                     pygame.draw.rect(popup, (54, 153, 43, 180), left_button)
                     pygame.draw.rect(popup, (54, 153, 43, 180), right_button)
 
