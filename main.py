@@ -61,7 +61,6 @@ menu_page = 'Lines'
 # tabs
 line_tab = "owned"
 train_tab = "stored"
-upgrade_tab = None
 
 fake_lines = []
 new_line = [{"shown": False}]
@@ -69,13 +68,10 @@ income_statements = ["","","","","","","","",""]
 
 zoom_level = 0
 
-
-# upgrade variables
-full_day = False
-
 # start and end of day
-start = 7
-end = 21
+start = 1
+end = 23
+full_day = False
 trains_running = False
 loop = True
 
@@ -93,6 +89,8 @@ SPACING = 8
 # map = pygame.transform.scale(map, (width-300, (height * (map.get_width()/(width+300))))) # adjusts map size so the width of the map is the same as the width of the screen
 lock = pygame.image.load("zug_fallt_aus/assets/lock.png")
 lock = pygame.transform.scale(lock, (16, 16))
+save = pygame.image.load("zug_fallt_aus/assets/save_icon.png")
+save = pygame.transform.scale(save, (32, 32))
 track_outline = pygame.image.load("zug_fallt_aus/assets/track_outline.png")
 track_outline = pygame.transform.scale(track_outline, (width-700, height-400))
 
@@ -243,18 +241,6 @@ owned_trains = []
 lines = [
     {"name": "Line-1", "color": pygame.Color(255, 102, 102), "type": "Standard", "shown": False, "owned": False, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},  
 ]
-upgrades = [
-    {"name": "Night Owl 1",     "cost": 1000000,  "predecessor": [],                              "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will run for an extra hour each night, meaning your trains will finish running at 10pm."},
-    {"name": "Night Owl 2",     "cost": 2000000,  "predecessor": ["Night Owl 1"],                 "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will run for an extra hour each night, meaning your trains will finish running at 11pm."},
-    {"name": "Night Owl 3",     "cost": 3000000,  "predecessor": ["Night Owl 2"],                 "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will run for an extra hour each night, meaning your trains will finish running at midnight."},
-    {"name": "Night Owl 4",     "cost": 4000000,  "predecessor": ["Night Owl 3"],                 "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will run for an extra hour each night, meaning your trains will finish running at 1am."},
-    {"name": "Early Bird 1",    "cost": 1000000,  "predecessor": [],                              "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will start running one hour earlier each day, meaning your trains will start running at 6am."},
-    {"name": "Early Bird 2",    "cost": 2000000,  "predecessor": ["Early Bird 1"],                "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will start running one hour earlier each day, meaning your trains will start running at 5am."},
-    {"name": "Early Bird 3",    "cost": 3000000,  "predecessor": ["Early Bird 2"],                "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will start running one hour earlier each day, meaning your trains will start running at 4am."},
-    {"name": "Early Bird 4",    "cost": 4000000,  "predecessor": ["Early Bird 3"],                "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service will start running one hour earlier each day, meaning your trains will start running at 3am."},
-    {"name": "Round the Clock", "cost": 10000000, "predecessor": ["Night Owl 4", "Early Bird 4"], "icon": red_hill, "owned": False, "shown": False, "effect": "Your train service now runs around the clock, meaning your trains never stop!"},
-
-]
 # place names
 first_names = [
     "Ash", "Bath", "Bay", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
@@ -265,7 +251,7 @@ first_names = [
     "Glen", "Gold", "Green", "Ham", "Han", "Hart", "Hazel", "Hemp", "Hen",
     "High", "Hill", "Hol", "Hope", "Hun", "Iron", "John",
     "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
-    "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "Mart", "May",
+    "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "May",
     "Mid", "Mill", "Mon", "Mount",  "New", "North", "Oak",
     "Oce", "Olive", "Ox", "Park", "Peach", "Pine", "Plain", "Port",
     "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
@@ -828,7 +814,7 @@ while running:
             else:
                 pass
         
-        for item in trains+lines+upgrades+new_line:
+        for item in trains+lines+new_line:
             if item["shown"]:
                 hover = False
         
@@ -924,7 +910,7 @@ while running:
                     font_h4.set_bold(False)
            
         # popup answers
-        for item in trains+lines+upgrades+new_line:
+        for item in trains+lines+new_line:
             if item["shown"]:
                 hover = False
                 rect = (0, 0, width, height)
@@ -1014,14 +1000,22 @@ while running:
 
                     # other line details
                     text = font_h3.render(f"Line Route:", True, "white")
-                    popup.blit(text, (50, 50))
+                    popup.blit(text, (10, 50))
                     text = font_h3.render(f"{','.join(item['cities'])}" if item["cities"] != [] else "Not built", True, "white")
-                    popup.blit(text, (50, 50+H3_SIZE))
-
+                    popup.blit(text, (10, 50+H3_SIZE))
                     text = font_h3.render(f"Line Top Speed: {item['speed']}", True, "white")
-                    popup.blit(text, (50, 50+H3_SIZE*2))
+                    popup.blit(text, (10, 50+H3_SIZE*2))
                     text = font_h3.render(f"Level: {item['level']}", True, "white")
-                    popup.blit(text, (50, 50+H3_SIZE*3))
+                    popup.blit(text, (10, 50+H3_SIZE*3))
+
+                    rect = pygame.Rect(10, 50+H3_SIZE*4.5, 520, 100)
+                    pygame.draw.rect(popup, (160,160,160), rect)
+
+                    left_button = pygame.Rect(220, 155+H3_SIZE*4.5, 35, 35)
+                    right_button = pygame.Rect(265, 155+H3_SIZE*4.5, 35, 35)
+                    pygame.draw.rect(popup, (54, 153, 43, 180), left_button)
+                    pygame.draw.rect(popup, (54, 153, 43, 180), right_button)
+
 
                     line_colors = {"Standard": (136, 0, 21), "Electric": (236, 255, 17), "MagLev": (16, 12, 115), "Monorail": (0, 162, 232)}
 
@@ -1286,33 +1280,9 @@ while running:
                     if reset_to_0:
                         item["level"] = 0
                     font_h3.set_bold(False)
-                          
-                if item in upgrades:
-                    text = font_h2_standard.render(f'{item["name"]}', True, "black")
-                    rect = pygame.Rect((x_across+popup.get_width()/2-text.get_width()/2)-5, 0, text.get_width()+10, H2_SIZE+4) 
-                    pygame.draw.rect(popup, (255,255,255,90), rect, border_radius = 10)
-                    popup.blit(text, (x_across+popup.get_width()/2-text.get_width()/2, 2))
-
-                    if not item["owned"]:
-                        rect = pygame.Rect(10, popup.get_height()-60, popup.get_width()-20, 50)
-                        pygame.draw.rect(popup, (54, 153, 43, 180), rect, border_radius=20)
-                        text = font_h3.render("Purchase Upgrade", True, "white")
-                        popup.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*1/2)-(text.get_height()/2)))
-
-                        if button_check(pygame.Rect(rect[0]+popup_loc.x, rect[1]+popup_loc.y, rect[2], rect[3])):
-                            item["owned"] = True
-
-                            if item["name"] in ["Night Owl 1", "Night Owl 2", "Night Owl 3", "Night Owl 4"]:
-                                end += 1
-                                if end == 24:
-                                    end = 0
-                            elif item["name"] in ["Early Bird 1", "Early Bird 2", "Early Bird 3", "Early Bird 4"]:
-                                start -= 1
-                            elif item["name"] in ["Round the Clock"]:
-                                full_day = True
 
                 if item in new_line:
-                    for item in trains+lines+upgrades:
+                    for item in trains+lines:
                         item["shown"] = False
 
                     text = font_h2_standard.render("Choose Line Color", True, "white")
@@ -1549,7 +1519,7 @@ while running:
                 # right side menus
         # mini menu labels
         title_rects = []
-        titles = ["Lines", "Trains", "Upgrades"]
+        titles = ["Lines", "Trains", "Ascension"]
         y_down = 20
         TAB_HEIGHT = 110
         for title in titles:
@@ -1653,7 +1623,7 @@ while running:
             for rect in line_rects:
                 if not train_purchase:
                     if button_check(rect):
-                        for item in trains+lines+upgrades+new_line:
+                        for item in trains+lines+new_line:
                             item["shown"] = False
                         lines[line_rects.index(rect)]["shown"] = True
 
@@ -1747,7 +1717,7 @@ while running:
                 
             for rect in train_rects:
                 if button_check(rect):
-                    for item in trains+lines+upgrades+new_line:
+                    for item in trains+lines+new_line:
                         item["shown"] = False
                     trains[train_rects.index(rect)]["shown"] = True
 
@@ -1789,44 +1759,17 @@ while running:
                     text = font_h4.render("Stored", True, "white")
                     screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/3)-text.get_height()/2+1))
 
-        if menu_page == "Upgrades":
-            upgrade_rects = []
-            valid_upgrades = []
+        if menu_page == "Ascension":
+            pass
 
-            for upgrade in upgrades:
-                if not upgrade["owned"]:
-                    if not upgrade["predecessor"]:
-                        valid_upgrades.append(upgrade)
-                        continue
-
-                    valid = True
-                    for predecessor_name in upgrade["predecessor"]:
-                        # Find the predecessor upgrade with the matching name
-                        matched = next((item for item in upgrades if item["name"] == predecessor_name), None)
-                        if not matched or not matched["owned"]:
-                            valid = False
-                            break
-
-                    if valid:
-                        valid_upgrades.append(upgrade)                
-
-            for upgrade in range(len(valid_upgrades)):
-                rect = pygame.Rect(x_across+SPACING, y_down+SPACING, ROW_HEIGHT-8, ROW_HEIGHT-8)
-                screen.blit(upgrades[upgrade]["icon"], (x_across+SPACING, y_down+SPACING))
-
-                upgrade_rects.append(rect)
-
-                if x_across == width - 76:
-                    x_across = width - 280
-                    y_down += ROW_HEIGHT+SPACING
-                else:
-                    x_across += ROW_HEIGHT+SPACING
-                
-            for rect in upgrade_rects:
-                if button_check(rect):
-                    for item in trains+lines+upgrades+new_line:
-                        item["shown"] = False
-                    upgrades[upgrade_rects.index(rect)]["shown"] = True
+        # save game
+        font_h2_diff.set_bold(True)
+        # rect = pygame.Rect(width - 42, 10, 32, 32)
+        # pygame.draw.rect(screen, "red", rect)
+        screen.blit(save, (width - 84, 10))
+        if button_check(rect):
+            save_code = None
+        font_h2_diff.set_bold(False)
 
         # close game
         font_h2_diff.set_bold(True)
@@ -2000,7 +1943,8 @@ while running:
                             if train.next_min >= 60:
                                 train.next_min -= 60
                                 train.next_hr += 1
-                            if train.next_hr >= end:
+                            if train.next_hr >= 24:
+                                train.next_hr -= 24
                                 pass
                             else:
                                 if hour == train.next_hr and minute >= train.next_min or hour == train.next_hr+1 and minute <= 10 and train.next_min > 50:
@@ -2016,8 +1960,8 @@ while running:
             menu_page = "Lines"
         elif key[pygame.K_t]:
             menu_page = "Trains"
-        elif key[pygame.K_u]:
-            menu_page = "Upgrades"
+        elif key[pygame.K_a]:
+            menu_page = "Ascension"
        
         # # map key
         # # can't afford key
