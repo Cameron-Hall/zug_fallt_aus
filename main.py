@@ -27,11 +27,8 @@ hover = True
 
 hover_time = 0
 
-    # tutorial things
-money_clicked = False
-tutorial_final = False
-name_select = False
-congratulations = False
+# tutorial things
+closest_city = None
 
 username = ""
 
@@ -103,6 +100,8 @@ track_outline = pygame.transform.scale(track_outline, (width-700, height-400))
 
 speed = 60
 
+GAME_SPEED = 4
+
 scale_level = 0
 
 # map = pygame.image.load("zug_fallt_aus/assets/train_icons/red-hill.png")
@@ -145,6 +144,8 @@ express_green = pygame.image.load("zug_fallt_aus/assets/train_icons/express-gree
 express_green = pygame.transform.scale(express_green, (ROW_HEIGHT, ROW_HEIGHT))
 express_red = pygame.image.load("zug_fallt_aus/assets/train_icons/express-red.png")
 express_red = pygame.transform.scale(express_red, (ROW_HEIGHT, ROW_HEIGHT))
+express_tutorial = pygame.image.load("zug_fallt_aus/assets/train_icons/express-tutorial.png")
+express_tutorial = pygame.transform.scale(express_tutorial, (ROW_HEIGHT, ROW_HEIGHT))
 thompson_lines_blue = pygame.image.load("zug_fallt_aus/assets/train_icons/thompson-locomotives-blue.png")
 thompson_lines_blue = pygame.transform.scale(thompson_lines_blue, (ROW_HEIGHT, ROW_HEIGHT))
 thompson_lines_red = pygame.image.load("zug_fallt_aus/assets/train_icons/thompson-locomotives-red.png")
@@ -173,6 +174,8 @@ hermann_orange = pygame.image.load("zug_fallt_aus/assets/train_icons/hermann-tra
 hermann_orange = pygame.transform.scale(hermann_orange, (ROW_HEIGHT, ROW_HEIGHT))
 hermann_green = pygame.image.load("zug_fallt_aus/assets/train_icons/hermann-trainworks-2.png")
 hermann_green = pygame.transform.scale(hermann_green, (ROW_HEIGHT, ROW_HEIGHT))
+
+title_card = pygame.image.load("zug_fallt_aus/assets/title_card.png")
     
 # fonts
 H1_SIZE = 100
@@ -234,19 +237,19 @@ trains = [
 {'make': 'Mr Peng Enterprises', 'model': 'Peng-01', 'icon': peng_enterprises, 'shown': False, 'owned': False, 'cost': 43000000, 'train_type': 'Speedy', 'capacity': 500, 'speed': 200, 'ppppkm': 0.055, 'level': 0, "stored": 0},
 {'make': 'Guangdong Star', 'model': 'Star of China', 'icon': guangdong_star, 'shown': False, 'owned': False, 'cost': 850000000, 'train_type': 'Profitable', 'capacity': 800, 'speed': 250, 'ppppkm': 0.6, 'level': 0, "stored": 0},
 {'make': 'Wang Li', 'model': 'Wang-01', 'icon': wang_li, 'shown': False, 'owned': False, 'cost': 18000000, 'train_type': 'Normal', 'capacity': 1200, 'speed': 150, 'ppppkm': 0.02, 'level': 0, "stored": 0},
-{'make': 'Yangtze Monos', 'model': 'Current', 'icon': yangtze_monos, 'shown': False, 'owned': False, 'cost': 11500000, 'train_type': 'Crowded', 'capacity': 100, 'speed': 120, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'Yangtze Transportation', 'model': 'Current', 'icon': yangtze_monos, 'shown': False, 'owned': False, 'cost': 11500000, 'train_type': 'Crowded', 'capacity': 100, 'speed': 120, 'ppppkm': 0.2, 'level': 0, "stored": 0},
 {'make': 'West Network', 'model': 'Bullet', 'icon': west_network, 'shown': False, 'owned': False, 'cost': 600000000, 'train_type': 'Profitable', 'capacity': 600, 'speed': 300, 'ppppkm': 0.4, 'level': 0, "stored": 0},
 {'make': 'Great Northern', 'model': 'Piercer', 'icon': great_northern, 'shown': False, 'owned': False, 'cost': 12250000, 'train_type': 'Speedy', 'capacity': 300, 'speed': 180, 'ppppkm': 0.05, 'level': 0, "stored": 0},
 {'make': 'Southern Star', 'model': 'Solo', 'icon': southern_star, 'shown': False, 'owned': False, 'cost': 24000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 200, 'ppppkm': 0.2, 'level': 0, "stored": 0},
 {'make': 'Eastern Power', 'model': 'Taurus', 'icon': eastern_power, 'shown': False, 'owned': False, 'cost': 9000000, 'train_type': 'Normal', 'capacity': 900, 'speed': 100, 'ppppkm': 0.04, 'level': 0, "stored": 0},
 {'make': 'Red Hill', 'model': 'Baron', 'icon': red_hill, 'shown': False, 'owned': False, 'cost': 2500000, 'train_type': 'Normal', 'capacity': 500, 'speed': 150, 'ppppkm': 0.03, 'level': 0, "stored": 0},
 {'make': 'Blue Hill', 'model': 'Ocean', 'icon': blue_hill, 'shown': False, 'owned': False, 'cost': 2500000, 'train_type': 'Speedy', 'capacity': 500, 'speed': 150, 'ppppkm': 0.03, 'level': 0, "stored": 0},
-{'make': 'Hermann Crowdeds', 'model': 'HM-11W', 'icon': hermann_green, 'shown': False, 'owned': False, 'cost': 11000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 140, 'ppppkm': 0.2, 'level': 0, "stored": 0},
-{'make': 'Hermann Crowdeds', 'model': 'HM-12W', 'icon': hermann_orange, 'shown': False, 'owned': False, 'cost': 12000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 150, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'Hermann Transit', 'model': 'HM-11W', 'icon': hermann_green, 'shown': False, 'owned': False, 'cost': 11000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 140, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'Hermann Transit', 'model': 'HM-12W', 'icon': hermann_orange, 'shown': False, 'owned': False, 'cost': 12000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 150, 'ppppkm': 0.2, 'level': 0, "stored": 0},
 ]
 owned_trains = []
 lines = [
-    {"name": "Line-1", "color": pygame.Color(255, 102, 102), "type": "Normal", "shown": False, "owned": False, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},  
+    #{"name": "Line-1", "color": pygame.Color(255, 102, 102), "type": "Normal", "shown": False, "owned": True, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0},  
 ]
 # place names
 first_names = [
@@ -588,19 +591,23 @@ def count_from_right(num, digit):
     return count
 
 
-def e_euros(euros):
+def e_euros(euros, symbol="€"):
     euros = int(euros)
     if euros >= 1000000000000:
         e_number = count_from_right(euros, 0)
-        return f'€{str(euros)[0]}.{str(euros)[1:4]}e{e_number}'
+        return f'{symbol}{str(euros)[0]}.{str(euros)[1:4]}e{e_number}'
     elif euros >= 1000000000:
         d = len(str(euros)) % 3
-        return f'€{str(euros)[0:d]}.{str(euros)[d]} Bil'
+        if d == 0:
+            d = 3
+        return f'{symbol}{str(euros)[0:d]}.{str(euros)[d]} Bil'
     elif euros >= 1000000:
         d = len(str(euros)) % 3
-        return f'€{str(euros)[0:d]}.{str(euros)[d]} Mil'
+        if d == 0:
+            d = 3
+        return f'{symbol}{str(euros)[0:d]}.{str(euros)[d]} Mil'
     else:
-        return f"€{('{:,}'.format(euros))}"
+        return f"{symbol}{('{:,}'.format(euros))}"
 
 
 # clock functions
@@ -684,6 +691,131 @@ def is_mouse_over_circle(circle_center, radius):
     distance_squared = dx * dx + dy * dy
     return distance_squared <= radius * radius
 
+def gen_tile_map(TILE_SIZE, width, height, tiles):
+    # Placement loop - NO ROTATION
+    tile_order = []
+
+    tiles_per_row = width // TILE_SIZE
+    tiles_per_column = (height // TILE_SIZE) + 1
+    total_tiles = tiles_per_row * tiles_per_column
+
+    for slot in range(total_tiles):
+        row = slot // tiles_per_row
+        col = slot % tiles_per_row
+
+        while True:
+            tile = random.choice(tiles)  # Pick already rotated tile
+            placed = False
+
+            # Check left
+            left_ok = True
+            if col > 0:
+                left_tile = tile_order[slot - 1]
+                left_ok = (tile.left == left_tile.right)
+
+            # Check above
+            top_ok = True
+            if row > 0:
+                top_tile = tile_order[slot - tiles_per_row]
+                top_ok = (tile.top == top_tile.bottom)
+
+            if left_ok and top_ok:
+                tile_order.append(tile)
+                placed = True
+                # print(f"{slot}:{row}/{col} {tile.top}-{tile.right}-{tile.bottom}-{tile.left} rot={tile.rotation}")
+                break  # Go to next slot
+
+        # Next slot
+
+    return tile_order
+
+def gen_city_points(first_names, last_names, width, height):
+    # generating city points based on specified amounts
+    num_points = len(first_names)
+    points = np.random.rand(num_points, 2)
+    points *= [width-430, height-100]  # Scale to screen size    
+    points += [80, 50]
+
+    # creating cities
+    cities_base = []
+    valid_points = []
+    deletions = 0
+    for index, point in enumerate(points):
+        first_name = random.choice(first_names)
+        first_names.remove(first_name)
+        city_name = str(first_name+random.choice(last_names))
+        if len(city_name) > 12:
+            city_name = str(first_name+random.choice(last_names[0:3]))
+        
+        city_loc = pygame.Vector2(point[0], point[1])
+        good = True
+        for item in cities_base:
+            if item["loc"].x-70 <= city_loc.x <= item["loc"].x+70 and item["loc"].y-70 <= city_loc.y <= item["loc"].y+70:
+                good = False
+                deletions += 1
+        if good:
+            cities_base.append({"name":city_name, "loc":city_loc})
+            valid_points.append([city_loc.x, city_loc.y])
+
+    # triangle linkage map
+    valid_points = np.array(valid_points)
+    tri = Delaunay(valid_points)    
+
+    int_points = [tuple(map(int, p)) for p in valid_points]
+
+    # exclusion rects
+    RECT_SIZE = 50 
+    half = RECT_SIZE // 2
+    exclude_rects = [
+        {
+            "rect": pygame.Rect(x - half, y - half, RECT_SIZE, RECT_SIZE),
+            "center": (x, y)
+        }
+        for x, y in int_points
+    ]
+
+    num_cities = len(int_points)
+    connections = [set() for _ in range(num_cities)]
+
+    for simplex in tri.simplices:
+        tri_pts = [int_points[i] for i in simplex]
+
+        if triangle_overlaps_other_rects(tri_pts, exclude_rects):
+            continue
+
+        i0, i1, i2 = simplex
+
+        connections[i0].update([i1, i2])
+        connections[i1].update([i0, i2])
+        connections[i2].update([i0, i1])
+
+    cities = []
+    for city in cities_base:
+        runs_to = []
+        for i, conn in enumerate(connections):
+            if city["name"] == cities_base[i]["name"]:
+                conns = len(conn)
+                runs_to = [int(x) for x in conn]
+                for i, x in enumerate(runs_to):
+                    runs_to[i] = cities_base[x]["name"][0:3].upper()
+
+        cost = round(random.choice(range(10000, 20000))*(random.choice(range(8, 50))), -4)
+        
+        cities.append(City(city["name"], city["name"][0:3].upper(), city["loc"], cost, round(cost/50*conns), runs_to))
+
+    cities_dict = {city.code: city for city in cities}
+
+    paths = []
+    for city in cities:
+        for dest in city.operates_to:
+            bad = False
+            for path in paths:
+                if (city.code == path["start"] or city.code == path["end"]) and (dest == path["start"] or dest == path["end"]):
+                    bad = True
+            if not bad:
+                paths.append({"start": city.code, "end": dest, "lines": 0, "running_total": -1})
+
+    return cities, paths, cities_dict
 
 
 tiles = []
@@ -716,122 +848,9 @@ for filename in os.listdir(folder):
 # generating tile map based on specified sizes 
 TILE_SIZE = 100
 
-# Placement loop - NO ROTATION
-tile_order = []
+tile_order = gen_tile_map(TILE_SIZE, width, height, tiles)
 
-tiles_per_row = width // TILE_SIZE
-tiles_per_column = (height // TILE_SIZE) + 1
-total_tiles = tiles_per_row * tiles_per_column
-
-for slot in range(total_tiles):
-    row = slot // tiles_per_row
-    col = slot % tiles_per_row
-
-    while True:
-        tile = random.choice(tiles)  # Pick already rotated tile
-        placed = False
-
-        # Check left
-        left_ok = True
-        if col > 0:
-            left_tile = tile_order[slot - 1]
-            left_ok = (tile.left == left_tile.right)
-
-        # Check above
-        top_ok = True
-        if row > 0:
-            top_tile = tile_order[slot - tiles_per_row]
-            top_ok = (tile.top == top_tile.bottom)
-
-        if left_ok and top_ok:
-            tile_order.append(tile)
-            placed = True
-            # print(f"{slot}:{row}/{col} {tile.top}-{tile.right}-{tile.bottom}-{tile.left} rot={tile.rotation}")
-            break  # Go to next slot
-
-    # Next slot
-
-# generating city points based on specified amounts
-num_points = len(first_names)
-points = np.random.rand(num_points, 2)
-points *= [width-430, height-100]  # Scale to screen size    
-points += [80, 50]
-
-# creating cities
-cities_base = []
-valid_points = []
-deletions = 0
-for index, point in enumerate(points):
-    first_name = random.choice(first_names)
-    first_names.remove(first_name)
-    city_name = str(first_name+random.choice(last_names))
-    city_loc = pygame.Vector2(point[0], point[1])
-    good = True
-    for item in cities_base:
-        if item["loc"].x-70 <= city_loc.x <= item["loc"].x+70 and item["loc"].y-70 <= city_loc.y <= item["loc"].y+70:
-            good = False
-            deletions += 1
-    if good:
-        cities_base.append({"name":city_name, "loc":city_loc})
-        valid_points.append([city_loc.x, city_loc.y])
-
-# triangle linkage map
-valid_points = np.array(valid_points)
-tri = Delaunay(valid_points)    
-
-int_points = [tuple(map(int, p)) for p in valid_points]
-
-# exclusion rects
-RECT_SIZE = 50 
-half = RECT_SIZE // 2
-exclude_rects = [
-    {
-        "rect": pygame.Rect(x - half, y - half, RECT_SIZE, RECT_SIZE),
-        "center": (x, y)
-    }
-    for x, y in int_points
-]
-
-num_cities = len(int_points)
-connections = [set() for _ in range(num_cities)]
-
-for simplex in tri.simplices:
-    tri_pts = [int_points[i] for i in simplex]
-
-    if triangle_overlaps_other_rects(tri_pts, exclude_rects):
-        continue
-
-    i0, i1, i2 = simplex
-
-    connections[i0].update([i1, i2])
-    connections[i1].update([i0, i2])
-    connections[i2].update([i0, i1])
-
-cities = []
-for city in cities_base:
-    runs_to = []
-    for i, conn in enumerate(connections):
-        if city["name"] == cities_base[i]["name"]:
-            conns = len(conn)
-            runs_to = [int(x) for x in conn]
-            for i, x in enumerate(runs_to):
-                runs_to[i] = cities_base[x]["name"][0:3].upper()
-
-    cost = round(random.choice(range(10000, 20000))*(random.choice(range(8, 50))), -4)
-    
-    cities.append(City(city["name"], city["name"][0:3].upper(), city["loc"], cost, round(cost/50*conns), runs_to))
-
-cities_dict = {city.code: city for city in cities}
-
-paths = []
-for city in cities:
-    for dest in city.operates_to:
-        bad = False
-        for path in paths:
-            if (city.code == path["start"] or city.code == path["end"]) and (dest == path["start"] or dest == path["end"]):
-                bad = True
-        if not bad:
-            paths.append({"start": city.code, "end": dest, "lines": 0, "running_total": -1})
+cities, paths, cities_dict = gen_city_points(first_names, last_names, width, height)
 
 while running:
     for event in pygame.event.get(exclude=[pygame.MOUSEBUTTONUP]):
@@ -916,99 +935,112 @@ while running:
         if hover:
             # detecting mouse pos relative to each city
             for city in cities:
-                if pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5,round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5, round(city.loc.y)+10) and city.shown:
+                if tutorial_step in [0, 1, 2] and tutorial and city != closest_city:
+                    pass
+                else:
+                    if pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5,round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5, round(city.loc.y)+10) and city.shown:
 
-                    # determining backing colour based on cost and players money - adds a clearer visualisation of what the player can do with city
-                    if city in cities and not city.owned and city.cost > euros:
-                        text_color = pygame.Color(255, 49, 0)
-                    elif city in cities and not city.owned:
-                        text_color = "white"
-                    else:
-                        text_color = "yellow"
+                        # determining backing colour based on cost and players money - adds a clearer visualisation of what the player can do with city
+                        if city in cities and not city.owned and city.cost > euros:
+                            text_color = pygame.Color(255, 49, 0)
+                        elif city in cities and not city.owned:
+                            text_color = "white"
+                        else:
+                            text_color = "yellow"
 
-                    rect = pygame.Rect(city.loc.x - 18, city.loc.y - 38, 41, H4_SIZE+12)
-                    pygame.draw.rect(screen, COLOR, rect, border_radius = 13)
-                    font_h4.set_bold(True)
-                    text = font_h4.render(city.code, True, text_color)
-                    screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2+1, rect[1]+(rect[3]/2)-text.get_height()/2))
-                    font_h4.set_bold(False)
+                        rect = pygame.Rect(city.loc.x - 18, city.loc.y - 38, 41, H4_SIZE+12)
+                        pygame.draw.rect(screen, COLOR, rect, border_radius = 13)
+                        font_h4.set_bold(True)
+                        text = font_h4.render(city.code, True, text_color)
+                        screen.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2+1, rect[1]+(rect[3]/2)-text.get_height()/2))
+                        font_h4.set_bold(False)
 
         # show city labels on click
         for city in cities:
             # city labels
-            if city.clicked and not line_build and city.shown: 
-                for dest in city.operates_to:
-                    fake_lines.append({"cities": [dest, city.code], "color": (150,150,150), "type": "Normal"})
-                draw_city(city, pygame.Color(54, 153, 43))
-                BOX_WIDTH = font_h4.render("XXXXXXXXXXXX  XXX", True, "black").get_width()
-                BOX_HEIGHT = H4_SIZE * 3 + 12
-                # box down
-                if city.loc.y - (H5_SIZE * 5 + 30) < 20:
-                    box = pygame.Vector2(city.loc.x - 65, city.loc.y + ((H5_SIZE * 5 + 15)-H5_SIZE * 5) + 5) # used V2 then rect
-                    rect = pygame.Rect(box.x, box.y, BOX_WIDTH, BOX_HEIGHT) 
-                # box up
-                else:
-                    box = pygame.Vector2(city.loc.x - 65, city.loc.y - (H5_SIZE * 5 + 15))
-                    rect = pygame.Rect(box.x, box.y, BOX_WIDTH, BOX_HEIGHT) 
-
-                pygame.draw.rect(screen, pygame.Color(210,210,210), rect)
-
-                # printing name details in top corners of box
-                print_text(f"{city.name}", font_h4, "black", box.x+4, box.y+2)
-                font_h4.set_bold(True)
-                text = font_h4.render(city.code, True, "black")
-                screen.blit(text, (box.x+rect[2]-text.get_width()-4, box.y+2))
-                font_h4.set_bold(False)
-
-                # shows purchase button for if the city is NOT owned
-                if not city.owned:
-
-                    if euros > city.cost:
-                        color = pygame.Color(39, 143, 31)
-                        words_1 = "PURCHASE"
-                        words_2 = str(city.cost)
+            if tutorial_step in [0, 1, 2] and tutorial and city != closest_city:
+                pass
+            else:
+                if city.clicked and not line_build and city.shown: 
+                    for dest in city.operates_to:
+                        fake_lines.append({"cities": [dest, city.code], "color": (150,150,150), "type": "Normal"})
+                    draw_city(city, pygame.Color(54, 153, 43))
+                    BOX_WIDTH = font_h4.render("XXXXXXXXXXXX  XXX", True, "black").get_width()
+                    BOX_HEIGHT = H4_SIZE * 3 + 12
+                    # box down
+                    if city.loc.y - (H5_SIZE * 5 + 30) < 20:
+                        box = pygame.Vector2(city.loc.x - 65, city.loc.y + ((H5_SIZE * 5 + 15)-H5_SIZE * 5) + 5) # used V2 then rect
+                        rect = pygame.Rect(box.x, box.y, BOX_WIDTH, BOX_HEIGHT) 
+                    # box up
                     else:
-                        color = "red"
-                        words_1 = "CAN'T AFFORD"
-                        words_2 = str(city.cost)
+                        box = pygame.Vector2(city.loc.x - 65, city.loc.y - (H5_SIZE * 5 + 15))
+                        rect = pygame.Rect(box.x, box.y, BOX_WIDTH, BOX_HEIGHT) 
 
-                    rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
-                    pygame.draw.rect(screen, color, rect)
-                    # printing purchase details on city
-                    text = font_h4.render(words_1, True, "white")
-                    screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*1/3)-(text.get_height()/2)-1))
-                    text = font_h4.render(words_2, True, "white")
-                    screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*2/3)-(text.get_height()/2)+2))
+                    pygame.draw.rect(screen, COLOR, rect)
 
-                    # checks for if user is clicking the purchase button or not
-                    if button_check(rect):
-                        if euros > city.cost:
-                            city.owned = True
-                            euros -= city.cost
-                            for dest in city.operates_to:
-                                for item in cities:
-                                    if dest == item.code:
-                                        item.shown = True
-                            
-
-                        # add money changes etc here
-                
-                # shows 'owned' button if city is owned - may change
-                if city.owned:
-                    rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
-                    pygame.draw.rect(screen, pygame.Color(160, 160, 160), rect)
-
+                    # printing name details in top corners of box
+                    print_text(f"{city.name}", font_h4, "white", box.x+4, box.y+2)
                     font_h4.set_bold(True)
-                    text = font_h4.render("OWNED", True, "white")
-                    screen.blit(text, ((rect[0]+rect[2]/2) - text.get_width()/2, (rect[1]+rect[3]/2) - text.get_height()/2))
+                    text = font_h4.render(city.code, True, "white")
+                    screen.blit(text, (box.x+rect[2]-text.get_width()-4, box.y+2))
                     font_h4.set_bold(False)
-           
+
+                    # shows purchase button for if the city is NOT owned
+                    if not city.owned:
+
+                        if euros > city.cost:
+                            color = pygame.Color(39, 143, 31)
+                            words_1 = "PURCHASE"
+                            words_2 = str(city.cost)
+                        else:
+                            color = "red"
+                            words_1 = "CAN'T AFFORD"
+                            words_2 = str(city.cost)
+
+                        rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
+                        pygame.draw.rect(screen, color, rect)
+                        # printing purchase details on city
+                        text = font_h4.render(words_1, True, "white")
+                        screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*1/3)-(text.get_height()/2)-1))
+                        text = font_h4.render(words_2, True, "white")
+                        screen.blit(text, (rect[0]+(rect[2]/2)-(text.get_width()/2), rect[1]+(rect[3]*2/3)-(text.get_height()/2)+2))
+
+                        # checks for if user is clicking the purchase button or not
+                        if button_check(rect):
+                            if euros > city.cost:
+                                city.owned = True
+                                euros -= city.cost
+                                for dest in city.operates_to:
+                                    for item in cities:
+                                        if dest == item.code:
+                                            item.shown = True
+                                
+
+                            # add money changes etc here
+                    
+                    # shows 'owned' button if city is owned - may change
+                    if city.owned:
+                        rect = pygame.Rect(box.x+4, box.y+H4_SIZE+4, BOX_WIDTH-8, (H4_SIZE*3+12)-(H4_SIZE+4)-4)
+                        pygame.draw.rect(screen, pygame.Color(160, 160, 160), rect)
+
+                        font_h4.set_bold(True)
+                        text = font_h4.render("OWNED", True, "white")
+                        screen.blit(text, ((rect[0]+rect[2]/2) - text.get_width()/2, (rect[1]+rect[3]/2) - text.get_height()/2))
+                        font_h4.set_bold(False)
+            
         # popup answers
         for item in trains+lines+new_line:
             if item["shown"]:
                 hover = False
                 rect = (0, 0, width, height)
-                pygame.draw.rect(trans_surface, (0,0,0,190), rect)
+                
+                if not tutorial:
+                    pygame.draw.rect(trans_surface, (0,0,0,190), rect)
+                else:
+                    pygame.draw.rect(trans_surface, (0,0,0,190), rect)
+            
+
+
                 screen.blit(trans_surface, (0,0))
                 screen.blit(track_outline, (200,120))
                 
@@ -1362,18 +1394,18 @@ while running:
                     if item["level"] == 0:
                         item["level"] = 1
                         reset_to_0 = True
-                    rect = pygame.Rect(x_across+15, height-40, 320, 32)
-                    pygame.draw.rect(screen, pygame.Color(54, 153, 43), rect, border_radius = 20)
-                    rect = pygame.Rect(x_across+15+(item["level"]-1)*32 +16, height-40, (10-(item["level"]))*32+16, 32)
-                    pygame.draw.rect(screen, "red", rect, border_top_right_radius = 20, border_bottom_right_radius = 20)
-                    pygame.draw.circle(screen, pygame.Color(252, 219, 3), (x_across+15+(item["level"]-1)*32 +16, height-8-(16)), 16)
+                    rect = pygame.Rect(195, popup.get_height()-100, 320, 32)
+                    pygame.draw.rect(popup, pygame.Color(54, 153, 43), rect, border_radius = 20)
+                    rect = pygame.Rect(195+(item["level"]-1)*32 +16, popup.get_height()-100, (10-(item["level"]))*32+16, 32)
+                    pygame.draw.rect(popup, "red", rect, border_top_right_radius = 20, border_bottom_right_radius = 20)
+                    pygame.draw.circle(popup, pygame.Color(252, 219, 3), (195+(item["level"]-1)*32 +16, popup.get_height()-68-(16)), 16)
                     font_h3.set_bold(True)
                     if reset_to_0:
                         item["level"] = 0
                     text = font_h3.render(str(item["level"]), True, "black")
                     if reset_to_0:
                         item["level"] = 1
-                    screen.blit(text, (x_across+15+(item["level"]-1)*32 +16 -text.get_width()/2, height-8-(16)-text.get_height()/2))
+                    popup.blit(text, (195+(item["level"]-1)*32 +16 -text.get_width()/2, popup.get_height()-68-(16)-text.get_height()/2))
                     if reset_to_0:
                         item["level"] = 0
                     font_h3.set_bold(False)
@@ -1457,7 +1489,7 @@ while running:
                         if same:
                             pass
                         else:
-                            lines.append({"name": f"Line-{len(lines)+1}", "color": (r,g,b), "type": "Normal", "shown": False, "owned": False, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0})
+                            lines.append({"name": f"Line-{len(lines)+1}", "color": (r,g,b), "type": "Normal", "shown": False, "owned": True, "finished": True, "cities": [], "build_order": [], "trains": [], "speed": 100, "level": 1, "cost": 100000, "money_earned": 0})
                             new_line[0]["shown"] = False
                             lines[-1]["shown"] = True
 
@@ -1524,6 +1556,8 @@ while running:
                     item["cities"].append(city.code)
                     item["build_order"].append(city.code)
                 elif button_check(rect) and len(item["cities"]) < 10 and city.owned:
+                    fronted = False
+                    backed = False
                     # Determine if city can be added to either end
                     can_add_to_back = city.code not in item["cities"] and city.code in city.operates_to and item["cities"] and city.code in cities_dict[item["cities"][-1]].operates_to
                     can_add_to_front = city.code not in item["cities"] and city.code in city.operates_to and item["cities"] and city.code in cities_dict[item["cities"][0]].operates_to
@@ -1584,7 +1618,13 @@ while running:
 
                 elif key[pygame.K_RETURN] or button_check(enter_rect):
                     item["finished"] = True
-                    line_build = None
+                    if tutorial_step == 8:
+                        if len(item["cities"]) < 3:
+                            pass
+                        else:
+                            line_build = None
+                    else:
+                        line_build = None
                     item["shown"] = True
                     if len(item["cities"]) < 2:
                         item["cities"] = []
@@ -1614,6 +1654,7 @@ while running:
                 lines[lines.index(line_build)] = item 
 
                 # right side menus
+                
         # mini menu labels
         title_rects = []
         titles = ["Lines", "Trains", "Ascension"]
@@ -1900,7 +1941,7 @@ while running:
 
             rect = pygame.Rect(x_across+20, y_down+2, width-(x_across+20)-20, 20)
             pygame.draw.rect(screen, "white", rect)
-            rect = pygame.Rect(x_across+24, y_down+6, (width-(x_across+24)-24)*(total_income/1000000000*(10**((num_ascensions+1)**2))), 12)
+            rect = pygame.Rect(x_across+24, y_down+6, (width-(x_across+24)-24)*(total_income/(1000000000*(10**((num_ascensions+1)**2)))), 12)
             pygame.draw.rect(screen, "green", rect)
             text = font_h4.render(f"{e_euros(total_income)} / {e_euros(1000000000*(10**((num_ascensions+1)**2)))}", True, "white")
             screen.blit(text, (x_across+140-text.get_width()/2, y_down+24))
@@ -1913,15 +1954,83 @@ while running:
 
             rect = pygame.Rect(x_across+20, y_down+2, width-(x_across+20)-20, 20)
             pygame.draw.rect(screen, "white", rect)
-            rect = pygame.Rect(x_across+24, y_down+6, (width-(x_across+24)-24)*(total_passengers/1000000*(10**((num_ascensions+1)**2))), 12)
+            rect = pygame.Rect(x_across+24, y_down+6, (width-(x_across+24)-24)*(total_passengers/(10000000*(10**((num_ascensions+1)**2)))), 12)
             pygame.draw.rect(screen, "green", rect)
-            text = font_h4.render(f"{e_euros(total_passengers)} / {e_euros(1000000*(10**((num_ascensions+1)**2)))}", True, "white")
+            text = font_h4.render(f"{e_euros(total_passengers, '')} / {e_euros(10000000*(10**((num_ascensions+1)**2)), '')}", True, "white")
             screen.blit(text, (x_across+140-text.get_width()/2, y_down+24))
 
+            y_down += 20 + H4_SIZE + 16
 
+            if total_passengers >= 10000000*(10**((num_ascensions+1)**2)) and total_income >= 1000000000*(10**((num_ascensions+1)**2)) and owned_total >= 32 and len(lines) >= 32:
+                color = "green"
+                ascension_ready = True
+            else:
+                color = "red"
+                ascension_ready = False
 
+            rect = pygame.Rect(x_across+20, y_down+2, width-(x_across+20)-20, H2_SIZE+20)
+            pygame.draw.rect(screen, color, rect, border_radius=16)
+            text = font_h2_standard.render("ASCEND", True, "white")
+            screen.blit(text, (x_across+140-text.get_width()/2, y_down+11+H2_SIZE/2-text.get_height()/2))
 
-
+            if button_check(rect) and ascension_ready:
+                num_ascensions += 1
+                lines = []
+                trains = [
+{'make': 'Express', 'model': 'DT-4', 'icon': express_red, 'shown': False, 'owned': False, 'cost': 300000, 'train_type': 'Normal', 'capacity': 200, 'speed': 100, 'ppppkm': 0.025, 'level': 0, "stored": 0, 'desc': 'The most basic train of the lot. Small yet reliable for transporting your first passengers, or for serving new connections.'},
+{'make': 'Express', 'model': 'DT-5A', 'icon': express_orange, 'shown': False, 'owned': False, 'cost': 340000, 'train_type': 'Normal', 'capacity': 250, 'speed': 100, 'ppppkm': 0.025, 'level': 0, "stored": 0},
+{'make': 'Express', 'model': 'DT-5B', 'icon': express_green, 'shown': False, 'owned': False, 'cost': 350000, 'train_type': 'Normal', 'capacity': 250, 'speed': 110, 'ppppkm': 0.028, 'level': 0, "stored": 0},
+{'make': 'Express', 'model': 'DT-6', 'icon': express_blue, 'shown': False, 'owned': False, 'cost': 400000, 'train_type': 'Normal', 'capacity': 300, 'speed': 112, 'ppppkm': 0.03, 'level': 0, "stored": 0},
+{'make': 'RailSpark', 'model': 'Ember', 'icon': railspark_ember, 'shown': False, 'owned': False, 'cost': 650000, 'train_type': 'Normal', 'capacity': 400, 'speed': 105, 'ppppkm': 0.025, 'level': 0, "stored": 0},
+{'make': 'RailSpark', 'model': 'Torrent', 'icon': railspark_torrent, 'shown': False, 'owned': False, 'cost': 600000, 'train_type': 'Normal', 'capacity': 200, 'speed': 160, 'ppppkm': 0.04, 'level': 0, "stored": 0},
+{'make': 'RailSpark', 'model': 'Bulb', 'icon': railspark_bulb, 'shown': False, 'owned': False, 'cost': 200000, 'train_type': 'Speedy', 'capacity': 100, 'speed': 140, 'ppppkm': 0.05, 'level': 0, "stored": 0},
+{'make': 'RailSpark', 'model': 'Mystic', 'icon': railspark_mystic, 'shown': False, 'owned': False, 'cost': 2500000, 'train_type': 'Speedy', 'capacity': 375, 'speed': 180, 'ppppkm': 0.06, 'level': 0, "stored": 0},
+{'make': 'North Star', 'model': 'Ursa', 'icon': north_star_green, 'shown': False, 'owned': False, 'cost': 500000, 'train_type': 'Normal', 'capacity': 500, 'speed': 80, 'ppppkm': 0.02, 'level': 0, "stored": 0},
+{'make': 'North Star', 'model': 'Maris', 'icon': north_star_red, 'shown': False, 'owned': False, 'cost': 320000, 'train_type': 'Speedy', 'capacity': 200, 'speed': 120, 'ppppkm': 0.03, 'level': 0, "stored": 0},
+{'make': 'North Star', 'model': 'Polaris', 'icon': north_star_purple, 'shown': False, 'owned': False, 'cost': 1600000, 'train_type': 'Speedy', 'capacity': 400, 'speed': 134, 'ppppkm': 0.045, 'level': 0, "stored": 0},
+{'make': 'North Star', 'model': 'Polaris-2', 'icon': north_star_yellow, 'shown': False, 'owned': False, 'cost': 2150000, 'train_type': 'Speedy', 'capacity': 500, 'speed': 150, 'ppppkm': 0.045, 'level': 0, "stored": 0},
+{'make': 'Thompson Lines', 'model': 'AC-76', 'icon': thompson_lines_red, 'shown': False, 'owned': False, 'cost': 150000, 'train_type': 'Normal', 'capacity': 150, 'speed': 110, 'ppppkm': 0.02, 'level': 0, "stored": 0},
+{'make': 'Thompson Lines', 'model': 'AC-77', 'icon': thompson_lines_blue, 'shown': False, 'owned': False, 'cost': 160000, 'train_type': 'Normal', 'capacity': 150, 'speed': 120, 'ppppkm': 0.02, 'level': 0, "stored": 0},
+{'make': 'Erlington Works', 'model': 'Jubilee-A', 'icon': erlington_works, 'shown': False, 'owned': False, 'cost': 900000, 'train_type': 'Speedy', 'capacity': 50, 'speed': 50, 'ppppkm': 1.0, 'level': 0, "stored": 0},
+{'make': 'Erlington Works', 'model': 'Jubilee-B', 'icon': erlington_works_2, 'shown': False, 'owned': False, 'cost': 1100000, 'train_type': 'Speedy', 'capacity': 75, 'speed': 75, 'ppppkm': 0.5, 'level': 0, "stored": 0},
+{'make': 'Royal', 'model': 'Bronze', 'icon': royal_bronze, 'shown': False, 'owned': False, 'cost': 3620000, 'train_type': 'Speedy', 'capacity': 200, 'speed': 150, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'Royal', 'model': 'Silver', 'icon': royal_silver, 'shown': False, 'owned': False, 'cost': 4200000, 'train_type': 'Speedy', 'capacity': 100, 'speed': 170, 'ppppkm': 0.5, 'level': 0, "stored": 0},
+{'make': 'Royal', 'model': 'Gold', 'icon': royal_gold, 'shown': False, 'owned': False, 'cost': 5000000, 'train_type': 'Speedy', 'capacity': 50, 'speed': 185, 'ppppkm': 1.0, 'level': 0, "stored": 0},
+{'make': 'Royal', 'model': 'Diamond', 'icon': royal_diamond, 'shown': False, 'owned': False, 'cost': 9900000, 'train_type': 'Profitable', 'capacity': 20, 'speed': 200, 'ppppkm': 4.0, 'level': 0, "stored": 0},
+{'make': 'Mr Peng Enterprises', 'model': 'Peng-01', 'icon': peng_enterprises, 'shown': False, 'owned': False, 'cost': 43000000, 'train_type': 'Speedy', 'capacity': 500, 'speed': 200, 'ppppkm': 0.055, 'level': 0, "stored": 0},
+{'make': 'Guangdong Star', 'model': 'Star of China', 'icon': guangdong_star, 'shown': False, 'owned': False, 'cost': 850000000, 'train_type': 'Profitable', 'capacity': 800, 'speed': 250, 'ppppkm': 0.6, 'level': 0, "stored": 0},
+{'make': 'Wang Li', 'model': 'Wang-01', 'icon': wang_li, 'shown': False, 'owned': False, 'cost': 18000000, 'train_type': 'Normal', 'capacity': 1200, 'speed': 150, 'ppppkm': 0.02, 'level': 0, "stored": 0},
+{'make': 'Yangtze Transportation', 'model': 'Current', 'icon': yangtze_monos, 'shown': False, 'owned': False, 'cost': 11500000, 'train_type': 'Crowded', 'capacity': 100, 'speed': 120, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'West Network', 'model': 'Bullet', 'icon': west_network, 'shown': False, 'owned': False, 'cost': 600000000, 'train_type': 'Profitable', 'capacity': 600, 'speed': 300, 'ppppkm': 0.4, 'level': 0, "stored": 0},
+{'make': 'Great Northern', 'model': 'Piercer', 'icon': great_northern, 'shown': False, 'owned': False, 'cost': 12250000, 'train_type': 'Speedy', 'capacity': 300, 'speed': 180, 'ppppkm': 0.05, 'level': 0, "stored": 0},
+{'make': 'Southern Star', 'model': 'Solo', 'icon': southern_star, 'shown': False, 'owned': False, 'cost': 24000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 200, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'Eastern Power', 'model': 'Taurus', 'icon': eastern_power, 'shown': False, 'owned': False, 'cost': 9000000, 'train_type': 'Normal', 'capacity': 900, 'speed': 100, 'ppppkm': 0.04, 'level': 0, "stored": 0},
+{'make': 'Red Hill', 'model': 'Baron', 'icon': red_hill, 'shown': False, 'owned': False, 'cost': 2500000, 'train_type': 'Normal', 'capacity': 500, 'speed': 150, 'ppppkm': 0.03, 'level': 0, "stored": 0},
+{'make': 'Blue Hill', 'model': 'Ocean', 'icon': blue_hill, 'shown': False, 'owned': False, 'cost': 2500000, 'train_type': 'Speedy', 'capacity': 500, 'speed': 150, 'ppppkm': 0.03, 'level': 0, "stored": 0},
+{'make': 'Hermann Transit', 'model': 'HM-11W', 'icon': hermann_green, 'shown': False, 'owned': False, 'cost': 11000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 140, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+{'make': 'Hermann Transit', 'model': 'HM-12W', 'icon': hermann_orange, 'shown': False, 'owned': False, 'cost': 12000000, 'train_type': 'Crowded', 'capacity': 200, 'speed': 150, 'ppppkm': 0.2, 'level': 0, "stored": 0},
+]
+                first_names = [
+    "Ash", "Bath", "Bay", "Bed", "Bell", "Berry", "Black", "Bloom", "Blue",
+    "Brad", "Brent", "Bridge", "Brook", "Cam", "Cedar", "Charl", "Chest", "Clear",
+    "Clifton", "Coal", "Clover", "Col", "Cran", "Crow", "Daven", "Day",
+    "Deer", "Dover", "Down", "Dun", "East", "Edge", "Elm", "Elk", "Fair", "Farm",
+    "Fayette", "Fern", "Fish", "Flat", "Fort", "Fountain", "Fox", "Frank", "Freder",
+    "Glen", "Gold", "Green", "Ham", "Han", "Hart", "Hazel", "Hemp", "Hen",
+    "High", "Hill", "Hol", "Hope", "Hun", "Iron", "John",
+    "Jones", "Ken", "King", "Lake", "Lan", "Laurel", "Law", "Leb", "Lex", "Lime",
+    "Lin", "Little", "Liver", "Long", "Lynn", "Man", "Maple", "Mar", "May",
+    "Mid", "Mill", "Mon", "Mount",  "New", "North", "Oak",
+    "Oce", "Olive", "Ox", "Park", "Peach", "Pine", "Plain", "Port",
+    "Pow", "Pres", "Prince", "Rain", "Red", "River", "Rock", "Rose", "Rox", "Rush",
+    "Ruther", "Saint", "Salt", "Sand", "Scot", "Shel", "Silver",
+    "Smith", "Snow", "South", "Spring", "Stan", "Stock", "Sun", "Syl",
+    "Tall", "Three", "Tim", "Twin", "Valley", "Vern", "Wake",
+    "Wash", "Water", "West", "Wheel", "White", "Willow", "Win", "Wood", "York",
+]
+                euros = 10000000
+                tile_order = gen_tile_map(TILE_SIZE, width, height, tiles)
+                cities, paths, cities_dict = gen_city_points(first_names, last_names, width, height)
 
         # save game
         font_h2_diff.set_bold(True)
@@ -1974,13 +2083,6 @@ while running:
         line_at_angle(screen, (EDGE+(width-EDGE)/2, height-70), 58*0.7, hour_theta, "black", 5)
         # line_at_angle(screen, (EDGE+(width-EDGE)/2, height-70), 58*0.9, minute_theta, "black", 3)
         pygame.draw.circle(screen, "black", (EDGE+(width-EDGE)/2, height-70), 5) 
-        # service running markers
-        FROM_EDGE = EDGE+14
-        rect = pygame.Rect(FROM_EDGE, (height-140)+FROM_EDGE, 140-FROM_EDGE*2, 140-FROM_EDGE*2)
-        pygame.draw.arc(screen, "green", rect, get_angle(18-12, 12), get_angle(18-7,12), width = 3)
-        FROM_EDGE = EDGE+20
-        rect = pygame.Rect(FROM_EDGE, (height-140)+FROM_EDGE, 140-FROM_EDGE*2, 140-FROM_EDGE*2)
-        pygame.draw.arc(screen, "green", rect, get_angle(18-21, 12), get_angle(18-12,12), width = 3)
         # draw markings
         for hour in range(0, 12):
             theta = get_angle(hour, 12)
@@ -2053,11 +2155,6 @@ while running:
             else:
                 city.clicked = False
 
-        # removing large city labels when clicked elsewhere
-        if button_check(pygame.Rect(0,0,width,height)):
-            for city in cities:
-                city.clicked = False
-
         # money
         # passive from cities
         for city in cities:
@@ -2125,28 +2222,6 @@ while running:
             menu_page = "Trains"
         elif key[pygame.K_a]:
             menu_page = "Ascension"
-       
-        # # map key
-        # # can't afford key
-        # rect = pygame.Rect(10,10,15,15)
-        # pygame.draw.rect(screen, "black", rect)
-        # rect = pygame.Rect(13,13,9,9)
-        # pygame.draw.rect(screen, pygame.Color(217, 49, 30), rect)
-        # print_text("Can't Afford", font_h4, "black", 31, 10)
-
-        # # can afford key
-        # rect = pygame.Rect(10,30,15,15)
-        # pygame.draw.rect(screen, "black", rect)
-        # rect = pygame.Rect(13,33,9,9)
-        # pygame.draw.rect(screen, pygame.Color(170,170,170), rect)
-        # print_text("Can Afford", font_h4, "black", 31, 30)
-
-        # # owned key
-        # rect = pygame.Rect(10,50,15,15)
-        # pygame.draw.rect(screen, "black", rect)
-        # rect = pygame.Rect(13,53,9,9)
-        # pygame.draw.rect(screen, "yellow", rect)
-        # print_text("Owned", font_h4, "black", 31, 50)
 
         text = font_h5.render(f'{pygame.mouse.get_pos()[0]}, {pygame.mouse.get_pos()[1]}', True, "black")
         screen.blit(text, (pygame.mouse.get_pos()[0]+10, pygame.mouse.get_pos()[1]+5))
@@ -2156,18 +2231,425 @@ while running:
             if tutorial_step == 0:
                 mask.fill((0, 0, 0, 140))  # semi-transparent overlay
                 big_rect = pygame.Rect(200,150, width-682, height-400)
-                pygame.draw.rect(mask, (0, 0, 0, 255), big_rect, border_radius=16)
-                text = font_h1.render("Zug Fällt Aus!", True, "white")
-                mask.blit(text, (big_rect[0]+(big_rect[2]/2)-text.get_width()/2, big_rect[1]+(big_rect[3]*1/3)-text.get_height()/2))
+                pygame.draw.rect(mask, (0, 0, 0, 255), big_rect, border_radius=32)
+                text = font_h1.render("Train Tycoon", True, "white")
+                mask.blit(title_card, (big_rect[0]+(big_rect[2]/2)-title_card.get_width()/2, big_rect[1]+(big_rect[3]*1/3)-title_card.get_height()/2))
+
                 rect = pygame.Rect(big_rect[0]+50, big_rect[1]+big_rect[3]-150, (big_rect[2]-150)/2, 100)
-                pygame.draw.rect(mask, (54, 255, 0, 255), rect)  # punch out
+                pygame.draw.rect(mask, (54, 153, 43, 255), rect, border_radius=32)
+                text = font_h3.render("Start Tutorial", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
+                if button_check(rect):
+                    tutorial_step = 1
+                
+                rect = pygame.Rect(big_rect[0]+big_rect[2]/2+25, big_rect[1]+big_rect[3]-150, (big_rect[2]-150)/2, 100)
+                pygame.draw.rect(mask, (255, 40, 43, 255), rect, border_radius=32)
+                text = font_h3.render("Skip Tutorial", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]/2)-text.get_height()/2))
+                if button_check(rect):
+                    tutorial = False
+                    tutorial_step = 0
+                    mask.fill((0,0,0,0))
 
 
-                main_rect = pygame.Rect(100, 100, 100, 100)
-                pygame.draw.rect(mask, (0, 0, 0, 0), main_rect)  # punch out
-        
+            elif tutorial_step == 1:
+
+                mask.fill((0, 0, 0, 140))  # semi-transparent overlay
+                rect = pygame.Rect(0, 0, width-282, height)
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect)
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,140), rect, border_radius=32)
+
+                text = font_h2_standard.render("This area is your map. It", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/7)-text.get_height()/2))
+                text = font_h2_standard.render("contains all of your cities,", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/7)-text.get_height()/2))
+                text = font_h2_standard.render("and eventually, your lines", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/7)-text.get_height()/2))
+                text = font_h3.render("Click anywhere on the map to continue", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*5/7)-text.get_height()/2))
+
+                if button_check(pygame.Rect(0,0,width-282,height)):
+                    tutorial_step = 2
+
+
+            elif tutorial_step == 2:
+                mask.fill((0, 0, 0, 140))
+                target = ((width-282)*1/4, height/2)
+                f = 0
+                for city in cities:
+                    d = distance(city.loc, target)
+                    if f == 0 or d < f:
+                        f = d
+                        closest_city = city
+
+                loc = (closest_city.loc.x+2.5, closest_city.loc.y+2.5)
+
+                if closest_city.clicked:
+                    rect = pygame.Rect(loc[0]-80, loc[1]-90, 159, 120)
+
+                elif pygame.mouse.get_pos()[0] in range(round(closest_city.loc.x)-5,round(closest_city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(closest_city.loc.y)-5, round(closest_city.loc.y)+10):
+                    rect = pygame.Rect(loc[0]-30, loc[1]-50, 59, 80)
+
+                else:
+                    rect = pygame.Rect(loc[0]-30, loc[1]-30, 59, 60)
+
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect, border_radius=16)
+
+                if closest_city.owned:
+                    tutorial_step = 3
+                    closest_city.clicked = False
+
+                
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Click on the highlighted city,", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/7)-text.get_height()/2))
+                text = font_h2_standard.render("and press purchase to own it.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/7)-text.get_height()/2))
+                
+
+            elif tutorial_step == 3:
+                mask.fill((0, 0, 0, 140))
+                owned_num = 0
+                for city in closest_city.operates_to:
+                    for code in cities:
+                        if code.code == city:
+                            city = code
+
+                    if city.owned: 
+                        owned_num += 1
+                        city.clicked = False
+
+                    loc = (city.loc.x+2.5, city.loc.y+2.5)
+
+                    if city.clicked:
+                        rect = pygame.Rect(loc[0]-80, loc[1]-90, 159, 120)
+
+                    elif pygame.mouse.get_pos()[0] in range(round(city.loc.x)-5,round(city.loc.x)+10) and pygame.mouse.get_pos()[1] in range(round(city.loc.y)-5, round(city.loc.y)+10):
+                        rect = pygame.Rect(loc[0]-30, loc[1]-50, 59, 80)
+
+                    else:
+                        rect = pygame.Rect(loc[0]-30, loc[1]-30, 59, 60)
+
+                    pygame.draw.rect(mask, (0, 0, 0, 0), rect, border_radius=16)
+
+                if owned_num >= 2:
+                    tutorial_step = 4
+                    pages_visited = []
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Each of the highlighted cities", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/8)-text.get_height()/2))
+                text = font_h2_standard.render("can run lines to the city you", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/8)-text.get_height()/2))
+                text = font_h2_standard.render(" just purchased. Purchase two", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/8)-text.get_height()/2))
+                text = font_h2_standard.render("of these cities.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*5/8)-text.get_height()/2))
+                text = font_h2_standard.render(f"{owned_num}/2", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*6/8)-text.get_height()/2))
+
+
+            elif tutorial_step == 4:
+                for item in trains+lines+new_line:
+                    item["shown"] = False
+
+                mask.fill((0, 0, 0, 140))
+                rect = pygame.Rect(width-342, 0, 60, 390)
+                if len(pages_visited) > 0:
+                    pygame.draw.rect(mask, (0, 0, 0, 0), rect, border_top_left_radius=16, border_bottom_left_radius=16)
+                    rect = pygame.Rect(width-282, 0, 282, height-200)
+                    pygame.draw.rect(mask, (0, 0, 0, 0), rect)
+                else:
+                    pygame.draw.rect(mask, (0, 0, 0, 0), rect, border_radius=16)
+
+                if menu_page == "Trains" and "Trains" not in pages_visited:
+                    pages_visited.append("Trains")
+                elif menu_page == "Ascension" and "Ascension" not in pages_visited:
+                    pages_visited.append("Ascension")
+                elif menu_page == "Lines" and "Lines" not in pages_visited:
+                    pages_visited.append("Lines")
+
+                if len(pages_visited) >= 3 and menu_page == "Lines":
+                    tutorial_step = 5
+                    menu_page = "Lines"
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("This is your menu.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/8)-text.get_height()/2))
+                text = font_h2_standard.render("Use these tabs to navigate to", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/8)-text.get_height()/2))
+                text = font_h2_standard.render("different pages, then return to", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/8)-text.get_height()/2))
+                text = font_h2_standard.render("the 'Lines' page", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*5/8)-text.get_height()/2))
+                text = font_h2_standard.render(f"{len(pages_visited)}/3", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*6/8)-text.get_height()/2))
+
+
+            elif tutorial_step == 5:
+                menu_page = "Lines"
+                new_line[0]["shown"] = True
+                for item in trains+lines:
+                    item["shown"] = False
+
+                mask.fill((0, 0, 0, 140))
+                rect = pygame.Rect(width-280+SPACING, 52, ROW_HEIGHT, ROW_HEIGHT)
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect, border_radius=8)
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Click on this button", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/7)-text.get_height()/2))
+                text = font_h2_standard.render("to add a new line", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/7)-text.get_height()/2))
+
+                if new_line[0]["shown"]:
+                    tutorial_step = 6
+            
+
+            elif tutorial_step == 6:
+                for item in trains+lines:
+                    item["shown"] = False
+                new_line[0]["shown"] = True
+
+                menu_page = "Lines"
+
+                mask.fill((0, 0, 0, 0))
+                l_rect = pygame.Rect(260, 290, 28, 220)
+                r_rect = pygame.Rect(768, 290, 28, 220)
+                if 0.25 < flash < 0.5 or 0.75 < flash < 1:
+                    pygame.draw.rect(mask, (255, 0, 0, 255), l_rect, width=3, border_radius=8)
+                    pygame.draw.rect(mask, (255, 0, 0, 255), r_rect, width=3, border_radius=8)
+
+                if len(lines) > 0:
+                    tutorial_step = 7
+
+                rect = pygame.Rect((width-282)/2-300, height*5/6-100, 600, 200)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Use the + and - buttons", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/4)-text.get_height()/2))
+                text = font_h2_standard.render("to choose a color for your new", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/4)-text.get_height()/2))
+                text = font_h2_standard.render("line, then click 'Add New Line'.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/4)-text.get_height()/2))
+
+            
+            elif tutorial_step == 7:
+                for item in trains+lines+new_line:
+                    item["shown"] = False
+                lines[0]["shown"] = True
+                menu_page = "Lines"
+
+                mask.fill((0, 0, 0, 0))
+
+                rect = pygame.Rect((width-282)/2-300, height*5/6-100, 600, 200)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("This area shows the information", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/4)-text.get_height()/2))
+                text = font_h2_standard.render("about your line.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/4)-text.get_height()/2))
+                text = font_h2_standard.render("Click 'Build Line'", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/4)-text.get_height()/2))
+
+                if line_build != None:
+                    tutorial_step = 8
+                    lines[0]["shown"] = False
+            
+            
+            elif tutorial_step == 8:
+                mask.fill((0, 0, 0, 140))
+
+                rect = pygame.Rect(0, 0, width-282, height)
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect, border_radius=8)
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,140), rect, border_radius=32)
+
+                text = font_h2_standard.render("Click on all your purchased", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/7)-text.get_height()/2))
+                text = font_h2_standard.render("stations in order to build", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/7)-text.get_height()/2))
+                text = font_h2_standard.render("a line between them. ", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/7)-text.get_height()/2))
+                text = font_h2_standard.render("You can undo, finish, or cancel", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/7)-text.get_height()/2))
+                text = font_h2_standard.render("the build using the buttons at", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*5/7)-text.get_height()/2))
+                text = font_h2_standard.render("the top of the screen.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*6/7)-text.get_height()/2))
+
+                if line_build == None and len(lines[0]["cities"]) >= 3:
+                    tutorial_step = 10
+                    menu_page = "Trains"
+                    for item in trains+lines+new_line:
+                        item["shown"] = False
+                    
+            #useless
+            elif tutorial_step == 9:
+                mask.fill((0, 0, 0, 0))
+
+                actions_complete = 0
+
+                good = True
+                for item in trains+lines+new_line:
+                    if item["shown"]:
+                        good = False
+
+                if good:
+                    actions_complete += 1
+                    mask.fill((0,0,0,140))
+                    a_rect = pygame.Rect(width-342, 0, 60, 390)
+                    pygame.draw.rect(mask, (0, 0, 0, 0), a_rect, border_radius=16)
+
+                if menu_page == "Trains":
+                    actions_complete += 1
+
+                if actions_complete >= 2:
+                    tutorial_step = 10
+
+                rect = pygame.Rect((width-282)/2-300, height*5/6-100, 600, 200)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Close the line page", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/4)-text.get_height()/2))
+                text = font_h2_standard.render("and open the 'Trains' menu", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/4)-text.get_height()/2))
+                text = font_h2_standard.render(f"{actions_complete}/2", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/4)-text.get_height()/2))
+
+            
+            elif tutorial_step == 10:
+                mask.fill((0, 0, 0, 140))
+
+                rect = pygame.Rect(width-282, 0, 282, height-200)
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect)
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Choose any of the 'Express'", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/7)-text.get_height()/2))
+                text = font_h2_standard.render("make of trains and click on their", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/7)-text.get_height()/2))
+                text = font_h2_standard.render("icon to open the purchase window.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/7)-text.get_height()/2))
+
+                mask.blit(express_tutorial, (rect[0]+(rect[2]/2)-express_tutorial.get_width()/2, rect[1]+(rect[3]*5/7)-express_tutorial.get_height()/2))
+
+                for train in trains:
+                    if train["make"] == "Express" and train["shown"]:
+                        tutorial_step = 11
+                    elif train["make"] != "Express":
+                        train["shown"] = False
+            
+
+            elif tutorial_step == 11:
+                mask.fill((0, 0, 0, 0))
+
+                rect = pygame.Rect((width-282)/2-300, height*5/6-100, 600, 200)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Unlock, then purchase the train.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/2)-text.get_height()/2))
+
+                if train_purchase:
+                    tutorial_step = 12
+
+
+            elif tutorial_step == 12:
+                mask.fill((0, 0, 0, 140))
+
+                rect = pygame.Rect(width-282, 0, 282, height-200)
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect)
+
+                rect = pygame.Rect((width-282)/2-300, height*5/6-100, 600, 200)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Click on the line you purchased", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*1/4)-text.get_height()/2))
+                text = font_h2_standard.render("earlier in order to add the", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/4)-text.get_height()/2))
+                text = font_h2_standard.render("train to it.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/4)-text.get_height()/2))
+
+                if not train_purchase:
+                    tutorial_step = 13
+
+
+            elif tutorial_step == 13:
+                for item in trains+lines+new_line:
+                    item["shown"] = False
+
+                mask.fill((0, 0, 0, 140))
+
+                rect = pygame.Rect(width-342, height-200, 342, 200)
+                pygame.draw.rect(mask, (0, 0, 0, 0), rect)
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                if income_box_shown:
+                    _rect = pygame.Rect(width-642, height-200, 642, 200)
+                    pygame.draw.rect(mask, (0, 0, 0, 0), _rect, border_top_left_radius=32, border_bottom_left_radius=32)
+                    w = 300
+                    h = 100
+                    finish_t = pygame.Rect(rect[0]+(rect[2]/2)-w/2, rect[1]+(rect[3]*4.5/6)-h/2, w, h)
+                    pygame.draw.rect(mask, (54, 153, 43, 255), finish_t, border_radius=32)
+                    text = font_h2_standard.render("Finish Tutorial", True, "white")
+                    mask.blit(text, (finish_t[0]+(finish_t[2]/2)-text.get_width()/2, finish_t[1]+(finish_t[3]*3/6)-text.get_height()/2))
+                    if button_check(finish_t):
+                        tutorial_step = 14
+
+                text = font_h2_standard.render("Click on the 'Income' button to", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/7)-text.get_height()/2))
+                text = font_h2_standard.render("see how your money is increasing.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/7)-text.get_height()/2))
+
+
+            elif tutorial_step == 14:
+                income_box_shown = False
+                
+                for item in trains+lines+new_line:
+                    item["shown"] = False
+
+                mask.fill((0, 0, 0, 140))
+
+                rect = pygame.Rect((width-282)*11/16-300, height/2-200, 600, 400)
+                pygame.draw.rect(mask, (0,0,0,200), rect, border_radius=32)
+
+                text = font_h2_standard.render("Congratulations, you have", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*2/6)-text.get_height()/2))
+                text = font_h2_standard.render("completed the tutorial.", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*3/6)-text.get_height()/2))
+                text = font_h2_standard.render("Click anywhere to continue", True, "white")
+                mask.blit(text, (rect[0]+(rect[2]/2)-text.get_width()/2, rect[1]+(rect[3]*4/6)-text.get_height()/2))
+
+                if button_check(pygame.Rect(0,0,width,height)):
+                    tutorial = False
+                    tutorial_step = 0
+                    mask.fill((0,0,0,0))
+
+                #main_rect = pygame.Rect(100, 100, 100, 100)
+                #pygame.draw.rect(mask, (0, 0, 0, 0), main_rect)  # punch out
         
         screen.blit(mask, (0, 0))
+
+        # removing large city labels when clicked elsewhere
+        if button_check(pygame.Rect(0,0,width,height)):
+            for city in cities:
+                city.clicked = False
 
     pygame.display.flip()
 
@@ -2185,7 +2667,7 @@ while running:
     dt = clock.tick(120)/1000
 
     # date
-    seconds_since_date_update += dt 
+    seconds_since_date_update += dt*GAME_SPEED
     if seconds_since_date_update >= 24:
         seconds_since_date_update = 0
         day += 1
