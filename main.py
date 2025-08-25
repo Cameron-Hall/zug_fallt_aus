@@ -870,7 +870,7 @@ while running:
     if homepage:
         screen.fill(COLOR)
 
-        text = font_h1.render("game", True, "white")
+        text = font_h1.render("Train Tycoon", True, "white")
         screen.blit(text,((width/2)-(text.get_width()/2),(height/2)-(text.get_height()/2)-height*0.1))
         anywhere = font_h2_standard.render("Click anywhere to continue", True, "white")
         screen.blit(anywhere,((width/2)-(anywhere.get_width()/2),(height/2)-(anywhere.get_height()/2)+height*0.1))
