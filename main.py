@@ -2032,15 +2032,6 @@ while running:
                 tile_order = gen_tile_map(TILE_SIZE, width, height, tiles)
                 cities, paths, cities_dict = gen_city_points(first_names, last_names, width, height)
 
-        # save game
-        font_h2_diff.set_bold(True)
-        # rect = pygame.Rect(width - 42, 10, 32, 32)
-        # pygame.draw.rect(screen, "red", rect)
-        screen.blit(save, (width - 84, 10))
-        if button_check(rect):
-            save_code = None
-        font_h2_diff.set_bold(False)
-
         # close game
         font_h2_diff.set_bold(True)
         rect = pygame.Rect(width - 42, 10, 32, 32)
